@@ -179,19 +179,19 @@ gcloud builds submit --tag gcr.io/PROJECT_ID/ms-incidents
 > gcloud run deploy --image gcr.io/PROJECT_ID/ms-incidents --platform managed --region us-central1 --allow-unauthenticated --memory=512Mi --cpu=1 --timeout=10m --set-env-vars=ENVIRONMENT=production --set-env-vars=SECRET_KEY=secret --set-env-vars=DATABASE_URL=database --set-env-vars=LOG_LEVEL=INFO --set-env-vars=PORT=9876
 ```
 
-5. Verificar el estado del despliegue.
+1. Verificar el estado del despliegue.
 
 ```bash
 gcloud run services list --platform managed
 ```
 
-6. Verificar la URL del servicio desplegado.
+2. Verificar la URL del servicio desplegado.
 
 ```bash
 gcloud run services describe ms-incidents --platform managed --region us-central1
 ```
 
-7. Probar el servicio desplegado.
+3. Probar el servicio desplegado.
 
 ```bash
 curl https://ms-incidents-<ID_PROYECTO>.a.run.app/incidents
