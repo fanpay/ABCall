@@ -1,11 +1,16 @@
+import os
+import sys
 import pytest
-from app import app
-from extensions import db
-from models.incidents import Incidents
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+
+from src.app import app
+from src.extensions import db
+from src.models.incidents import Incidents
 
 @pytest.fixture
 def client():
-    app.config['TESTING'] = True
+    app.config.from_object('src.config.TestConfig')
     with app.test_client() as client:
         with app.app_context():
             db.create_all()

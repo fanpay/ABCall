@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from flask_restful import Resource
-from models.incidents import Incidents
-from extensions import db, cache
+from ..models.incidents import Incidents
+from ..extensions import db, cache
 
 
 class IncidentsList(Resource):

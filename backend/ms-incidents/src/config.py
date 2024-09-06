@@ -12,3 +12,8 @@ class Config:
     #CACHE_REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
     
     CACHE_DEFAULT_TIMEOUT = 300
+    
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'  # Base de datos en memoria para pruebas
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -18,7 +18,7 @@ RUN pip install -r requirements.txt
 
 
 # Set environment variables
-ENV FLASK_APP="main.py"
+ENV FLASK_APP="src/app.py"
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONFAULTHANDLER 1
 #ENV FLASK_DEBUG=1
@@ -30,4 +30,4 @@ EXPOSE 9876
 # Define the command to run the Flask development server
 CMD ["flask", "run", "--host=0.0.0.0", "-p 9876"]
 #CMD ["gunicorn", "--bind", "0.0.0.0:9876", "app:app"]
-#CMD ["gunicorn", "--bind", "0.0.0.0:9876", "main:app"]
+#CMD ["gunicorn", "--bind", "0.0.0.0:9876", "src.app:app"]
