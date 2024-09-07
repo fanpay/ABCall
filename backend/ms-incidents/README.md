@@ -163,13 +163,6 @@ Finalmente agregue la etiqueta de 'databases' a la instancia.
 ## 5. Despliegue en Cloud Run
 
 
-Configuración de APIGateway
-```bash
-gcloud services enable apigateway.googleapis.com
-```
-
-URL: https://cloud.google.com/api-gateway/docs/get-started-cloud-run?hl=es-419
-
 Aquí hay diferentes formas de realizar el despliegue, dependiendo de las necesidades del proyecto:
 
 ```bash
@@ -206,6 +199,11 @@ curl https://ms-incidents-<ID_PROYECTO>.a.run.app/incidents
 
 
 ## 6. API Gateway
+
+Configuración servicios de APIGateway
+
+    URL: 
+    https://cloud.google.com/api-gateway/docs/get-started-cloud-run?hl=es-419
 
 1. Prepara tu Archivo OpenAPI
 
