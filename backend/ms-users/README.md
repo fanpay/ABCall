@@ -58,7 +58,7 @@ Para usar el microservicio de usuarios, se deben hacer peticiones a la ruta `/us
 ### Endpoints
 - > `POST /users/ping`: Verifica que el microservicio esté en ejecución.
   - > ``` curl --location 'http://localhost:9878/users/ping' ```
-- Más información del contrato con información de cada servicio :arrow_right: [acá](https://github.com/MISW-4301-Desarrollo-Apps-en-la-Nube/proyecto-202411/wiki/Gesti%C3%B3n-de-Usuarios) :arrow_left:
+
 
 
 ## Pruebas

@@ -1,7 +1,6 @@
 from flask import jsonify, request, Blueprint
 from ..commands.ping import ViewPing
 from ..commands.signin import ViewSignIn
-from ..commands.user_update import ViewUserUpdate
 from ..commands.login import ViewLogInToken
 from ..commands.user_info import ViewUserInfo
 from ..commands.user_reset import ViewUsersReset
@@ -25,17 +24,6 @@ def signin():
     }
 
     return jsonify(response_data), 201
-
-
-@operations_blueprint.route("/users/<string:user_id>", methods=["PATCH"])
-def update_user(user_id):
-    data = request.get_json()
-
-    ViewUserUpdate(data, user_id=user_id).execute()
-
-    response_data = {"msg": "el usuario ha sido actualizado"}
-
-    return jsonify(response_data), 200
 
 # Authentication with data
 @operations_blueprint.route("/users/auth", methods=["POST"])
