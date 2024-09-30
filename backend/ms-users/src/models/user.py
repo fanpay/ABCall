@@ -19,8 +19,9 @@ class User(db.Model):
     salt = db.Column(db.LargeBinary, nullable=False)
     token = db.Column(db.String, nullable=True)
     status = db.Column(
-        db.String, nullable=False, default="POR_VERIFICAR"
+        db.String, nullable=False, default="VERIFICADO"
     )  # POR_VERIFICAR, NO_VERIFICADO, VERIFICADO
+    role = db.Column(db.String, nullable=False)
     expireAt = db.Column(db.DateTime)
     createdAt = db.Column(
         db.DateTime, default=datetime.datetime.now(datetime.timezone.utc)
@@ -60,6 +61,7 @@ class UserSchema(Schema):
     salt = fields.String()
     token = fields.String()
     status = fields.String()
+    role = fields.String()
     expireAt = fields.DateTime()
     createdAt = fields.DateTime()
     updateAt = fields.DateTime()

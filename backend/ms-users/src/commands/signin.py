@@ -26,6 +26,7 @@ class ViewSignIn(BaseCommannd):
         self.dni = data_json.get("dni", "")
         self.fullName = (data_json.get("fullName", ""),)
         self.phoneNumber = data_json.get("phoneNumber", "")
+        self.role = data_json.get("role", "user")
 
     def execute(self):
         new_user = User(
@@ -34,6 +35,7 @@ class ViewSignIn(BaseCommannd):
             dni=self.dni,
             fullName=self.fullName,
             phoneNumber=self.phoneNumber,
+            role=self.role
         )
 
         new_user.encrypt_pwd(self.password)

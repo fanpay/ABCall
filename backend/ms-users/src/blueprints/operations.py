@@ -8,12 +8,12 @@ from ..commands.user_reset import ViewUsersReset
 
 operations_blueprint = Blueprint("operations", __name__)
 
-
+#Ping
 @operations_blueprint.route("/users/ping", methods=["GET"])
 def ping():
     return ViewPing().execute()
 
-
+#Create user
 @operations_blueprint.route("/users", methods=["POST"])
 def signin():
     data = request.get_json()
@@ -21,6 +21,7 @@ def signin():
     response_data = {
         "id": str(result.id),
         "createdAt": result.createdAt.strftime("%Y-%m-%dT%H:%M:%S"),
+        "role": str(result.role)
     }
 
     return jsonify(response_data), 201
@@ -36,7 +37,7 @@ def update_user(user_id):
 
     return jsonify(response_data), 200
 
-
+# Authentication with data
 @operations_blueprint.route("/users/auth", methods=["POST"])
 def login_token():
     data = request.get_json()
@@ -51,7 +52,7 @@ def login_token():
 
     return jsonify(response_data), 200
 
-
+# Data user by token
 @operations_blueprint.route("/users/me", methods=["GET"])
 def get_user_info():
     bearer_token = request.headers.get("Authorization")
@@ -66,11 +67,12 @@ def get_user_info():
         "dni": user_authenticated.dni,
         "phoneNumber": user_authenticated.phoneNumber,
         "status": user_authenticated.status,
+        "role": user_authenticated.role
     }
 
     return jsonify(response_data), 200
 
-
+# Reset users
 @operations_blueprint.route("/users/reset", methods=["POST"])
 def reset():
     ViewUsersReset().execute()
