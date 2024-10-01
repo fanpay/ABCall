@@ -1,5 +1,9 @@
 <h1>
   Vista del administrador
 </h1>
-<app-plan></app-plan>
-<app-agent-create/>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showPlanComponent()" *ngIf="showMenu">Plan</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showCreateAgentComponent()" *ngIf="showMenu">Crear agente</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showBackOption()" *ngIf="showBack">Regresar</button>
+
+<app-plan *ngIf="showPlan" />
+<app-agent-create *ngIf="showCreateAgent" />
