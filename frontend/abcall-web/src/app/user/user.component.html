@@ -1,3 +1,6 @@
-<p>
-  user works!
-</p>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showCreateIncidentComponent()" *ngIf="showMenu">Crear incidente</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showSearchIncidentComponent()" *ngIf="showMenu">Consultar incidentes</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showBackOption()" *ngIf="showBack">Regresar</button>
+
+<app-incident-create *ngIf="showCreateIncident" />
+<app-incident-search *ngIf="showSearchIncident" />
