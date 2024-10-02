@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
   constructor(
+    private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
     private toastrService: ToastrService
@@ -28,14 +30,19 @@ export class LoginComponent implements OnInit {
 
   validateLogin(dataLogin: any) {
     console.log(dataLogin);
-    if (dataLogin.username === "admin" && dataLogin.password === "admin") {
-      this.router.navigate(['/admin']);
-    } else if (dataLogin.username === "agent" && dataLogin.password === "agent") {
-      this.router.navigate(['/agent']);
-    } else if (dataLogin.username === "user" && dataLogin.password === "user") {
-      this.router.navigate(['/user']);
-    } else {
+    this.authService.validateLogin(dataLogin);
+    if (this.authService.isAuthenticated) {
+      this.toastrService.success("Login Success");
+      if (dataLogin.username === "admin" && dataLogin.password === "admin") {
+        this.router.navigate(['/admin']);
+      } else if (dataLogin.username === "agent" && dataLogin.password === "agent") {
+        this.router.navigate(['/agent']);
+      } else if (dataLogin.username === "user" && dataLogin.password === "user") {
+        this.router.navigate(['/user']);
+      }
+    }  else {
       this.toastrService.warning("Verifique sus datos.", "Verificacion");
     }
+  
   }
 }

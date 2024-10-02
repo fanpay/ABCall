@@ -1,3 +1,7 @@
+<nav class="navbar navbar-light bg-light" *ngIf="authService.isAuthenticated">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand" (click)="logout()">Salir</a>
+</nav>
 
 <div class="container-fluid" id="principal">
     <div class="row">
@@ -13,7 +17,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="text-center">
-            <p>© 2018 ABCall. Todos los derechos reservados.</p>
+            <p>© 2024 ABCall. Todos los derechos reservados Grupo 18.</p>
           </div>
         </div>
       </div>

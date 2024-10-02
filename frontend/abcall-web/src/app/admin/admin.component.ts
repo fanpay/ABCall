@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,9 +14,12 @@ export class AdminComponent implements OnInit {
   showBack: boolean = false;
   showMenu: boolean = true;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
+    this.authService.isActive();
   }
 
   showPlanComponent() {
