@@ -4,11 +4,13 @@ import { AdminComponent } from './admin.component';
 import { AgentCreateComponent } from './agent-create/agent-create.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PlanComponent } from './plan/plan.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   declarations: [
     AdminComponent, 

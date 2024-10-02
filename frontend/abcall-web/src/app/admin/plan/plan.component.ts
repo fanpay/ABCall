@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-plan',
@@ -12,6 +13,7 @@ export class PlanComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -22,7 +24,7 @@ export class PlanComponent implements OnInit {
 
   savePlan(plan: String) {
     console.info("The plan to created: ", plan)
-    //this.toastr.success("Confirmation", "Agente creado!")
+    this.toastrService.success("Confirmation", "El plan fue actualizado!")
     this.planForm.reset();
   }
 

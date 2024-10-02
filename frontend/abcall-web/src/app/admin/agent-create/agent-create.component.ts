@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Agent } from './agent';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class AgentCreateComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit() {
@@ -30,7 +32,7 @@ export class AgentCreateComponent implements OnInit {
   createAgent(agent: Agent) {
     agent.role = "agent";
     console.info("The agent to created: ", agent)
-    //this.toastr.success("Confirmation", "Agente creado!")
+    this.toastrService.success("Confirmation", "Agente creado!")
     this.agentForm.reset();
   }
 
