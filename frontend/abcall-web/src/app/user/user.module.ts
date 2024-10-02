@@ -5,6 +5,7 @@ import { IncidentCreateComponent } from './incident-create/incident-create.compo
 import { IncidentSearchComponent } from './incident-search/incident-search.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { IncidentDetailComponent } from './incident-detail/incident-detail.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
   declarations: [
     UserComponent,
     IncidentCreateComponent,
-    IncidentSearchComponent
+    IncidentSearchComponent,
+    IncidentDetailComponent
   ],
   exports: [UserComponent]
 })

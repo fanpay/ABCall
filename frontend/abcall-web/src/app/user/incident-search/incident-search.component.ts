@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../user.service';
+import { Incident } from '../incident';
 
 @Component({
   selector: 'app-incident-search',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IncidentSearchComponent implements OnInit {
 
-  constructor() { }
+  incidentsList !: Incident[];
+  selectedIncident !: Incident;
+  showDetail = false;
+
+  constructor(
+    private userService: UserService
+  ) { }
 
   ngOnInit() {
+    this.incidentsList = this.userService.getIncidents();
+  }
+
+  onSelect(incident: Incident): void {
+    this.selectedIncident = incident;
+    this.showDetail = true;
   }
 
 }
