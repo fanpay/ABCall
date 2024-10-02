@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ABCall para móviles</string>
+    <string name="error_retrieve_incidents">Error retriving incidents</string>
+    <string name="label_btn_crear">Create</string>
+    <string name="label_btn_cancelar">Cancel</string>
+    <string name="language">Language</string>
+    <string name="error_retrieve_user">Error retriving user</string>
+    <string name="add_incident">Create Incident</string>
+    <string name="error_login">No login. Failed</string>
+    <string name="user_not_found">User not found</string>
+    <string name="error_fetch_user_info">Error al obtener la información del usuario</string>
+</resources>

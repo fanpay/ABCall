@@ -1,0 +1,127 @@
+<resources>
+    <string name="app_name">ABCall para móviles</string>
+
+    <!-- DATE FORMATS -->
+    <string name="date_format" translatable="false">%d-%02d-%02d</string>
+
+    <!-- ERROR MESSAGES -->
+    <string name="error_image_description">Imagen de error, el sistema Android tiene un problema</string>
+    <string name="error_network_connection">Error de comunicación</string>
+    <string name="error_retrieve_incidents">Error obteniendo incidentes</string>
+    <string name="error_save_album">Error creando álbum</string>
+    <string name="error_save_comment">Error creando comentario</string>
+    <string name="error_retrieve_collectors">Error obteniendo colectores</string>
+    <string name="not_data_found">No se encontraron datos</string>
+    <string name="txt_no_comments">No hay comentarios para este álbum</string>
+    <string name="error_retrieve_user">Error obteniendo usuario</string>
+
+    <!-- ACCESSIBILITY TEXT -->
+    <string name="album_cover_image_alt">Imagen de portada para el álbum</string>
+    <string name="artist_profile_image_alt">Fotografía del artista</string>
+
+
+    <string name="title_albums">Álbumes</string>
+    <string name="title_vista_albums">Vista Álbumes</string>
+    <string name="title_artists">Artistas</string>
+    <string name="title_vista_artists">Vista Artistas</string>
+    <string name="title_collectors">Coleccionistas</string>
+    <string name="title_vista_collectors">Vista Coleccionistas</string>
+    <string name="title_detail_album">Detalle del álbum</string>
+    <string name="title_detail_artist">Detalle del artista</string>
+    <string name="title_detail_collector">Detalle del colector</string>
+    <string name="title_albums_bnb">Álbumes</string>
+    <string name="title_artists_bnb">Artistas</string>
+    <string name="title_collectors_bnb">Coleccionistas</string>
+    <string name="title_create_prize">Crear premio</string>
+
+    <string name="description_label">Descripción</string>
+    <string name="launch_date">Fecha de lanzamiento</string>
+    <string name="genre">Género</string>
+    <string name="year_birth">Año de nacimiento</string>
+
+    <string name="nombre_label">Nombre</string>
+    <string name="cover_label">URL imagen</string>
+    <string name="genero_label">Género</string>
+    <string name="disquera_label">Disquera</string>
+    <string name="fecha_estreno_label">Fecha Estreno</string>
+    <string name="nombre_desc">Ingrese el nombre</string>
+    <string name="cover_desc">Ingrese la URL de la imagen</string>
+    <string name="descripcion_desc">Ingrese la descripción</string>
+    <string name="fecha_estreno_desc">Ingrese la fecha de estreno</string>
+    <string name="genero_desc">Ingrese el género musical</string>
+    <string name="crear_button">Crear</string>
+    <string name="add_incident">Crear Incidente</string>
+    <string name="agregar_premio">Agregar premio</string>
+    <string name="telephone">Teléfono</string>
+    <string name="email">Email</string>
+
+    <!-- DROPDOWN OPTIONS -->
+    <string name="genero1">Salsa</string>
+    <string name="genero2">Rock</string>
+    <string name="genero3">Folk</string>
+    <string name="genero4">Clásica</string>
+    <string name="etiqueta1">Sony Music</string>
+    <string name="etiqueta2">EMI</string>
+    <string name="etiqueta3">Discos Fuentes</string>
+    <string name="etiqueta4">Elektra</string>s
+    <string name="etiqueta5">Fania Records</string>
+
+    <string name="hint_prize_nombre">Ingrese el nombre</string>
+    <string name="hint_prize_descripcion">Ingrese la descripción</string>
+    <string name="hint_prize_organizacion">Ingrese la organización</string>
+    <string name="label_btn_crear">Crear</string>
+    <string name="label_btn_cancelar">Cancelar</string>
+
+    <!-- Comentario -->
+    <string name="commentAlbumButton">Comentar</string>
+    <string name="createAlbumCommentTitle">Crear comentario</string>
+    <string name="language">Idioma</string>
+
+    <string name="hint_comment_rating">Ingrese el rating</string>
+    <string name="hint_comment_text">Ingrese el comentario</string>
+
+
+    <!-- UX STRINGS -->
+    <string name="name_logo">logo</string>
+
+    <string name="title_list">Servicios disponibles</string>
+    <string name="title_postpone">¿Deseas posponer la alarma?</string>
+
+    <string name="lbl_user">Usuario</string>
+    <string name="lbl_pass">Contraseña</string>
+
+    <string name="h_user">Ingresa tu usuario</string>
+    <string name="h_pass">Ingresa tu contraseña</string>
+
+    <string name="btn_login">Ingresar</string>
+    <string name="btn_home">Inicio</string>
+    <string name="btn_logout">Salir</string>
+
+    <string name="card_title">Agua</string>
+    <string name="card_sub_title">Fecha de corte: 01-04-2024</string>
+    <string name="card_body_1">Num.contrato 123-456-789-10</string>
+    <string name="card_body_2">Valor total: $120.000</string>
+    <string name="card_btn_posponer">Posponer</string>
+    <string name="card_btn_pagar">Pagar</string>
+
+    <string name="pp_p1">Requerimos confirmar que seas tu, por favor realiza la autenticación facial.</string>
+    <string name="pp_p2">Ajusta tu rostro al óvalo que se encuentra abajo y cuando estés listo presiona continuar</string>
+
+    <string name="c_t_pay">Realizar pago</string>
+
+    <string name="c_b_pay">Te llevaremos a la plataforma de pago de tu proveedor, allí deberás diligenciar el formulario como lo haces habitualmente desde un navegador web.</string>
+
+    <string name="t_cancel">Cancelar</string>
+
+    <string name="t_continue">Continuar</string>
+
+    <string name="c_t_redirect">Redirigiendo</string>
+    <string name="c_b_redirect">en 3 segundos.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="error_login">No se pudo autenticar en el sistema</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="error_fetch_user_info">Error al obtener la información del usuario</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/incidentsFragment">
+    <fragment
+        android:id="@+id/incidentsFragment"
+        android:name="com.uniandes.abcall.view.IncidentsFragment"
+        android:label="album_fragment"
+        tools:layout="@layout/fragment_incidents" >
+        <action
+            android:id="@+id/action_incidentsFragment_to_incidentDetailFragment"
+            app:destination="@id/incidentDetailFragment" />
+        <action
+            android:id="@+id/action_incidentsFragment_to_incidentCreateFragment"
+            app:destination="@id/incidentCreateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/incidentDetailFragment"
+        android:name="com.uniandes.abcall.view.IncidentDetailFragment"
+        android:label="album_detail_fragment"
+        tools:layout="@layout/fragment_incident_detail" >
+        <argument
+            android:name="album"
+            app:argType="com.uniandes.abcall.data.model.Incident" />
+        <action
+            android:id="@+id/action_incidentDetailFragment_to_albumFragment"
+            app:destination="@id/incidentsFragment" />
+        <!--<action
+            android:id="@+id/action_albumDetailFragment_to_commentCreateFragment"
+            app:destination="@id/commentCreateFragment" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/incidentCreateFragment"
+        android:name="com.uniandes.abcall.view.IncidentCreateFragment"
+        android:label="album_create_fragment"
+        tools:layout="@layout/fragment_incident_create" >
+        <action
+            android:id="@+id/action_albumCreateFragment_to_albumFragment"
+            app:destination="@id/incidentsFragment" />
+    </fragment>
+
+</navigation>
