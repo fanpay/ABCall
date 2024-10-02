@@ -1,3 +1,8 @@
-<p>
-  agent works!
-</p>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showManageIncidentComponent()" *ngIf="showMenu">Gestionar incidentes</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showControlPanelComponent()" *ngIf="showMenu">Tablero de control</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showIndicatorsComponent()" *ngIf="showMenu">Indicadores</button>
+<button type="button" class="btn btn-outline-dark btn-lg" (click)="showBackOption()" *ngIf="showBack">Regresar</button>
+
+<app-manage-incident *ngIf="showManageIncident" />
+<app-control-panel *ngIf="showControlPanel" />
+<app-indicators *ngIf="showIndicators" />
