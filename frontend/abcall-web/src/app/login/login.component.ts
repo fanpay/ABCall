@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     console.log(dataLogin);
     this.authService.validateLogin(dataLogin);
     if (this.authService.isAuthenticated) {
-      this.toastrService.success("Login Success");
+      this.toastrService.success("Bienvenido!");
       if (dataLogin.username === "admin" && dataLogin.password === "admin") {
         this.router.navigate(['/admin']);
       } else if (dataLogin.username === "agent" && dataLogin.password === "agent") {
