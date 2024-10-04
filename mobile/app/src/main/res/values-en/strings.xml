@@ -9,5 +9,6 @@
     <string name="add_incident">Create Incident</string>
     <string name="error_login">No login. Failed</string>
     <string name="user_not_found">User not found</string>
-    <string name="error_fetch_user_info">Error al obtener la información del usuario</string>
+    <string name="error_fetch_user_info">Error fetching user info</string>
+    <string name="error_create_incident">Error creating incident</string>
 </resources>

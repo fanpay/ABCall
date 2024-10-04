@@ -1,5 +1,6 @@
 package com.uniandes.abcall.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -8,8 +9,8 @@ import com.uniandes.abcall.data.model.Incident
 
 @Dao
 interface IncidentsDao {
-    @Query("SELECT * FROM incidents_table ORDER BY incidentId ASC")
-    fun getIncidents(): List<Incident>
+    @Query("SELECT * FROM incidents_table ORDER BY id ASC")
+    fun getAllIncidents(): LiveData<List<Incident>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(artist: Incident)

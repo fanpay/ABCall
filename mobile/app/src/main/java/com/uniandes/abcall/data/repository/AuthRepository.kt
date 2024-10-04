@@ -24,7 +24,7 @@ class AuthRepository(val application: Application) {
         return withContext(Dispatchers.IO) {
             try {
                 val response = RetrofitBroker.login(userCredentials)
-                Log.d("AuthRepository", "Respuesta de login: $response")
+                Log.e("AuthRepository", "Respuesta de login: $response")
                 response
             } catch (e: Throwable) {
                 if (e is HttpException) {

@@ -14,6 +14,7 @@ import com.uniandes.abcall.data.model.Incident
     version = 1,
     exportSchema = false
 )
+
 @TypeConverters(Converters::class)
 abstract class ABCallRoomDatabase : RoomDatabase() {
     abstract fun usersDao(): UsersDao

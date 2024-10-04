@@ -123,5 +123,6 @@
     <string name="error_fetch_user_info">Error al obtener la información del usuario</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_create_incident">Error creando el incidente</string>
 
 </resources>

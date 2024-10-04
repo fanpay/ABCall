@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.uniandes.abcall.R
 import com.uniandes.abcall.data.database.IncidentsDao
 import com.uniandes.abcall.data.database.ABCallRoomDatabase
@@ -14,104 +15,96 @@ import com.uniandes.abcall.data.service.RetrofitBroker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class IncidentRepository(val application: Application) {
     private val incidentsDao: IncidentsDao by lazy {
         ABCallRoomDatabase.getDatabase(application).incidentsDao()
     }
 
-    suspend fun getAllIncidents(): List<Incident> {
-        return withContext(Dispatchers.IO) {
+    // Retornar incidencias usando LiveData desde la base de datos
+    fun getAllIncidents(): LiveData<List<Incident>> {
+        return incidentsDao.getAllIncidents() // Retorna LiveData que Room gestiona en segundo plano
+    }
 
+    // Sincroniza los incidentes desde la API y los guarda en Room
+    suspend fun syncIncidents() {
+        if (isNetworkAvailable()) {
             try {
-                val cached = incidentsDao.getIncidents()
-
-                if (!isNetworkAvailable() && cached.isNotEmpty()) {
-                    Log.v("IncidentRepository", "No Internet. Retrieving cached incidents. ${cached.size} found.")
-                    return@withContext cached
-                }
-
-                if (!isNetworkAvailable() && cached.isEmpty()) {
-                    Log.v("IncidentRepository", "No Internet. No cached data was found. Retrieving empty list.")
-                    return@withContext cached
-                }
-
-                if (cached.isNotEmpty()) {
-                    Log.v("IncidentRepository", "Retrieving cached incidents. ${cached.size} found.")
-                    return@withContext cached
-                }
-
-                var incidents: List<Incident> = emptyList()
-
                 RetrofitBroker.getIncidents(
                     onComplete = { response ->
-                        incidents = response
+                        // Guardar los incidentes en Room
+                        Log.e("IncidentRepository", "Respuesta de incident: $response")
                         CoroutineScope(Dispatchers.IO).launch {
-                            insertIncidentsIntoDatabase(incidents)
+                            insertIncidentsIntoDatabase(response)
                         }
                     },
                     onError = { error ->
+                        Log.e("IncidentRepository", "Error retrieving incidents from API: ${error.message}")
                         throw ApiRequestException(
-                            application.resources.getString(
-                                R.string.error_retrieve_incidents
-                            ), error
+                            application.resources.getString(R.string.error_retrieve_incidents),
+                            error
                         )
                     }
                 )
-
-                return@withContext incidents
             } catch (e: Throwable) {
-                Log.e("IncidentRepository", "Error retrieving incidents from API: ${e.message}")
+                Log.e("IncidentRepository", "Error retrieving incidents: ${e.message}")
                 throw ApiRequestException(
                     application.resources.getString(R.string.error_retrieve_incidents),
                     e
                 )
             }
+        } else {
+            Log.v("IncidentRepository", "No Internet. Using cached data.")
         }
     }
 
+    // Crea una nueva incidencia llamando a la API y almacenándola en Room
     suspend fun createIncident(incident: Incident,
-                            onComplete: (resp: Incident) -> Unit,
-                            onError: (error: Throwable) -> Unit) {
-        return withContext(Dispatchers.IO) {
+                               onComplete: (resp: Incident) -> Unit,
+                               onError: (error: Throwable) -> Unit) {
+        if (isNetworkAvailable()) {
             try {
-                val response = RetrofitBroker.createIncident(
+                RetrofitBroker.createIncident(
                     incident,
                     onComplete = { response ->
+                        // Almacenar en la base de datos local (Room)
                         CoroutineScope(Dispatchers.IO).launch {
+                            Log.e("IncidentRepository", "Respuesta de incident: $response")
                             insertIncidentIntoDatabase(response)
                         }
                         onComplete(response)
                     },
                     onError = { error ->
+                        Log.e("IncidentRepository", "Error creating incident: ${error.message}")
                         onError(error)
                         throw ApiRequestException(
-                            application.resources.getString(
-                                R.string.error_retrieve_incidents
-                            ), error
+                            application.resources.getString(R.string.error_create_incident),
+                            error
                         )
                     }
                 )
-
-                return@withContext response
             } catch (e: Throwable) {
-                Log.e("IncidentRepository", "Error creating incident from API: ${e.message}")
+                Log.e("IncidentRepository", "Error creating incident: ${e.message}")
                 throw ApiRequestException(
-                    application.resources.getString(R.string.error_save_album),
+                    application.resources.getString(R.string.error_create_incident),
                     e
                 )
             }
+        } else {
+            // Manejo del caso sin internet si lo necesitas
+            onError(Exception("No internet connection"))
         }
     }
 
-    private suspend fun isNetworkAvailable(): Boolean = withContext(Dispatchers.IO) {
+    // Verificar si hay conexión a internet
+    private suspend fun isNetworkAvailable(): Boolean {
         val cm = application.baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = cm.activeNetwork
         val capabilities = cm.getNetworkCapabilities(network)
-        return@withContext capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        return capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
     }
 
+    // Insertar incidentes en la base de datos Room
     private suspend fun insertIncidentsIntoDatabase(incidents: List<Incident>) {
         incidentsDao.insertAll(incidents)
         Log.v("IncidentRepository", "Inserted ${incidents.size} incidents into the local database.")
@@ -119,6 +112,6 @@ class IncidentRepository(val application: Application) {
 
     private suspend fun insertIncidentIntoDatabase(incident: Incident) {
         incidentsDao.insert(incident)
-        Log.v("IncidentRepository", "Inserted 1 incident into the local database. ID ${incident.incidentId}")
+        Log.v("IncidentRepository", "Inserted 1 incident into the local database. ID ${incident.id}")
     }
 }

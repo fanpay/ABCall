@@ -11,7 +11,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun dateToTimestamp(timestamp: Timestamp?): Long? {
+    fun timestampToLong(timestamp: Timestamp?): Long? {
         return timestamp?.time
     }
 }

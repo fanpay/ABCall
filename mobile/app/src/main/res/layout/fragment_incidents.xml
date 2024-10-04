@@ -8,17 +8,12 @@
     android:layout_marginHorizontal="10dp"
     tools:context=".view.IncidentsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-    <!--<androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/albumsRv"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/incidentsRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/album_item"/>
+        tools:listitem="@layout/incident_item"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -29,14 +24,14 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_add_album"
+        android:id="@+id/floating_add_incident"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         app:tint="@color/white"
         android:backgroundTint="@color/purple_500"
-        android:contentDescription="@string/agregar_album"
-        android:src="@drawable/ic_add_circle"/>-->
+        android:contentDescription="@string/add_incident"
+        android:src="@drawable/ic_add_circle"/>
 
 </FrameLayout>
