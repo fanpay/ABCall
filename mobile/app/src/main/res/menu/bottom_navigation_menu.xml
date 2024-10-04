@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/btn_home"
+        android:icon="@drawable/ic_home"
+        android:tint="@color/white"
+        android:iconTint="@color/white"
+        />
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="@string/btn_logout"
+        android:icon="@drawable/ic_logout"
+        android:tint="@color/white"
+        android:iconTint="@color/white"
+        />
+
+</menu>
