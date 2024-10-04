@@ -11,12 +11,13 @@ class IncidentsList(Resource):
         output = [
             {
                 "id": inc.id, 
-                "user_id": inc.user_id, 
+                "userId": inc.userId, 
+                "subject": inc.subject, 
                 "description": inc.description, 
-                "origin_type": inc.origin_type, 
+                "originType": inc.originType, 
                 "status": inc.status,
-                "creation_date": inc.creation_date.strftime("%Y-%m-%dT%H:%M:%S"),
-                "update_date": inc.update_date.isoformat()
+                "creationDate": inc.creationDate.strftime("%Y-%m-%dT%H:%M:%S"),
+                "updateDate": inc.updateDate.isoformat()
             }
             for inc in incidents
         ]
@@ -25,16 +26,17 @@ class IncidentsList(Resource):
     def post(self):
         data = request.get_json()
         new_incident = Incidents(
+            subject=data["subject"], 
             description=data["description"], 
             status=data["status"],
-            origin_type=data["origin_type"]
+            originType=data["originType"]
         )
         db.session.add(new_incident)
         db.session.commit()
         
         cache.delete('incidents_list')
         return jsonify(
-            {"message": "Incident created", "incident_id": new_incident.id}
+            {"message": "Incident created", "incidentId": new_incident.id}
         )
 
 
@@ -45,35 +47,37 @@ class IncidentDetail(Resource):
         return jsonify(
             {
                 "id": incident.id,
-                "user_id": incident.user_id,
+                "userId": incident.userId,
+                "subject": incident.subject,
                 "description": incident.description,
-                "origin_type": incident.origin_type,
+                "originType": incident.originType,
                 "status": incident.status,
                 "solution": incident.solution,
-                "creation_date": incident.creation_date.strftime("%Y-%m-%dT%H:%M:%S"),
-                "update_date": incident.update_date.isoformat(),
-                "solution_agent_id": incident.solution_agent_id,
-                "solution_date": incident.solution_date.isoformat() if incident.solution_date else None  # None value handling for optional fields in the model and schema
+                "creationDate": incident.creationDate.strftime("%Y-%m-%dT%H:%M:%S"),
+                "updateDate": incident.updateDate.isoformat(),
+                "solutionAgentId": incident.solutionAgentId,
+                "solutionDate": incident.solutionDate.isoformat() if incident.solutionDate else None  # None value handling for optional fields in the model and schema
             }
         )
 
     def put(self, id):
         incident = Incidents.query.get_or_404(id)
         data = request.get_json()
-        incident.user_id = data.get("user_id", incident.user_id)
+        incident.userId = data.get("userId", incident.userId)
+        incident.subject = data.get("subject", incident.subject)
         incident.description = data.get("description", incident.description)
         incident.status = data.get("status", incident.status)
         
         if(data.get("solution")):
             incident.solution = data.get("solution", incident.solution)    
-            incident.solution_agent_id = data.get("solution_agent_id", incident.solution_agent_id)
-            incident.solution_date = data.get("solution_date", incident.solution_date)
+            incident.solutionAgentId = data.get("solutionAgentId", incident.solutionAgentId)
+            incident.solutionDate = data.get("solutionDate", incident.solutionDate)
             
         db.session.commit()
-        return jsonify({"message": "Incident updated", "incident_id": id})
+        return jsonify({"message": "Incident updated", "incidentId": id})
 
     def delete(self, id):
         incident = Incidents.query.get_or_404(id)
         db.session.delete(incident)
         db.session.commit()
-        return jsonify({"message": "Incident removed", "incident_id": id})
+        return jsonify({"message": "Incident removed", "incidentId": id})
