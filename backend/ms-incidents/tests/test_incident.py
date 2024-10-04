@@ -22,6 +22,18 @@ def test_get_incidents(client):
     assert response.status_code == 200
 
 def test_post_incident(client):
-    response = client.post('/incidents', json={'description': 'Test incident', 'origin_type': 'web', 'status': 'Open'})
+    response = client.post('/incidents', json={'subject': 'Server failing', 'description': 'Server down', 'originType': 'web', 'status': 'Open'})
     assert response.status_code == 200
     assert b"Incident created" in response.data
+
+def test_get_incident_not_found(client):
+    # Intentar obtener un incidente inexistente
+    response = client.get('/incidents/9999')
+    assert response.status_code == 404
+
+
+def test_delete_incident_not_found(client):
+    # Intentar eliminar un incidente inexistente
+    response = client.delete('/incidents/9999')
+    assert response.status_code == 404
+

@@ -25,9 +25,9 @@ ENV PYTHONFAULTHANDLER 1
 #ENV FLASK_ENV=development
 
 # Expose port 9876 for the Flask development server to listen on
-EXPOSE 9876
+EXPOSE 9877
 
 # Define the command to run the Flask development server
-CMD ["flask", "run", "--host=0.0.0.0", "-p 9876"]
+CMD ["flask", "run", "--host=0.0.0.0", "-p 9877"]
 #CMD ["gunicorn", "--bind", "0.0.0.0:9876", "app:app"]
 #CMD ["gunicorn", "--bind", "0.0.0.0:9876", "src.app:app"]
