@@ -19,26 +19,26 @@ export class AuthService {
   ) { }
 
   async validateLogin(dataLogin: any) {
-    this.http.post(this.apiUrl+"/auth", dataLogin)
-    .subscribe(async (res: any) => {
+    return this.http.post(this.apiUrl + "/auth", dataLogin).toPromise()
+    .then((res: any) => {
       this.authInfo = res;
       console.log(this.authInfo);
       localStorage.setItem('token', this.authInfo.token);
       this.isAuthenticated = true;
-      await this.getMeInfo(this.authInfo.token);
+      return this.authInfo;
     });
   }
 
   async getMeInfo(token: string) {
-    this.http.get(this.apiUrl+"/me", {
+    return this.http.get(this.apiUrl+"/me", {
       headers: {'Authorization': 'Bearer ' + token}}
-    ).subscribe((res: any) => {
+    ).toPromise()
+    .then((res: any) => {
       this.meInfo = res;
       console.log(this.meInfo);
       localStorage.setItem('meInfo', JSON.stringify(this.meInfo));
+      return this.meInfo;
     });
-
-    console.log(this.meInfo);
   }
 
   logout() {

@@ -29,16 +29,20 @@ export class LoginComponent implements OnInit {
   }
 
   async validateLogin(dataLogin: any) {
-    await this.authService.validateLogin(dataLogin);
+    try {
+      const validaInfo = await this.authService.validateLogin(dataLogin);
 
-    if (this.authService.meInfo) {
-      const meInfo = localStorage.getItem('meInfo');
-      if (meInfo) {
+      const meInfo = await this.authService.getMeInfo(validaInfo.token);
+      
+      if (meInfo !== undefined && meInfo !== null) {
         this.toastrService.success("Bienvenido!");
-        const userInfo = JSON.parse(meInfo);
+        const userInfo = JSON.parse(localStorage.getItem('meInfo')!);
         this.router.navigate([`/${userInfo.role}`]);
+      } else {
+        this.toastrService.warning("Verifique sus datos.", "Verificacion");
       }
-    } else {
+    } catch (error) {
+      console.error('Error during login:', error);
       this.toastrService.warning("Verifique sus datos.", "Verificacion");
     }
 
