@@ -1,0 +1,39 @@
+resources:
+  # Definir la instancia de Cloud SQL
+  - name: misw-pf-db-instance
+    type: gcp-types/sqladmin-v1beta4:instances
+    properties:
+      region: us-central1  # Región
+      databaseVersion: POSTGRES_14  # Versión de PostgreSQL 14
+      settings:
+        tier: db-g1-small  # Tipo de máquina más cercano, 1 vCPU, alrededor de 0.6-1 GB de RAM
+        dataDiskSizeGb: 10  # Almacenamiento de 10 GB de HDD
+        dataDiskType: PD_HDD  # Tipo de disco HDD
+        activationPolicy: ALWAYS  # Política de activación de la instancia
+        storageAutoResize: false  # Deshabilitar aumentos automáticos de almacenamiento
+        availabilityType: ZONAL  # Disponibilidad zonal única
+        ipConfiguration:
+          ipv4Enabled: true  # Habilitar IP pública para la instancia
+          authorizedNetworks:  # Lista de IPs autorizadas para conectarse
+            - name: my-local-machine
+              value: 200.118.16.5  # Reemplaza con tu IP local
+          privateNetwork: projects/miso-dan-2024/global/networks/vpn-services-g18  # Conectar a la red privada
+        labels:
+          environment: development  # Etiqueta de entorno
+          role: databases  # Etiqueta para identificar el recurso como parte de bases de datos
+      databaseFlags: []
+    
+  # Configurar la base de datos
+  - name: misw-incidents-db
+    type: gcp-types/sqladmin-v1beta4:databases
+    properties:
+      name: misw-incidents-db  # Nombre de la base de datos
+      instance: $(ref.misw-pf-db-instance.name)
+  
+  # Crear usuario para la base de datos
+  - name: misw-incidents-db-user
+    type: gcp-types/sqladmin-v1beta4:users
+    properties:
+      instance: $(ref.misw-pf-db-instance.name)
+      name: postgres  # Nombre de usuario por defecto en PostgreSQL
+      password: postgres  # Contraseña definida

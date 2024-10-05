@@ -1,0 +1,13 @@
+openapi: "3.0.0"
+info:
+  title: "API Gateway for Microservices"
+  version: "1.0.0"
+paths:
+  /incidents:
+    get:
+      x-google-backend:
+        address: https://ms-incidents-<your-region>.a.run.app
+  /users:
+    get:
+      x-google-backend:
+        address: https://ms-users-<your-region>.a.run.app
