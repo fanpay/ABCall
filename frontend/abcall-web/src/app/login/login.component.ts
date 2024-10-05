@@ -28,21 +28,19 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  validateLogin(dataLogin: any) {
-    console.log(dataLogin);
-    this.authService.validateLogin(dataLogin);
-    if (this.authService.isAuthenticated) {
-      this.toastrService.success("Bienvenido!");
-      if (dataLogin.username === "admin" && dataLogin.password === "admin") {
-        this.router.navigate(['/admin']);
-      } else if (dataLogin.username === "agent" && dataLogin.password === "agent") {
-        this.router.navigate(['/agent']);
-      } else if (dataLogin.username === "user" && dataLogin.password === "user") {
-        this.router.navigate(['/user']);
+  async validateLogin(dataLogin: any) {
+    await this.authService.validateLogin(dataLogin);
+
+    if (this.authService.meInfo) {
+      const meInfo = localStorage.getItem('meInfo');
+      if (meInfo) {
+        this.toastrService.success("Bienvenido!");
+        const userInfo = JSON.parse(meInfo);
+        this.router.navigate([`/${userInfo.role}`]);
       }
-    }  else {
+    } else {
       this.toastrService.warning("Verifique sus datos.", "Verificacion");
     }
-  
+
   }
 }
