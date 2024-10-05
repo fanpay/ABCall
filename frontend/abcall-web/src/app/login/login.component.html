@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-4">
+      <h2 class="text-center pb-5">Ingresar al sistema</h2>
+      <form class="pt-5" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && validateLogin(loginForm.value)">
+
+        <!--username-->
+        <div class="form-group mx-sm-3 mb-2 pt-3">
+          <label for="username">Nombre de usuario</label>
+          <input novalidate id="username" class="form-control" formControlName="username"
+            placeholder="Nombre de usaurio del agente" />
+          <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+            loginForm.get('username')!.hasError('required') &&
+            loginForm.get('username')!.touched
+          ">
+            El nombre de usuario es requerido
+          </div>
+        </div>
+
+        <!--password-->
+        <div class="form-group mx-sm-3 mb-2">
+          <label for="password">Contraseña</label>
+          <input novalidate id="password" class="form-control" formControlName="password" placeholder="Contraseña"
+            type="password" />
+          <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+            loginForm.get('password')!.hasError('required') &&
+            loginForm.get('password')!.touched
+          ">
+            La Contraseña es requerida
+          </div>
+        </div>
+
+
+        <!--Controles-->
+        <div class="text-center pt-5">
+          <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.valid">
+            Ingresar
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-8 d-flex flex-column justify-content-center align-items-center">
+      <h1 class="text-center">Gestión de solicitudes</h1>
+      <h1 class="text-center">ABCall</h1>
+    </div>
+  </div>
+</div>
