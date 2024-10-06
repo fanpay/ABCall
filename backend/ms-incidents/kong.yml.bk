@@ -1,8 +1,0 @@
-_format_version: "2.1"
-services:
-  - name: incidents-api
-    url: http://localhost:9876
-    routes:
-      - name: incidents-route
-        paths:
-          - /incidents  # Ruta expuesta públicamente
