@@ -10,10 +10,11 @@ produces:
 
 # Definición de seguridad para API Key
 securityDefinitions:
-  api_key:
+  Bearer:
     type: apiKey
-    name: key
-    in: query
+    name: Authorization
+    in: header
+    description: "Bearer token for accessing the API."
 
 # Aplicar seguridad globalmente a todas las operaciones
 #security:
@@ -158,15 +159,12 @@ paths:
     post:
       summary: Crear un nuevo usuario
       operationId: createUser
-      # Requiere autenticación (opcional según tu implementación)
-      security:
-        - api_key: []
       x-google-backend:
         address: https://ms-users-719013485218.us-central1.run.app/users
       parameters:
         - in: body
           name: user
-          description: Objeto de usuario que se va a crear
+          description: Usuario que se va a crear
           schema:
             type: object
             properties:
@@ -226,8 +224,12 @@ paths:
     get:
       summary: Obtener información del usuario autenticado
       operationId: getUserInfo
+      security:
+      - Bearer: []
       x-google-backend:
-        address: https://ms-users-719013485218.us-central1.run.app/users/me
+        address: https://ms-users-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: true
       parameters:
         - in: header
           name: Authorization

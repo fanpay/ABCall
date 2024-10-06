@@ -29,16 +29,16 @@ resources:
     properties:
       name: misw-incidents-db  # Nombre de la base de datos
       instance: $(ref.misw-pf-db-instance.name)
-
+  
   # Configurar la base de datos - usuarios
-  - name: misw-incidents-db
+  - name: misw-users-db
     type: gcp-types/sqladmin-v1beta4:databases
     properties:
-      name: misw-users-db  # Nombre de la base de datos
+      name: misw-users-db  # Nombre de la base de datos para el microservicio de usuarios
       instance: $(ref.misw-pf-db-instance.name)
   
   # Crear usuario para la base de datos
-  - name: misw-incidents-db-user
+  - name: misw-db-user
     type: gcp-types/sqladmin-v1beta4:users
     properties:
       instance: $(ref.misw-pf-db-instance.name)

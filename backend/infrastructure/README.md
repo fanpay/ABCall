@@ -68,7 +68,9 @@ Luego de comprar que se puede acceder a la base de datos desde la máquina local
 > gcloud sql instances patch misw-pf-db-instance --no-assign-ip
 
 
-## Comando para desplegar desde la carpeta de infraestructura
+# Cloud Build
+ 
+## Comando para desplegar desde la carpeta de infraestructura
 
 > gcloud builds submit --config=cloudbuild.yaml ../
 
