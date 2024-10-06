@@ -16,19 +16,16 @@ securityDefinitions:
     in: header
     description: "Bearer token for accessing the API."
 
-# Aplicar seguridad globalmente a todas las operaciones
-#security:
-#  - api_key: []
-
 paths:
   /incidents:
     get:
       summary: Listar todos los incidentes
       operationId: listIncidents
       security:
-        - api_key: []
+        - Bearer: []
       x-google-backend:
         address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       responses:
         '200':
           description: Lista de incidentes
@@ -45,9 +42,10 @@ paths:
       summary: Crear un nuevo incidente
       operationId: createIncident
       security:
-        - api_key: []
+        - Bearer: []
       x-google-backend:
         address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       parameters:
         - in: body
           name: incident
@@ -73,9 +71,10 @@ paths:
       summary: Obtener un incidente específico por ID
       operationId: getIncident
       security:
-        - api_key: []
+        - Bearer: []
       x-google-backend:
         address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       parameters:
         - in: path
           name: id
@@ -98,9 +97,10 @@ paths:
       summary: Actualizar un incidente específico por ID
       operationId: updateIncident
       security:
-        - api_key: []
+        - Bearer: []
       x-google-backend:
         address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       parameters:
         - in: path
           name: id
@@ -124,9 +124,10 @@ paths:
       summary: Eliminar un incidente específico por ID
       operationId: deleteIncident
       security:
-        - api_key: []
+        - Bearer: []
       x-google-backend:
         address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       parameters:
         - in: path
           name: id

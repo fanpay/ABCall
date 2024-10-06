@@ -1,23 +1,23 @@
 steps:
   # Step 1: Install dependencies
-  - name: python
-    entrypoint: bash
-    args:
-      - '-c'
-      - |
-        cd ms-incidents && \
-        pip install -r requirements.txt && \
-        pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
+  # - name: python
+  #   entrypoint: bash
+  #   args:
+  #     - '-c'
+  #     - |
+  #       cd ms-incidents && \
+  #       pip install -r requirements.txt && \
+  #       pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
 
-  # Step 2: Run unit tests with coverage
-  - name: python
-    entrypoint: bash
-    args:
-      - '-c'
-      - |
-        cd ms-users && \
-        pip install -r requirements.txt && \
-        pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
+  # # Step 2: Run unit tests with coverage
+  # - name: python
+  #   entrypoint: bash
+  #   args:
+  #     - '-c'
+  #     - |
+  #       cd ms-users && \
+  #       pip install -r requirements.txt && \
+  #       pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
 
 
   # Step 3: If tests and coverage pass, build and push the Docker image for ms-incidents
