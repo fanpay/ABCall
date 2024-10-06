@@ -1,13 +1,273 @@
-openapi: "3.0.0"
+swagger: '2.0'
 info:
-  title: "API Gateway for Microservices"
-  version: "1.0.0"
+  title: ABCall Management API
+  description: API para gestionar incidentes y usuarios con backend en Cloud Run
+  version: 1.0.0
+schemes:
+  - https
+produces:
+  - application/json
+
+# Definición de seguridad para API Key
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: key
+    in: query
+
+# Aplicar seguridad globalmente a todas las operaciones
+#security:
+#  - api_key: []
+
 paths:
   /incidents:
     get:
+      summary: Listar todos los incidentes
+      operationId: listIncidents
+      security:
+        - api_key: []
       x-google-backend:
-        address: https://ms-incidents-<your-region>.a.run.app
-  /users:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+      responses:
+        '200':
+          description: Lista de incidentes
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                description:
+                  type: string
+    post:
+      summary: Crear un nuevo incidente
+      operationId: createIncident
+      security:
+        - api_key: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+      parameters:
+        - in: body
+          name: incident
+          description: Objeto de incidente que se va a crear
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+      responses:
+        '201':
+          description: Incidente creado
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              description:
+                type: string
+
+  /incidents/{id}:
     get:
+      summary: Obtener un incidente específico por ID
+      operationId: getIncident
+      security:
+        - api_key: []
       x-google-backend:
-        address: https://ms-users-<your-region>.a.run.app
+        address: https://ms-incidents-719013485218.us-central1.run.app
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: ID del incidente a obtener
+      responses:
+        '200':
+          description: Detalles del incidente
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              description:
+                type: string
+        '404':
+          description: Incidente no encontrado
+    put:
+      summary: Actualizar un incidente específico por ID
+      operationId: updateIncident
+      security:
+        - api_key: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: ID del incidente a actualizar
+        - in: body
+          name: incident
+          description: Objeto de incidente que se va a actualizar
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+      responses:
+        '200':
+          description: Incidente actualizado
+        '404':
+          description: Incidente no encontrado
+    delete:
+      summary: Eliminar un incidente específico por ID
+      operationId: deleteIncident
+      security:
+        - api_key: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: ID del incidente a eliminar
+      responses:
+        '204':
+          description: Incidente eliminado
+        '404':
+          description: Incidente no encontrado
+
+  /users/ping:
+    get:
+      summary: Ping the user service
+      operationId: pingService
+      # No requiere autenticación
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/ping
+      responses:
+        '200':
+          description: "Service is up"
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  /users:
+    post:
+      summary: Crear un nuevo usuario
+      operationId: createUser
+      # Requiere autenticación (opcional según tu implementación)
+      security:
+        - api_key: []
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users
+      parameters:
+        - in: body
+          name: user
+          description: Objeto de usuario que se va a crear
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              email:
+                type: string
+              password:
+                type: string
+              role:
+                type: string
+      responses:
+        '201':
+          description: Usuario creado
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              createdAt:
+                type: string
+              role:
+                type: string
+
+  /users/auth:
+    post:
+      summary: Autenticar usuario con credenciales
+      operationId: loginToken
+      # Este endpoint no requiere autenticación
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/auth
+      parameters:
+        - in: body
+          name: credentials
+          description: Credenciales de usuario para autenticación
+          schema:
+            type: object
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: Autenticación exitosa
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              token:
+                type: string
+              expireAt:
+                type: string
+
+  /users/me:
+    get:
+      summary: Obtener información del usuario autenticado
+      operationId: getUserInfo
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/me
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          description: Bearer token para autenticar la solicitud
+      responses:
+        '200':
+          description: Información del usuario
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              username:
+                type: string
+              email:
+                type: string
+              fullName:
+                type: string
+              dni:
+                type: string
+              phoneNumber:
+                type: string
+              status:
+                type: string
+              role:
+                type: string
+
+  /users/reset:
+    post:
+      summary: Restablecer todos los usuarios
+      operationId: resetUsers
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/reset
+      responses:
+        '200':
+          description: Todos los datos de usuario fueron eliminados
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string

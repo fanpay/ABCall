@@ -16,18 +16,25 @@ resources:
           ipv4Enabled: true  # Habilitar IP pública para la instancia
           authorizedNetworks:  # Lista de IPs autorizadas para conectarse
             - name: my-local-machine
-              value: 200.118.16.5  # Reemplaza con tu IP local
+              value: 181.128.13.68  # Reemplaza con tu IP local
           privateNetwork: projects/miso-dan-2024/global/networks/vpn-services-g18  # Conectar a la red privada
         labels:
           environment: development  # Etiqueta de entorno
           role: databases  # Etiqueta para identificar el recurso como parte de bases de datos
       databaseFlags: []
     
-  # Configurar la base de datos
+  # Configurar la base de datos - incidentes
   - name: misw-incidents-db
     type: gcp-types/sqladmin-v1beta4:databases
     properties:
       name: misw-incidents-db  # Nombre de la base de datos
+      instance: $(ref.misw-pf-db-instance.name)
+
+  # Configurar la base de datos - usuarios
+  - name: misw-incidents-db
+    type: gcp-types/sqladmin-v1beta4:databases
+    properties:
+      name: misw-users-db  # Nombre de la base de datos
       instance: $(ref.misw-pf-db-instance.name)
   
   # Crear usuario para la base de datos

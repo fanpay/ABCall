@@ -50,18 +50,18 @@ Con esto, se crea una subred llamada `vpn-users-service` en la región `us-centr
 
 
 
-## Desplegar Cloud SQL
+# Desplegar Cloud SQL
 
-### Desplegar Cloud SQL con IP pública
+## Desplegar Cloud SQL con IP pública
 > gcloud deployment-manager deployments create misw-g18-db-deployment --config cloudsql-instance.yaml
 
-### Ver operaciones
+## Ver operaciones
 > gcloud sql operations list --instance=misw-pf-db-instance
 
-### Reintentar operación
+## Reintentar operación
 > gcloud deployment-manager deployments update misw-g18-db-deployment --config cloudsql-instance.yaml
 
-### Deshabiitar IP publica (Opcional)
+## Deshabiitar IP publica (Opcional)
 
 Luego de comprar que se puede acceder a la base de datos desde la máquina local, es buena práctica deshabilitar la IP pública.
 
@@ -72,10 +72,11 @@ Luego de comprar que se puede acceder a la base de datos desde la máquina local
 
 > gcloud builds submit --config=cloudbuild.yaml ../
 
-## Permissions
+### Permissions
 
-add the following permissions to the Cloud Build service account:
+Agregue los siguientes permisos a la cuenta de servicio relacionada a Cloud Build:
 
+```bash
 gcloud config get-value project # YOUR_PROJECT_ID
 
 gcloud projects add-iam-policy-binding miso-dan-2024 \
@@ -85,4 +86,114 @@ gcloud projects add-iam-policy-binding miso-dan-2024 \
 gcloud projects add-iam-policy-binding miso-dan-2024 \
   --member=serviceAccount:719013485218@cloudbuild.gserviceaccount.com \
   --role=roles/iam.serviceAccountUser
+```
 
+# Desplegar API Gateway
+
+Configuración servicios de APIGateway
+
+  URL de información: 
+  * https://cloud.google.com/api-gateway/docs/get-started-cloud-run?hl=es-419
+
+1. Prepara tu Archivo OpenAPI
+
+    Guarda tu archivo OpenAPI en un archivo local, por ejemplo, openapi-run.yaml. Este archivo define las rutas y configuraciones de tu API.
+
+2. Crea un Servicio en Google Cloud Run
+
+    Si aún no has desplegado tu aplicación en Google Cloud Run, hazlo ahora. Asume que ya has construido y subido tu imagen de Docker a Google Container Registry.
+
+3. Crear una Configuración de API
+Crea una configuración para tu API en Google Cloud API Gateway:
+
+    ```bash
+    gcloud api-gateway api-configs create apigateway-pf-config \
+        --api=abcall-api \
+        --openapi-spec=openapi.yaml \
+        --project=miso-dan-2024
+    ```
+    Reemplaza:
+
+        YOUR_API_CONFIG_NAME -> nombre que desees para la configuración de la API.
+
+        YOUR_API_NAME -> nombre de tu API.
+
+        YOUR_OPENAPI_FILE -> nombre del archivo de OpenAPI con la configuración de la API.
+
+        YOUR_PROJECT_ID -> ID de tu proyecto de Google Cloud.
+
+
+    Después de crear la configuración de la API, puedes ejecutar este comando para ver los detalles:
+
+    ```
+    gcloud api-gateway api-configs describe apigateway-pf-config \
+    --api=abcall-api --project=miso-dan-2024
+    ```
+
+    Reemplaza:
+
+        YOUR_API_CONFIG_NAME -> nombre de la configuración de tu API.
+
+        YOUR_API_NAME -> nombre de tu API.
+
+        YOUR_PROJECT_ID -> ID de tu proyecto de Google Cloud.
+4. Crear un Gateway
+
+    Crea un gateway que asocie tu API con la configuración:
+
+    ```bash
+    gcloud api-gateway gateways create misw-2024-api-gateway-pf \
+        --api=abcall-api \
+        --api-config=apigateway-pf-config \
+        --location=us-central1 \
+        --project=miso-dan-2024
+    ```
+    
+    Reemplaza:
+
+        YOUR_GATEWAY_NAME con el nombre que desees para el gateway.
+        YOUR_API_NAME con el nombre de tu API.
+        YOUR_API_CONFIG_NAME con el nombre de la configuración de tu API.
+        YOUR_REGION con la región en la que deseas crear el gateway.
+        YOUR_PROJECT_ID con el ID de tu proyecto de Google Cloud.
+
+4.1 Para actualizar el API Gateway
+Nota: Se debió crear una configuración diferentes de la API Gateway
+
+  ```
+  gcloud api-gateway gateways update misw-2024-api-gateway-pf \
+    --api=abcall-api \
+    --api-config=apigateway-pf-config-up1 \
+    --location=us-central1 \
+    --project=miso-dan-2024
+  ```
+5. Verifica y prueba tu configuración
+
+    Una vez que todo esté configurado, verifica la URL proporcionada por API Gateway y prueba las rutas definidas en tu archivo OpenAPI.
+
+    Para obtener la URL del gateway, puedes usar el siguiente comando:
+
+    ```bash
+    gcloud api-gateway gateways describe misw-2024-api-gateway-pf --location=us-central1 --project=miso-dan-2024
+    ```
+
+    Reemplaza:
+
+        YOUR_GATEWAY_NAME con el nombre de tu gateway.
+        YOUR_REGION con la región en la que creaste tu gateway.
+        YOUR_PROJECT_ID con el ID de tu proyecto de Google Cloud.
+
+6. Cómo probar tu implementación de API
+
+    Ahora puedes enviar solicitudes a tu API con la URL generada luego de la implementación de la puerta de enlace.
+
+    Ingresa la siguiente URL en el navegador web, donde:
+
+        DEFAULT_HOSTNAME -> host de la URL de la puerta de enlace implementada.
+        incidents -> ruta especificada en la configuración del API para incidentes.
+        users -> ruta especificada en la configuración del API para usuarios.
+
+    > https://DEFAULT_HOSTNAME/users/ping
+    
+    Por ejemplo:
+    * https://my-gateway-a12bcd345e67f89g0h.uc.gateway.dev/users/ping

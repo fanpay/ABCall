@@ -1,39 +1,23 @@
 steps:
   # Step 1: Install dependencies
   - name: python
-    #entrypoint: pip
-    #args: ["install", "-r", "requirements.txt", "--user"]
     entrypoint: bash
-    env:
-      - 'DB_USER=postgres'
-      - 'DB_PASSWORD=postgres'
-      - 'DB_HOST=localhost'
-      - 'DB_PORT=5432'
-      - 'DB_NAME=misw-incidents-db'
     args:
       - '-c'
       - |
         cd ms-incidents && \
         pip install -r requirements.txt && \
-        pytest --cov=src --cov-fail-under=20 --junitxml=${SHORT_SHA}_test_log.xml
+        pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
 
   # Step 2: Run unit tests with coverage
   - name: python
-    #entrypoint: python
-    #args: ["-m", "pytest", "--cov=src", "--cov-fail-under=70", "--junitxml=${SHORT_SHA}_test_log.xml"]
     entrypoint: bash
-    env:
-      - 'DB_USER=postgres'
-      - 'DB_PASSWORD=postgres'
-      - 'DB_HOST=localhost'
-      - 'DB_PORT=5432'
-      - 'DB_NAME=misw-users-db'
     args:
       - '-c'
       - |
         cd ms-users && \
         pip install -r requirements.txt && \
-        pytest --cov=src --cov-fail-under=20 --junitxml=${SHORT_SHA}_test_log.xml
+        pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
 
 
   # Step 3: If tests and coverage pass, build and push the Docker image for ms-incidents
@@ -50,7 +34,7 @@ steps:
            '--port', '9877',
            '--project=miso-dan-2024',
            '--min-instances=0',
-           '--max-instances=10',
+           '--max-instances=5',
            '--cpu=1',
            '--memory=512Mi',
            '--platform', 'managed',
@@ -58,7 +42,7 @@ steps:
            '--network=vpn-services-g18',
            '--subnet=vpn-abcall-service',
            '--vpc-egress=private-ranges-only',
-           '--set-env-vars', 'DB_HOST=192.168.0.3,DB_PORT=5432,DB_NAME=misw-incidents-db,DB_USER=postgres,DB_PASSWORD=postgres',
+           '--set-env-vars', 'DB_HOST=192.168.32.3,DB_PORT=5432,DB_NAME=misw-incidents-db,DB_USER=postgres,DB_PASSWORD=postgres',
            '--set-cloudsql-instances=miso-dan-2024:us-central1:misw-pf-db-instance',
            '--no-cpu-boost',
            '--allow-unauthenticated'
@@ -87,7 +71,7 @@ steps:
           '--network=vpn-services-g18',
           '--subnet=vpn-abcall-service',
           '--vpc-egress=private-ranges-only',
-          '--set-env-vars', 'DB_HOST=192.168.0.3,DB_PORT=5432,DB_NAME=misw-users-db	,DB_USER=postgres,DB_PASSWORD=postgres',
+          '--set-env-vars', 'DB_HOST=192.168.32.3,DB_PORT=5432,DB_NAME=misw-users-db,DB_USER=postgres,DB_PASSWORD=postgres',
           '--set-cloudsql-instances=miso-dan-2024:us-central1:misw-pf-db-instance',
           '--no-cpu-boost',
           '--allow-unauthenticated'
