@@ -1,0 +1,72 @@
+name: Pruebas y despliegue en Cloud Build
+
+on:
+  push:
+    branches:
+      - 'main'
+  release:
+    types: [published]
+
+jobs:
+  tests:
+    name: Pruebas unitarias y cobertura en microservicios
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ms-incidents, ms-users]
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Instalación de librerías y dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/${{ matrix.service }}/requirements.txt
+
+    - name: Correr pruebas unitarias en ${{ matrix.service }}
+      run: |
+        cd backend/${{ matrix.service }}
+        python -m unittest discover -s tests
+
+    - name: Correr cobertura de código en ${{ matrix.service }}
+      run: |
+        cd backend/${{ matrix.service }}
+        coverage run -m unittest discover -s tests
+        coverage report -m
+        coverage xml
+
+    - name: Verificación de cobertura
+      run: |
+        cd backend/${{ matrix.service }}
+        coverage report -m --fail-under=70
+      continue-on-error: false
+
+  deploy:
+    name: Desplegar microservicios en Cloud Build
+    needs: tests
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Autenticar en Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+    - name: Configurar gcloud
+      run: |
+        gcloud config set project ${{ secrets.GCP_PROJECT }}
+
+    - name: Desplegar todos los microservicios en Cloud Build
+      run: |
+        cd infrastructure/
+        gcloud builds submit --config=cloudbuild.yaml ../
