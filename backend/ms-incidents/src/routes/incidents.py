@@ -43,7 +43,7 @@ class IncidentsList(Resource):
 class IncidentDetail(Resource):
     @cache.cached(timeout=300, key_prefix="incident_%s")
     def get(self, id):
-        incident = Incidents.query.get_or_404(id)
+        incident = Incidents.query.get_or_404(id, description="Incident not found")
         return jsonify(
             {
                 "id": incident.id,

@@ -8,7 +8,6 @@ WORKDIR /app
 
 # Copy the rest of the application code to the container
 COPY ./src/. .
-COPY ./.env .
 COPY ./requirements.txt .
 
 # Install the dependencies
