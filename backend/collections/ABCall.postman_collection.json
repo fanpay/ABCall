@@ -194,68 +194,6 @@
 					"response": []
 				},
 				{
-					"name": "Update user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"let jsonData = JSON.parse(responseBody);",
-									"",
-									"tests[\"Status should be 200\"] = responseCode.code == 200;",
-									"tests[\"Response has msg\"] = jsonData.msg === 'el usuario ha sido actualizado';"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"const STATUSES = [\"POR_VERIFICAR\", \"NO_VERIFICADO\", \"VERIFICADO\"];",
-									"",
-									"const status = STATUSES[Math.floor(Math.random() * STATUSES.length)];",
-									"const dni = pm.variables.replaceIn(\"{{$randomInt}}\");",
-									"const fullname = pm.variables.replaceIn(\"{{$randomFullName}}\").toLowerCase();",
-									"const phonenumber = pm.variables.replaceIn(\"{{$randomPhoneNumber}}\").replaceAll('-', '');",
-									"",
-									"pm.collectionVariables.set('USER_STATUS', status);",
-									"pm.collectionVariables.set('USER_DNI', dni);",
-									"pm.collectionVariables.set('USER_FULLNAME', fullname);",
-									"pm.collectionVariables.set('USER_PHONENUMBER', phonenumber);"
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"status\": \"{{USER_STATUS}}\",\n    \"dni\": \"{{USER_DNI}}\",\n    \"fullName\": \"{{USER_FULLNAME}}\",\n    \"phoneNumber\": \"{{USER_PHONENUMBER}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{USERS_URL}}/users/{{USER_ID}}",
-							"host": [
-								"{{USERS_URL}}"
-							],
-							"path": [
-								"users",
-								"{{USER_ID}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Generate Token",
 					"event": [
 						{
@@ -643,13 +581,36 @@
 					"response": []
 				},
 				{
+					"name": "Get Incidents - User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{INCIDENTS_URL}}/incidents?userId={{USER_ID}}",
+							"host": [
+								"{{INCIDENTS_URL}}"
+							],
+							"path": [
+								"incidents"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{USER_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Incident 1",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"subject\": \"Server problem\",\n  \"description\": \"Server was down\",\n  \"status\": \"open\",\n  \"originType\": \"web\",\n  \"userId\": 1,  \n  \"solution\": \"Restart server\",  \n  \"solutionAgentId\": 2,  \n  \"solutionDate\": \"2024-09-30T14:30:00\" \n}\n",
+							"raw": "{\n    \"userId\": \"{{USER_ID}}\",\n    \"subject\": \"Server problem\",\n    \"description\": \"Server was down\",\n    \"originType\": \"web\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -695,66 +656,6 @@
 					"response": []
 				},
 				{
-					"name": "Create Incident - CLOUD RUN",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"description\": \"Server was down\",\n    \"status\": \"open\",\n    \"originType\": \"web\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://ms-incidents-719013485218.us-central1.run.app/incidents",
-							"protocol": "https",
-							"host": [
-								"ms-incidents-719013485218",
-								"us-central1",
-								"run",
-								"app"
-							],
-							"path": [
-								"incidents"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Incident - API GATEWAY",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"description\": \"Server was down\",\n  \"status\": \"open\",\n  \"originType\": \"web\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "https://misw-2024-api-gateway-pf-96b62bvm.uc.gateway.dev/incidents",
-							"protocol": "https",
-							"host": [
-								"misw-2024-api-gateway-pf-96b62bvm",
-								"uc",
-								"gateway",
-								"dev"
-							],
-							"path": [
-								"incidents"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Incident",
 					"request": {
 						"method": "GET",
@@ -779,7 +680,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"solution\": \"Server was restarted\",\n  \"status\": \"closed\"\n}\n",
+							"raw": "{\n    \"userId\": \"{{USER_ID}}\",\n    \"subject\": \"Server problem\",\n    \"description\": \"Server was down\",\n    \"status\": \"CLOSED\",\n    \"solution\": \"Server was restarted\",\n    \"solutionAgentId\": \"2\",  \n    \"solutionDate\": \"2024-09-30T14:30:00\" \n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -843,16 +744,6 @@
 		}
 	],
 	"variable": [
-		{
-			"key": "USERS_URL",
-			"value": "http://localhost:9876",
-			"type": "string"
-		},
-		{
-			"key": "INCIDENTS_URL",
-			"value": "http://localhost:9875",
-			"type": "string"
-		},
 		{
 			"key": "USER_EMAIL",
 			"value": ""

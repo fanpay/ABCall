@@ -1,13 +1,20 @@
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from ..models.incidents import Incidents
 from ..extensions import db, cache
+from ..services.cache_service import clear_incident_cache
 
 
 class IncidentsList(Resource):
     @cache.cached(timeout=30)
     def get(self):
-        incidents = Incidents.query.all()
+        user_id = request.args.get('userId')
+        
+        if user_id:
+            incidents = Incidents.query.filter_by(userId=user_id).all()
+        else:
+            incidents = Incidents.query.all()
+            
         output = [
             {
                 "id": inc.id, 
@@ -21,31 +28,47 @@ class IncidentsList(Resource):
             }
             for inc in incidents
         ]
-        return jsonify(output)
+        return output
 
     def post(self):
-        data = request.get_json()
-        new_incident = Incidents(
-            subject=data["subject"], 
-            description=data["description"], 
-            status=data["status"],
-            originType=data["originType"]
-        )
-        db.session.add(new_incident)
-        db.session.commit()
+        try:
+            data = request.get_json()
+            
+            print(f"Data received: {data}") 
+            
+            required_fields = ['userId', 'subject', 'description', 'originType']
+            missing_fields = [field for field in required_fields if field not in data]
+
+            print(f"Missing fields: {', '.join(missing_fields)}") 
+
+            if missing_fields:
+                # Devuelve un diccionario en formato JSON y el código de estado 400
+                return {"message": f"Missing fields: {', '.join(missing_fields)}"}, 400        
         
-        cache.delete('incidents_list')
-        return jsonify(
-            {"message": "Incident created", "incidentId": new_incident.id}
-        )
+            new_incident = Incidents(
+                userId=data["userId"],
+                subject=data["subject"], 
+                description=data["description"], 
+                status="OPEN",
+                originType=data["originType"]
+            )
+            db.session.add(new_incident)
+            db.session.commit()
+            
+            cache.clear()
+            return {
+                "message": "Incident created", 
+                "incidentId": new_incident.id
+            }, 201
+        except Exception as e:
+            return {"error": str(e)}, 500
 
 
 class IncidentDetail(Resource):
-    @cache.cached(timeout=300, key_prefix="incident_%s")
+    @cache.cached(timeout=30, key_prefix="incident_%s")
     def get(self, id):
         incident = Incidents.query.get_or_404(id, description="Incident not found")
-        return jsonify(
-            {
+        return {
                 "id": incident.id,
                 "userId": incident.userId,
                 "subject": incident.subject,
@@ -58,7 +81,6 @@ class IncidentDetail(Resource):
                 "solutionAgentId": incident.solutionAgentId,
                 "solutionDate": incident.solutionDate.isoformat() if incident.solutionDate else None  # None value handling for optional fields in the model and schema
             }
-        )
 
     def put(self, id):
         incident = Incidents.query.get_or_404(id)
@@ -74,10 +96,13 @@ class IncidentDetail(Resource):
             incident.solutionDate = data.get("solutionDate", incident.solutionDate)
             
         db.session.commit()
-        return jsonify({"message": "Incident updated", "incidentId": id})
+        
+        clear_incident_cache(incident.id)
+        
+        return {"message": "Incident updated", "incidentId": id}
 
     def delete(self, id):
         incident = Incidents.query.get_or_404(id)
         db.session.delete(incident)
         db.session.commit()
-        return jsonify({"message": "Incident removed", "incidentId": id})
+        return {"message": "Incident removed", "incidentId": id}
