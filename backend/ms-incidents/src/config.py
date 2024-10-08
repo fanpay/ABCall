@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = f'postgresql://{os.environ["DB_USER"]}:{os.environ["DB_PASSWORD"]}@{os.environ["DB_HOST"]}:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}'
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{os.environ.get("DB_USER", "default_user")}:{os.environ.get("DB_PASSWORD", "default_password")}@{os.environ.get("DB_HOST", "localhost")}:{os.environ.get("DB_PORT", "5432")}/{os.environ.get("DB_NAME", "test_db")}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CACHE_TYPE = 'SimpleCache'  # Usar almacenamiento en memoria
     CACHE_DEFAULT_TIMEOUT = 300

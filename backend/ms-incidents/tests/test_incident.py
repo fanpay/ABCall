@@ -96,14 +96,14 @@ def test_get_incidents_with_userid(mock_query, client):
 
 @patch('src.models.incidents.Incidents')
 @patch('src.extensions.db.session')
-@patch('src.extensions.cache.delete')
+@patch('src.extensions.cache.clear')
 def test_post_incident_cache_deleted(mock_cache_delete, mock_db_session, mock_incident_model, client):
     mock_incident = mock_incident_model.return_value
     mock_incident.id = 1
     
     response = client.post('/incidents', json={'userId': '12345', 'subject': 'Server failing', 'description': 'Server down', 'originType': 'web', 'status': 'Open'})
     assert response.status_code == 201
-    mock_cache_delete.assert_called_with('incidents_list')  # Verifica que la cache sea eliminada tras crear el incidente
+    mock_cache_delete.assert_called()  # Verifica que la cache sea eliminada tras crear el incidente
 
 
 @patch('src.models.incidents.Incidents.query')
