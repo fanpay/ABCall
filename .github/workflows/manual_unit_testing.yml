@@ -39,20 +39,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r backend/${{ github.event.inputs.service }}/requirements.txt
+        pip install pytest pytest-cov
 
-    - name: Correr pruebas unitarias en ${{ github.event.inputs.service }}
+    - name: Correr pruebas unitarias y cobertura con pytest en ${{ github.event.inputs.service }}
       run: |
         cd backend/${{ github.event.inputs.service }}
-        python -m unittest discover -s tests
-        
-    - name: Correr cobertura de código en ${{ github.event.inputs.service }}
-      run: |
-        cd backend/${{ github.event.inputs.service }}
-        coverage run -m unittest discover -s tests
-        coverage report -m
-        coverage xml
-
-    - name: Verificación de cobertura en ${{ github.event.inputs.service }}
-      run: |
-        cd backend/${{ github.event.inputs.service }}
-        coverage report -m --fail-under=70
+        pytest --cov=src --cov-fail-under=70 --cov-report=html
