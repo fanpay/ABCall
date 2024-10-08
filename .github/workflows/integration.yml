@@ -17,13 +17,13 @@ jobs:
     - name: Checkout del repositorio
       uses: actions/checkout@v3
 
-    - name: Mezcla develop -> ${{ github.ref }}
+    - name: Mezcla develop -> ${{ github.head_ref }}
       uses: tukasz/direct-merge-action@master
       with:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          source-branch: develop
-         target-branch: ${{ github.ref }}
-         commit-message: "Se realiza merge de develop a la rama ${{ github.ref }}"
+         target-branch: ${{ github.head_ref }}
+         commit-message: "Se realiza merge de develop a la rama ${{ github.head_ref }}"
     
   ms_incidents_tests:
     name: Pruebas unitarias y cobertura en ms-incidents
@@ -126,10 +126,10 @@ jobs:
     - name: Checkout del repositorio
       uses: actions/checkout@v3
 
-    - name: Mezcla ${{ github.ref }} -> develop
+    - name: Mezcla ${{ github.head_ref }} -> develop
       uses: tukasz/direct-merge-action@master
       with:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         source-branch: ${{ github.ref }}
+         source-branch: ${{ github.head_ref }}
          target-branch: develop
-         commit-message: "Se realiza merge de la rama ${{ github.ref }} a develop"
+         commit-message: "Se realiza merge de la rama ${{ github.head_ref }} a develop"
