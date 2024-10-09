@@ -77,4 +77,10 @@ class AuthRepository(val application: Application) {
             usersDao.getUserById(id)
         }
     }
+
+    suspend fun clearUsersTable() {
+        withContext(Dispatchers.IO) {
+            usersDao.deleteAll()
+        }
+    }
 }

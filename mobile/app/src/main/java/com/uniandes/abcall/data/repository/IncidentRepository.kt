@@ -15,6 +15,7 @@ import com.uniandes.abcall.data.service.RetrofitBroker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class IncidentRepository(val application: Application) {
     private val incidentsDao: IncidentsDao by lazy {
@@ -23,7 +24,7 @@ class IncidentRepository(val application: Application) {
 
     // Retornar incidencias usando LiveData desde la base de datos
     fun getAllIncidents(): LiveData<List<Incident>> {
-        return incidentsDao.getAllIncidents() // Retorna LiveData que Room gestiona en segundo plano
+        return incidentsDao.getAllIncidents()
     }
 
     // Sincroniza los incidentes desde la API y los guarda en Room
@@ -97,7 +98,7 @@ class IncidentRepository(val application: Application) {
     }
 
     // Verificar si hay conexión a internet
-    private suspend fun isNetworkAvailable(): Boolean {
+    private fun isNetworkAvailable(): Boolean {
         val cm = application.baseContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = cm.activeNetwork
         val capabilities = cm.getNetworkCapabilities(network)
@@ -113,5 +114,11 @@ class IncidentRepository(val application: Application) {
     private suspend fun insertIncidentIntoDatabase(incident: Incident) {
         incidentsDao.insert(incident)
         Log.v("IncidentRepository", "Inserted 1 incident into the local database. ID ${incident.id}")
+    }
+
+    suspend fun clearIncidentsTable() {
+        withContext(Dispatchers.IO) {
+            incidentsDao.deleteAll()
+        }
     }
 }
