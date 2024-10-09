@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - 'develop'
+    types:
+      - opened
+      - closed
 
 jobs:
   merge_develop:
@@ -91,23 +94,3 @@ jobs:
         cd backend/ms-users
         pytest --cov=src --cov-fail-under=70 --cov-report=html
 
-  merge_to_develop:
-    name: Mezclar la rama feature a develop
-    permissions: write-all
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    needs: [ms_incidents_tests, ms_users_tests]
-    if: ${{ github.event.pull_request.merged == false && github.event.pull_request.approvals > 0 }}
-    steps:
-    - name: Checkout del repositorio
-      uses: actions/checkout@v3
-
-    - name: Mezcla ${{ github.head_ref }} -> develop
-      uses: tukasz/direct-merge-action@master
-      with:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         source-branch: ${{ github.head_ref }}
-         target-branch: develop
-         commit-message: "Se realiza merge de la rama ${{ github.head_ref }} a develop"
