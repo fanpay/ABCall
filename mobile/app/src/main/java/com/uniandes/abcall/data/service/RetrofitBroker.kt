@@ -22,11 +22,12 @@ class RetrofitBroker {
 
         // Incidents
         suspend fun getIncidents(
+            userId: String,
             onComplete: (resp: List<Incident>) -> Unit,
             onError: (error: Throwable) -> Unit
         ) {
             try {
-                val response = ApiClient.incidents.getAllIncidents()
+                val response = ApiClient.incidents.getAllIncidents(userId)
                 if (response.isSuccessful) {
                     Log.e("RetrofitBroker", "Incidentes obtenidos de la API: ${response.body()}")
                     onComplete(response.body() ?: emptyList())

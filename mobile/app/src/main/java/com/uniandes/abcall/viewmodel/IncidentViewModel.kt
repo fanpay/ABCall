@@ -8,21 +8,24 @@ import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.data.repository.IncidentRepository
 import kotlinx.coroutines.launch
 
-class IncidentViewModel(application: Application) : AndroidViewModel(application) {
-    private val incidentRepository = IncidentRepository(application)
+class IncidentViewModel(application: Application,
+                        userId: String,
+                        private var incidentRepository:IncidentRepository = IncidentRepository(application)
+    ) : AndroidViewModel(application) {
+
 
     // LiveData para observar las incidencias desde Room
-    val incidents: LiveData<List<Incident>> = incidentRepository.getAllIncidents()
+    val incidents: LiveData<List<Incident>> = incidentRepository.getAllIncidents(userId)
 
     init {
         // Sincronizar incidencias desde la API cuando se crea el ViewModel
-        syncIncidents()
+        syncIncidents(userId)
     }
 
     // Sincronizar incidencias desde la API y almacenarlas en Room
-    fun syncIncidents() {
+    fun syncIncidents(userId: String) {
         viewModelScope.launch {
-            incidentRepository.syncIncidents()
+            incidentRepository.syncIncidents(userId)
         }
     }
 

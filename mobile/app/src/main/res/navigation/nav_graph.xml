@@ -9,6 +9,10 @@
         android:name="com.uniandes.abcall.view.IncidentsFragment"
         android:label="incidents_fragment"
         tools:layout="@layout/fragment_incidents" >
+        <argument
+            android:name="USER_ID"
+            app:argType="string"
+            android:defaultValue=""/>
         <action
             android:id="@+id/action_incidentsFragment_to_incidentDetailFragment"
             app:destination="@id/incidentDetailFragment" />

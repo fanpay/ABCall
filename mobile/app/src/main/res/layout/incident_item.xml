@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="@id/incident_date_creation"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription='@{@string/album_cover_image_alt + " " + incident.id + " " + incident.subject}' />
+                    android:contentDescription='@{@string/incident_cover_image_alt + " " + incident.id + " " + incident.subject}' />
 
                 <TextView
                     android:id="@+id/incident_subject"

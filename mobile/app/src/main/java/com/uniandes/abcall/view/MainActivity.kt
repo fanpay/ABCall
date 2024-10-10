@@ -1,20 +1,15 @@
 package com.uniandes.abcall.view
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.uniandes.abcall.R
-
 
 import android.content.Intent
-import android.util.Log
+import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.uniandes.abcall.R
 import com.uniandes.abcall.data.model.UserCredentials
 import com.uniandes.abcall.viewmodel.AuthViewModel
 import com.uniandes.abcall.viewmodel.AuthViewModelFactory
@@ -34,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btn_login)
 
         // Observa los resultados del login
-        authViewModel.authResponse.observe(this, Observer { authResponse ->
+        authViewModel.authResponse.observe(this) { authResponse ->
             if (authResponse != null) {
                 // Login exitoso, redirigir a HomeActivity
                 Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show()
@@ -47,12 +42,10 @@ class MainActivity : AppCompatActivity() {
                 intent.putExtra("TOKEN", authResponse.token)
                 intent.putExtra("USER_ID", authResponse.id)
 
-                Log.e("MainActivity", "Token: ${authResponse.token}")
-                Log.e("MainActivity", "USER_ID: ${authResponse.id}")
                 startActivity(intent)
                 finish() // Cerrar esta actividad
             }
-        })
+        }
 
         // Observa posibles errores
         authViewModel.error.observe(this, Observer { error ->

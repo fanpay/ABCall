@@ -10,7 +10,4 @@ interface UserApi {
     @GET("/users/me")
     suspend fun getUserInfo(@Header("Authorization") token: String): User
 
-    /*@GET("user")
-    suspend fun getUser(): Response<User>*/
-
 }
