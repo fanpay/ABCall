@@ -33,16 +33,16 @@ gcloud compute networks subnets create vpn-abcall-2-service --range=192.168.80.0
 
 ```
 
-OPCIONAL: 
+**OPCIONAL:**
 
 Las subredes (vpn-abcall-1-service y vpn-abcall-2-service) son contiguas y se crean de la siguiente manera:
 
 1. Subred en el rango 192.168.64.0/20
-- Rango de IPs: 192.168.64.0 a 192.168.79.255.
-- Esta subred está inmediatamente después del rango conflictivo (192.168.32.0/19).
+    - Rango de IPs: 192.168.64.0 a 192.168.79.255.
+    - Esta subred está inmediatamente después del rango conflictivo (192.168.32.0/19).
 2. Subred en el rango 192.168.80.0/20
-- Rango de IPs: 192.168.80.0 a 192.168.95.255.
-- Esta subred está inmediatamente después de la primera subred.
+    - Rango de IPs: 192.168.80.0 a 192.168.95.255.
+    - Esta subred está inmediatamente después de la primera subred.
 
 Con esto, se crea una subred llamada `vpn-users-service` en la región `us-central1` con un rango de direcciones IP de `192.168.32.0/19` dentro de la red `vpn-services-g18`.
 
@@ -53,28 +53,37 @@ Con esto, se crea una subred llamada `vpn-users-service` en la región `us-centr
 # Desplegar Cloud SQL
 
 ## Desplegar Cloud SQL con IP pública
-> gcloud deployment-manager deployments create misw-g18-db-deployment --config cloudsql-instance.yaml
+```bash
+gcloud deployment-manager deployments create misw-g18-db-deployment --config cloudsql-instance.yaml
+```
 
 ## Ver operaciones
-> gcloud sql operations list --instance=misw-pf-db-instance
+```
+gcloud sql operations list --instance=misw-pf-db-instance
+```
 
 ## Reintentar operación
-> gcloud deployment-manager deployments update misw-g18-db-deployment --config cloudsql-instance.yaml
+```
+gcloud deployment-manager deployments update misw-g18-db-deployment --config cloudsql-instance.yaml
+```
 
 ## Deshabiitar IP publica (Opcional)
 
 Luego de comprar que se puede acceder a la base de datos desde la máquina local, es buena práctica deshabilitar la IP pública.
 
-> gcloud sql instances patch misw-pf-db-instance --no-assign-ip
-
+```
+gcloud sql instances patch misw-pf-db-instance --no-assign-ip
+```
 
 # Cloud Build
  
-## Comando para desplegar desde la carpeta de infraestructura
+## Comando para desplegar desde la carpeta de infraestructura de manera manual
 
-> gcloud builds submit --config=cloudbuild.yaml ../
+```
+gcloud builds submit --config=cloudbuild.yaml ../
+```
 
-### Permissions
+### Permisos
 
 Agregue los siguientes permisos a la cuenta de servicio relacionada a Cloud Build:
 
@@ -159,8 +168,9 @@ Crea una configuración para tu API en Google Cloud API Gateway:
         YOUR_REGION con la región en la que deseas crear el gateway.
         YOUR_PROJECT_ID con el ID de tu proyecto de Google Cloud.
 
-4.1 Para actualizar el API Gateway
-Nota: Se debió crear una configuración diferentes de la API Gateway
+5. Para actualizar el API Gateway (Opcional)
+
+**Nota: Se debió crear una configuración diferente de la API Gateway**
 
   ```
   gcloud api-gateway gateways update misw-2024-api-gateway-pf \
@@ -169,7 +179,7 @@ Nota: Se debió crear una configuración diferentes de la API Gateway
     --location=us-central1 \
     --project=miso-dan-2024
   ```
-5. Verifica y prueba tu configuración
+6. Verifica y prueba tu configuración
 
     Una vez que todo esté configurado, verifica la URL proporcionada por API Gateway y prueba las rutas definidas en tu archivo OpenAPI.
 
@@ -185,7 +195,7 @@ Nota: Se debió crear una configuración diferentes de la API Gateway
         YOUR_REGION con la región en la que creaste tu gateway.
         YOUR_PROJECT_ID con el ID de tu proyecto de Google Cloud.
 
-6. Cómo probar tu implementación de API
+7. Cómo probar tu implementación de API
 
     Ahora puedes enviar solicitudes a tu API con la URL generada luego de la implementación de la puerta de enlace.
 
