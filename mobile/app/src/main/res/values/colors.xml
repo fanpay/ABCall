@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#2DAAE1</color>
+
+    <color name="graySuperLight">#EFEFEF</color>
+    <color name="grayD3">#D3D3D3</color>
+    <color name="grayLight">#888888</color>
+    <color name="grayDark">#99000000</color>
+    <color name="purpleDark">#6200EE</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="red">#B00020</color>
+    <color name="yellow">#F9B233</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="edit_text_margin">#E0E0E0</color>
+    <color name="text_gray">#666666</color>
+</resources>

@@ -1,0 +1,100 @@
+# En este archivo se encuentra la configuración del despliegue de la aplicación
+# utilizando Kubernetes (K8s es su acronimo, lo vamos a usar para referirnos asi mas adelante).
+# En cada punto especificaremos los elementos respectivos.
+
+# Version del API de Kubernetes
+apiVersion: apps/v1
+# Tipo de elemento
+kind: Deployment
+# Metadatos del elemento
+metadata:
+  # Nombre
+  name: users
+  # Etiqueta del Deployment
+  labels:
+    app: users
+# Especificaciones del elemento
+spec:
+  replicas: 1
+  # K8s agrupa los elementos del Deployment y los interconecta entre si utilizando etiquetas
+  # Aqui definimos como seleccionar los elementos juntos
+  selector:
+    # En este caso va a seleccionar aquellos que coincidan con el nombre del deploy
+    matchLabels:
+      app: users 
+  # En esta sección definimos el contenido del pod y declaramos los contenedores
+  template:
+    metadata:
+      labels:
+        # Esta es la etiqueta que se le asigna al pod, debe ser igual al selector (linea 24)
+        app: users
+    spec:
+      # Declaracion de contenedores
+      # name: Nombre del contenedor
+      # image: Nombre de la imagen, por defecto buscara en Docker Hub o en el repositorio privado
+      #        configurado en K8s
+      containers:
+        - name: users
+          image: us-central1-docker.pkg.dev/miso-dan-2024/uniandes-misw-native-g23/users:1.0
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 9876
+          #Usa las variables de entorno que configuraste en tu archivo de secretos appsecrets
+          env:
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_USER
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_PASSWORD
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_HOST
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_PORT
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_NAME
+
+          # Realizar pull siempre a la imagen
+          imagePullPolicy: Always
+      volumes:
+        - name: appsecrets-volume
+          secret:
+            secretName: appsecrets
+
+# Vamos a especificar el balanceador de carga en este mismo archivo
+# para ello vamos a crear otro documento separado, esto se hace con el operador "---"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: users-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: users
+  # Declaracion y redireccion del trafico por los puertos
+  # En este caso, estamos ocupando el puerto 80 para la conexión HTTP
+  # y lo estamos redirigiendo al 9878 de la red virtual del pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9876

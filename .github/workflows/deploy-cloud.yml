@@ -1,0 +1,58 @@
+name: Pruebas y despliegue en Cloud Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: Pruebas unitarias y cobertura en microservicios
+    permissions: write-all
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [ms-incidents, ms-users]
+
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Configuración de entorno de python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Instalación de librerías y dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/${{ matrix.service }}/requirements.txt
+        pip install pytest pytest-cov
+
+    - name: Correr pruebas unitarias y cobertura con pytest en ${{ matrix.service }}
+      run: |
+        cd backend/${{ matrix.service }}
+        pytest --cov=src --cov-fail-under=70 --cov-report=html
+      continue-on-error: false
+
+  deploy:
+    name: Desplegar microservicios en Cloud Build
+    permissions: write-all
+    needs: tests
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Autenticar en Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+    - name: Configurar gcloud
+      run: |
+        gcloud config set project ${{ secrets.GCP_PROJECT }}
+
+    - name: Desplegar todos los microservicios en Cloud Build
+      run: |
+        cd infrastructure/
+        gcloud builds submit --config=cloudbuild.yaml ../

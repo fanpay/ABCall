@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.MainActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:backgroundTint="#DA1F1F"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:fontFamily="@font/roboto">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/app_name"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="339dp"
+            android:layout_height="373dp"
+            android:contentDescription="@string/name_logo"
+            app:srcCompat="@drawable/logo" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="15dp">
+
+            <TextView
+                android:id="@+id/labelUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="13dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:outlineProvider="none"
+                android:paddingHorizontal="3dp"
+                android:text="@string/lbl_user"
+                android:textColor="@color/text_gray" />
+
+            <EditText
+                android:id="@+id/fieldUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints="password"
+                android:background="@drawable/edittext"
+                android:fontFamily="@font/roboto"
+                android:hint="@string/h_user"
+                android:inputType="text"
+                android:paddingHorizontal="11dp"
+                android:paddingVertical="14dp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="15dp">
+
+            <TextView
+                android:id="@+id/passLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="13dp"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:outlineProvider="none"
+                android:paddingHorizontal="3dp"
+                android:text="@string/lbl_pass"
+                android:textColor="@color/text_gray" />
+
+            <EditText
+                android:id="@+id/passField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:autofillHints="password"
+                android:background="@drawable/edittext"
+                android:fontFamily="@font/roboto"
+                android:hint="@string/h_pass"
+                android:inputType="textPassword"
+                android:paddingHorizontal="11dp"
+                android:paddingVertical="14dp" />
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingHorizontal="25dp"
+            android:fontFamily="@font/roboto"
+            app:backgroundTint="@null"
+            android:background="@drawable/rounded_button"
+            android:text="@string/btn_login"
+            android:textAllCaps="true"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

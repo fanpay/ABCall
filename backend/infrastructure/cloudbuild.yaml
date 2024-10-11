@@ -1,0 +1,83 @@
+steps:
+  # Step 1: Install dependencies
+  # - name: python
+  #   entrypoint: bash
+  #   args:
+  #     - '-c'
+  #     - |
+  #       cd ms-incidents && \
+  #       pip install -r requirements.txt && \
+  #       pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
+
+  # # Step 2: Run unit tests with coverage
+  # - name: python
+  #   entrypoint: bash
+  #   args:
+  #     - '-c'
+  #     - |
+  #       cd ms-users && \
+  #       pip install -r requirements.txt && \
+  #       pytest --cov=src --cov-fail-under=70 --junitxml=${SHORT_SHA}_test_log.xml
+
+
+  # Step 3: If tests and coverage pass, build and push the Docker image for ms-incidents
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/ms-incidents', 'backend/ms-incidents']
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/ms-incidents']
+  
+  # Step 4: Deploy the ms-incidents service to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'ms-incidents',
+           '--image', 'gcr.io/$PROJECT_ID/ms-incidents',
+           '--port', '${_PORT_INCIDENTS}',
+           '--project=$PROJECT_ID',
+           '--min-instances=${_MIN_INSTANCES_INCIDENTS}',
+           '--max-instances=${_MAX_INSTANCES_INCIDENTS}',
+           '--cpu=1',
+           '--memory=512Mi',
+           '--platform', 'managed',
+           '--region', '${_ZONE_CLOUDSQL}',
+           '--network=${_VPN_NETWORK}',
+           '--subnet=${_VPN_SUBNET}',
+           '--vpc-egress=private-ranges-only',
+           '--set-env-vars', 'DB_HOST=${_DB_HOST_INCIDENTS},DB_PORT=${_DB_PORT_INCIDENTS},DB_NAME=${_DB_NAME_INCIDENTS},DB_USER=${_DB_USER_INCIDENTS},DB_PASSWORD=${_DB_PASSWORD_INCIDENTS}',
+           '--set-cloudsql-instances=$PROJECT_ID:${_ZONE_CLOUDSQL}:${_INSTANCE_CLOUDSQL}',
+           '--no-cpu-boost',
+           '--allow-unauthenticated'
+           ]
+
+  # Step 5: Build and push the ms-users container
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/ms-users', 'backend/ms-users']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/ms-users']
+
+  # Step 6: Deploy the ms-users service to Cloud Run with environment variables
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+          'run', 'deploy', 'ms-users',
+          '--image', 'gcr.io/$PROJECT_ID/ms-users',
+          '--port', '${_PORT_USERS}',
+          '--project=$PROJECT_ID',
+          '--min-instances=${_MIN_INSTANCES_USERS}',
+          '--max-instances=${_MAX_INSTANCES_USERS}',
+          '--cpu=1',
+          '--memory=512Mi',
+          '--platform', 'managed',
+          '--region', '${_ZONE_CLOUDSQL}',
+          '--network=${_VPN_NETWORK}',
+          '--subnet=${_VPN_SUBNET}',
+          '--vpc-egress=private-ranges-only',
+          '--set-env-vars', 'DB_HOST=${_DB_HOST_USERS},DB_PORT=${_DB_PORT_USERS},DB_NAME=${_DB_NAME_USERS},DB_USER=${_DB_USER_USERS},DB_PASSWORD=${_DB_PASSWORD_USERS}',
+          '--set-cloudsql-instances=$PROJECT_ID:${_ZONE_CLOUDSQL}:${_INSTANCE_CLOUDSQL}',
+          '--no-cpu-boost',
+          '--allow-unauthenticated'
+          ]
+
+# Specify the images to push to Container Registry
+images:
+  - 'gcr.io/$PROJECT_ID/ms-incidents'
+  - 'gcr.io/$PROJECT_ID/ms-users'
