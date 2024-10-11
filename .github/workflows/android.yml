@@ -39,14 +39,17 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       with:
-        api-level: ${{ matrix.api-level }}
-        target: ${{ matrix.target }}
-        arch: ${{ matrix.arch }}
+        cmdline-tools-version: "latest"
+        accept-android-sdk-licenses: true
+        packages: |
+          platforms;android-${{ matrix.api-level }}
+          build-tools;33.0.0
 
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
 
     - name: Verify Coverage
+      if: success()
       run: |
         # Calcula la cobertura de los ViewModels a partir del archivo XML de JaCoCo
         COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
