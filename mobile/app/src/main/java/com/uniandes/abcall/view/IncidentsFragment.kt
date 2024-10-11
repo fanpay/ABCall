@@ -38,6 +38,9 @@ class IncidentsFragment : Fragment() {
 
         val userId = arguments?.getString("USER_ID")
 
+        (activity as? HomeActivity)?.showNoDataSplash(false,"")
+        (activity as? HomeActivity)?.showErrorLayout(false, "")
+
         if (!userId.isNullOrEmpty()) {
             (activity as? HomeActivity)?.showErrorLayout(false,"")
             // Crear el ViewModel usando el Factory
@@ -46,14 +49,16 @@ class IncidentsFragment : Fragment() {
 
             // Observar cambios en los incidentes desde el ViewModel
             incidentViewModel.incidents.observe(viewLifecycleOwner) { incidents ->
-                if (incidents.isNotEmpty()) {
+                if (incidents != null && incidents.isNotEmpty()) {
                     binding.progressBar.visibility = View.GONE
-                    (activity as? HomeActivity)?.showNoDataSplash(false,"")
+                    (activity as? HomeActivity)?.showNoDataSplash(false, "")
+                    (activity as? HomeActivity)?.showErrorLayout(false, "")
                     binding.incidentsRv.visibility = View.VISIBLE
                     incidentAdapter.setIncidents(incidents)
                 } else {
                     binding.progressBar.visibility = View.GONE
-                    (activity as? HomeActivity)?.showNoDataSplash(true,resources.getString(R.string.not_data_found))
+                    (activity as? HomeActivity)?.showErrorLayout(false, "")
+                    (activity as? HomeActivity)?.showNoDataSplash(true, resources.getString(R.string.not_data_found))
                     binding.incidentsRv.visibility = View.GONE
                 }
             }
@@ -61,8 +66,6 @@ class IncidentsFragment : Fragment() {
             // Sincronizar los incidentes
             incidentViewModel.syncIncidents(userId)
         } else {
-            // Manejar el caso donde userId sea nulo
-            (activity as? HomeActivity)?.showNoDataSplash(false,"")
             (activity as? HomeActivity)?.showErrorLayout(true,resources.getString(R.string.error_user_id_null))
             Log.e("IncidentsFragment", "El userId es nulo")
         }

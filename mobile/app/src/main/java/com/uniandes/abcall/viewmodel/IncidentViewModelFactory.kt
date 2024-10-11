@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class IncidentViewModelFactory(
+open class IncidentViewModelFactory(
     private val application: Application,
     private val userId: String
 ) : ViewModelProvider.Factory {

@@ -2,6 +2,6 @@
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.kotlin.android) apply false
-    id("androidx.navigation.safeargs") version "2.8.1" apply false
+    id("androidx.navigation.safeargs") version "2.8.2" apply false
     kotlin("kapt") version "1.9.0" apply false
 }

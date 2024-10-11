@@ -1,6 +1,7 @@
 package com.uniandes.abcall.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -14,8 +15,8 @@ class IncidentViewModel(application: Application,
     ) : AndroidViewModel(application) {
 
 
-    // LiveData para observar las incidencias desde Room
     val incidents: LiveData<List<Incident>> = incidentRepository.getAllIncidents(userId)
+
 
     init {
         // Sincronizar incidencias desde la API cuando se crea el ViewModel
@@ -25,15 +26,23 @@ class IncidentViewModel(application: Application,
     // Sincronizar incidencias desde la API y almacenarlas en Room
     fun syncIncidents(userId: String) {
         viewModelScope.launch {
-            incidentRepository.syncIncidents(userId)
+            try {
+                // Sincroniza los incidentes desde el repositorio
+                incidentRepository.syncIncidents(userId)
+            } catch (e: Exception) {
+                Log.e("IncidentViewModel", "Error sincronizando los incidentes: ${e.message}")
+            }
         }
     }
 
     // Método para agregar una nueva incidencia si es necesario
     fun addIncident(incident: Incident) {
         viewModelScope.launch {
-            incidentRepository.createIncident(incident,
-                onComplete = { /* Manejo de éxito si es necesario */ },
+            incidentRepository.createIncident(
+                incident,
+                onComplete = {
+                    incidentRepository.getAllIncidents(incident.userId)
+                },
                 onError = { /* Manejo de errores */ })
         }
     }

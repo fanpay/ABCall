@@ -19,6 +19,7 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 mockitoCore = "5.11.0"
 mockitoInline = "3.11.2"
+mockitoKotlin = "4.0.0"
 navigationRuntimeKtx = "2.8.2"
 picasso = "2.71828"
 retrofit = "2.9.0"
@@ -54,6 +55,7 @@ androidx-activity = { group = "androidx.activity", name = "activity", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
 mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 

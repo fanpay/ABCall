@@ -16,12 +16,15 @@ import com.uniandes.abcall.R
 import com.uniandes.abcall.data.repository.AuthRepository
 import com.uniandes.abcall.data.repository.IncidentRepository
 import com.uniandes.abcall.viewmodel.UserViewModel
+import com.uniandes.abcall.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory(application)
+    }
     private lateinit var authRepository: AuthRepository
     private lateinit var incidentsRepository: IncidentRepository
 

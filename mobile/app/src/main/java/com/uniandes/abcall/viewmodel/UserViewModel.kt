@@ -9,9 +9,9 @@ import com.uniandes.abcall.data.model.User
 import com.uniandes.abcall.data.repository.AuthRepository
 import kotlinx.coroutines.launch
 
-class UserViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val authRepository = AuthRepository(application)
+class UserViewModel(application: Application,
+                    private var authRepository:AuthRepository = AuthRepository(application)
+) : AndroidViewModel(application) {
 
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> = _user

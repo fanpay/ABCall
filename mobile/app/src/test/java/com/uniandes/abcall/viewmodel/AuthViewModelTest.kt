@@ -1,4 +1,4 @@
-package com.uniandes.abcall
+package com.uniandes.abcall.viewmodel
 
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -6,9 +6,6 @@ import com.uniandes.abcall.data.exceptions.ApiRequestException
 import com.uniandes.abcall.data.model.AuthResponse
 import com.uniandes.abcall.data.model.UserCredentials
 import com.uniandes.abcall.data.repository.AuthRepository
-import com.uniandes.abcall.viewmodel.AuthViewModel
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNotNull
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +14,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

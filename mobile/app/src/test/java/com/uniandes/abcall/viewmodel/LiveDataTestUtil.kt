@@ -1,4 +1,4 @@
-package com.uniandes.abcall
+package com.uniandes.abcall.viewmodel
 
 
 import androidx.lifecycle.LiveData
@@ -15,8 +15,8 @@ fun <T> LiveData<T>.getOrAwaitValue(
     var data: T? = null
     val latch = CountDownLatch(1)
     val observer = object : Observer<T> {
-        override fun onChanged(o: T) {
-            data = o
+        override fun onChanged(value: T) {
+            data = value
             latch.countDown()
             this@getOrAwaitValue.removeObserver(this)
         }
