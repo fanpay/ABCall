@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.data.repository.IncidentRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -35,7 +36,8 @@ class IncidentViewModelFactoryTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = StandardTestDispatcher()
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    private val testDispatcher = newSingleThreadContext("Test thread")
 
     private lateinit var application: Application
     private lateinit var incidentRepository: IncidentRepository
@@ -69,6 +71,7 @@ class IncidentViewModelFactoryTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        testDispatcher.close()
     }
 
     @Test

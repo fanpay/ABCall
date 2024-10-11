@@ -1,23 +1,36 @@
 package com.uniandes.abcall.viewmodel
 
 import android.app.Application
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.junit.MockitoJUnit
+import org.mockito.junit.MockitoRule
 
 @ExperimentalCoroutinesApi
 class UserViewModelFactoryTest {
 
-    private val testDispatcher = StandardTestDispatcher()
+    @get:Rule
+    val mockitoRule: MockitoRule = MockitoJUnit.rule()
+
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    private val testDispatcher = newSingleThreadContext("Test thread")
+
     private lateinit var application: Application
     private lateinit var userViewModelFactory: UserViewModelFactory
 
@@ -31,6 +44,7 @@ class UserViewModelFactoryTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        testDispatcher.close()
     }
 
     @Test

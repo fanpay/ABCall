@@ -6,9 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.data.repository.IncidentRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -35,7 +37,8 @@ class IncidentViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val testDispatcher = StandardTestDispatcher()
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+    private val testDispatcher = newSingleThreadContext("Test thread")
 
     @Mock
     private lateinit var application: Application
@@ -60,6 +63,7 @@ class IncidentViewModelTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        testDispatcher.close()
     }
 
     @Test
@@ -104,7 +108,7 @@ class IncidentViewModelTest {
             incidentViewModel.syncIncidents("testUserId")
 
             // Adelantar las tareas pendientes para completar las operaciones asíncronas
-            testDispatcher.scheduler.advanceUntilIdle()
+            advanceUntilIdle()
 
             // Verificar que el LiveData se haya actualizado
             assertNotNull("El valor del LiveData debería no ser null", capturedIncidents)
@@ -162,7 +166,7 @@ class IncidentViewModelTest {
             incidentViewModel.addIncident(newIncident)
 
             // Aseguramos que las tareas asíncronas se completen
-            testDispatcher.scheduler.advanceUntilIdle()
+            advanceUntilIdle()
 
             // Verificamos que el LiveData se haya actualizado
             assertNotNull("El valor del LiveData debería no ser null", capturedIncidents)
