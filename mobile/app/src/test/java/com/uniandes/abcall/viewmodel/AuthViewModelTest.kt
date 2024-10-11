@@ -6,6 +6,7 @@ import com.uniandes.abcall.data.exceptions.ApiRequestException
 import com.uniandes.abcall.data.model.AuthResponse
 import com.uniandes.abcall.data.model.UserCredentials
 import com.uniandes.abcall.data.repository.AuthRepository
+import com.uniandes.abcall.getOrAwaitValue
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,6 +14,8 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -88,7 +91,7 @@ class AuthViewModelTest {
         authViewModel.login(userCredentials)
 
         val error = authViewModel.error.getOrAwaitValue()
-        assertEquals("Error de autenticación: Login failed", error)
+        assertThat(error, containsString("Login failed"))
     }
 
     @Test

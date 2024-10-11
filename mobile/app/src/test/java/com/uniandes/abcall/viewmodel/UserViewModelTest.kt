@@ -5,6 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.uniandes.abcall.data.model.User
 import com.uniandes.abcall.data.repository.AuthRepository
+import com.uniandes.abcall.getOrAwaitValue
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

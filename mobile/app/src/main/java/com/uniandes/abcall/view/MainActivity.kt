@@ -5,10 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import com.uniandes.abcall.R
 import com.uniandes.abcall.data.model.UserCredentials
 import com.uniandes.abcall.viewmodel.AuthViewModel
@@ -32,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         authViewModel.authResponse.observe(this) { authResponse ->
             if (authResponse != null) {
                 // Login exitoso, redirigir a HomeActivity
-                Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show()
+
+                Snackbar.make(findViewById(android.R.id.content), R.string.successfull_login, Snackbar.LENGTH_SHORT).show()
 
                 // Consultar la información del usuario usando el token
                 authViewModel.fetchAndStoreUserInfo(authResponse.token)
@@ -48,11 +48,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Observa posibles errores
-        authViewModel.error.observe(this, Observer { error ->
+        authViewModel.error.observe(this) { error ->
             if (error != null) {
-                Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), error, Snackbar.LENGTH_LONG).show()
             }
-        })
+        }
 
         // Configurar el botón de login
         loginButton.setOnClickListener {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                 val userCredentials = UserCredentials(username, password)
                 authViewModel.login(userCredentials)
             } else {
-                Toast.makeText(this, "Por favor, ingresa tu usuario y contraseña.", Toast.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), R.string.validation_data_login, Snackbar.LENGTH_SHORT).show()
             }
         }
     }

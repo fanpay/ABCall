@@ -10,7 +10,7 @@
     <string name="add_incident">Create Incident</string>
     <string name="btn_login">Login</string>
     <string name="btn_home">Home</string>
-    <string name="error_login">No login. Failed</string>
+    <string name="error_login">Login Failed</string>
     <string name="user_not_found">User not found</string>
     <string name="error_fetch_user_info">Error fetching user info</string>
     <string name="error_create_incident">Error creating incident</string>
@@ -33,4 +33,6 @@
     <string name="h_user">Type your username</string>
     <string name="h_pass">Type your password</string>
     <string name="error_user_id_null">User not found</string>
+    <string name="successfull_login">Login Successful</string>
+    <string name="validation_data_login">Please, type your user and password</string>
 </resources>

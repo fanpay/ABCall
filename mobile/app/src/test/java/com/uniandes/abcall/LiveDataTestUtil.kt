@@ -1,4 +1,4 @@
-package com.uniandes.abcall.viewmodel
+package com.uniandes.abcall
 
 
 import androidx.lifecycle.LiveData

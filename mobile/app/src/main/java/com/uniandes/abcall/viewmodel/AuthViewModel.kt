@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.uniandes.abcall.R
 import com.uniandes.abcall.data.exceptions.ApiRequestException
 import com.uniandes.abcall.data.model.AuthResponse
 import com.uniandes.abcall.data.model.UserCredentials
@@ -29,7 +30,8 @@ class AuthViewModel(
                 val response = authRepository.login(userCredentials)
                 _authResponse.postValue(response)
             } catch (e: Exception) {
-                _error.postValue("Error de autenticación: ${e.message}")
+                val errorMessage = getApplication<Application>().getString(R.string.error_login) + ": " + e.message
+                _error.postValue(errorMessage)
             }
         }
     }
