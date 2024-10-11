@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
     kotlin("kapt")
+    id("jacoco")
 }
 
 android {
@@ -93,4 +94,38 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.androidx.espresso.intents)
+}
+
+
+afterEvaluate {
+    tasks.create("jacocoTestReport", JacocoReport::class.java) {
+        dependsOn("testDebugUnitTest")
+
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+
+        val fileFilter = listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "android/**/*.*"
+        )
+        val debugTree = fileTree("$buildDir/tmp/kotlin-classes/debug") {
+            exclude(fileFilter)
+        }
+
+        val mainSrc = "$projectDir/src/main/java"
+
+        sourceDirectories.setFrom(files(mainSrc))
+        classDirectories.setFrom(files(debugTree))
+        executionData.setFrom(
+            fileTree("$buildDir") {
+                include("jacoco/testDebugUnitTest.exec")
+            }
+        )
+    }
 }
