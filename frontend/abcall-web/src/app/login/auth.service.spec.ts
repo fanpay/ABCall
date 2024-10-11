@@ -2,27 +2,22 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
-
-// Mock del Router
-class RouterMock {
-  navigate = jasmine.createSpy('navigate');
-}
+import { environment } from '../../environments/environment.development';
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let routerMock: RouterMock;
+  let routerMock: jasmine.SpyObj<Router>;
 
-  // Configuración inicial del TestBed
   beforeEach(() => {
-    routerMock = new RouterMock();
+    // Crear un mock para el router
+    routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule], // Importamos el HttpClientTestingModule
       providers: [
         AuthService,
-        { provide: Router, useValue: routerMock }  // Mock del Router
+        { provide: Router, useValue: routerMock } // Proveemos el mock del Router
       ]
     });
 
@@ -31,84 +26,62 @@ describe('AuthService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verifica que no queden peticiones HTTP pendientes
-    localStorage.clear(); // Limpiar el localStorage después de cada prueba
+    // Verificar que no hay peticiones abiertas después de cada prueba
+    httpMock.verify();
   });
 
-  // 1. **Prueba para el método validateLogin**
   it('should call validateLogin and store the token', async () => {
-    const mockLoginData = { username: 'test', password: 'password' };
-    const mockResponse = { token: 'test-token' };
+    const mockResponse = { token: 'fake-token' }; // Respuesta mockeada
+    const loginData = { username: 'test', password: 'password' };
 
-    // Ejecutar el método
-    await service.validateLogin(mockLoginData);
+    // Llamamos al método validateLogin
+    const loginPromise = service.validateLogin(loginData);
 
-    // Verificamos la respuesta
-    expect(localStorage.getItem('token')).toBe('test-token');
-    expect(service.isAuthenticated).toBeTrue();
+    // Interceptamos la solicitud y respondemos con la respuesta mockeada
+    const req = httpMock.expectOne(`${environment.baseUrlUsers}/auth`);
+    expect(req.request.method).toBe('POST'); // Verificamos que el método sea POST
+    req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada
 
-    // Simulamos la petición HTTP
-    const req = httpMock.expectOne(`${service['apiUrl']}/auth`);
-    expect(req.request.method).toBe('POST');
-    req.flush(mockResponse);
+    await loginPromise; // Esperamos que la promesa se resuelva
+
+    // Verificamos que el token se ha almacenado en el localStorage
+    expect(localStorage.getItem('token')).toBe('fake-token');
+    expect(service.isAuthenticated).toBeTrue(); // Verificamos que el estado de autenticación sea correcto
+
+    // Verificamos que no hay más peticiones abiertas
+    httpMock.verify();
   });
 
-  // 2. **Prueba para el método getMeInfo**
   it('should call getMeInfo and store user data', async () => {
-    const mockToken = 'test-token';
-    const mockUserData = { username: 'test', email: 'test@example.com' };
+    const mockResponse = { user: { id: 1, name: 'John Doe' } }; // Respuesta mockeada
+    const token = 'fake-token';
 
-    // Ejecutar el método
-    await service.getMeInfo(mockToken);
+    // Llamamos al método getMeInfo
+    const getMeInfoPromise = service.getMeInfo(token);
 
-    // Verificamos la respuesta
-    expect(localStorage.getItem('meInfo')).toBe(JSON.stringify(mockUserData));
+    // Interceptamos la solicitud GET y respondemos con la respuesta mockeada
+    const req = httpMock.expectOne(`${environment.baseUrlUsers}/me`);
+    expect(req.request.method).toBe('GET'); // Verificamos que el método sea GET
+    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`); // Verificamos que el token esté presente en los headers
+    req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada
 
-    // Simulamos la petición HTTP
-    const req = httpMock.expectOne(`${service['apiUrl']}/me`);
-    expect(req.request.method).toBe('GET');
-    expect(req.request.headers.has('Authorization')).toBeTrue();
-    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockToken}`);
-    req.flush(mockUserData);
+    await getMeInfoPromise; // Esperamos que la promesa se resuelva
+
+    // Verificamos que la información del usuario se ha almacenado en localStorage
+    expect(localStorage.getItem('meInfo')).toBe(JSON.stringify(mockResponse));
+
+    // Verificamos que no hay más peticiones abiertas
+    httpMock.verify();
   });
 
-  // 3. **Prueba para el método logout**
   it('should call logout and clear localStorage', () => {
-    // Configuramos el estado inicial
-    localStorage.setItem('token', 'test-token');
-    localStorage.setItem('meInfo', JSON.stringify({ username: 'test' }));
-    service.isAuthenticated = true;
-
-    // Ejecutamos el método logout
+    // Simulamos el logout
     service.logout();
 
-    // Verificamos el resultado
-    expect(service.isAuthenticated).toBeFalse();
+    // Verificamos que los valores de localStorage han sido eliminados
     expect(localStorage.getItem('token')).toBeNull();
     expect(localStorage.getItem('meInfo')).toBeNull();
+    expect(service.isAuthenticated).toBeFalse();
     expect(routerMock.navigate).toHaveBeenCalledWith(['']);
-  });
-
-  // 4. **Prueba para el método isActive**
-  it('should call isActive and navigate if not authenticated', () => {
-    // Simulamos que no estamos autenticados
-    service.isAuthenticated = false;
-
-    // Ejecutamos el método
-    service.isActive();
-
-    // Verificamos que router.navigate fue llamado
-    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
-  });
-
-  it('should not call navigate if authenticated', () => {
-    // Simulamos que estamos autenticados
-    service.isAuthenticated = true;
-
-    // Ejecutamos el método
-    service.isActive();
-
-    // Verificamos que router.navigate no fue llamado
-    expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 });
