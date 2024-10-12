@@ -38,13 +38,6 @@ jobs:
 
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-      with:
-        cmdline-tools-version: 10406996
-        accept-android-sdk-licenses: 'yes'
-        packages: |
-          platform-tools
-          platforms;android-${{ matrix.api-level }}
-          build-tools;33.0.0
 
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
