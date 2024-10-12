@@ -48,7 +48,7 @@ jobs:
     - name: List Directories
       run: |
         echo "Listing directories and files in mobile/build:"
-        ls -R build
+        ls -R 
 
     - name: Check if JaCoCo report exists
       if: success()
