@@ -103,7 +103,9 @@ afterEvaluate {
 
         reports {
             xml.required.set(true)
+            xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/testDebugUnitTest/jacocoTestReport.xml"))
             html.required.set(true)
+            html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testDebugUnitTest/html"))
         }
 
         val fileFilter = listOf(
@@ -114,7 +116,7 @@ afterEvaluate {
             "**/*Test*.*",
             "android/**/*.*"
         )
-        val debugTree = fileTree("$buildDir/tmp/kotlin-classes/debug") {
+        val debugTree = fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) {
             exclude(fileFilter)
         }
 
@@ -123,7 +125,7 @@ afterEvaluate {
         sourceDirectories.setFrom(files(mainSrc))
         classDirectories.setFrom(files(debugTree))
         executionData.setFrom(
-            fileTree("$buildDir") {
+            fileTree(layout.buildDirectory) {
                 include("jacoco/testDebugUnitTest.exec")
             }
         )
