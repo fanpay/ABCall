@@ -10,7 +10,7 @@ import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
-import org.junit.Assert.assertTrue
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
@@ -51,7 +51,7 @@ class UserViewModelFactoryTest {
     fun `create UserViewModel successfully`() {
         // Verificamos que UserViewModelFactory crea una instancia de UserViewModel
         val viewModel = userViewModelFactory.create(UserViewModel::class.java)
-        assertTrue(viewModel is UserViewModel)
+        assertNotNull(viewModel)
     }
 
     @Test(expected = IllegalArgumentException::class)
