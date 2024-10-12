@@ -39,6 +39,9 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Install xmllint
+      run: sudo apt-get install -y libxml2-utils
+
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
 
