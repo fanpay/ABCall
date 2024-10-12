@@ -47,32 +47,26 @@ jobs:
 
     - name: List Directories
       run: |
-        echo "Listing directories and files in mobile/build:"
-        ls -R 
+        echo "Listing directories and files in mobile/app/build:"
+        ls -R app/build
 
     - name: Check if JaCoCo report exists
       if: success()
       run: |
-        if [ ! -f build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml ]; then
-          echo "JaCoCo report not found!"
+        if [ ! -f app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml ]; then
+          echo "JaCoCo report not found in mobile/app/build/reports/jacoco/testDebugUnitTest!"
           exit 1
         else
-          echo "JaCoCo report found."
+          echo "JaCoCo report found in mobile/app/build/reports/jacoco/testDebugUnitTest."
         fi
       continue-on-error: false
 
     - name: Verify Coverage
       if: success()
       run: |
-        # Verifica si el archivo XML de JaCoCo existe
-        if [ ! -f build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml ]; then
-          echo "JaCoCo report not found!"
-          exit 1
-        fi
-
         # Calcula la cobertura de los ViewModels a partir del archivo XML de JaCoCo
-        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
-        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
+        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
+        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
         TOTAL=$((COVERAGE + MISSED))
         PERCENT=$((COVERAGE * 100 / TOTAL))
         echo "Line Coverage for ViewModels: $PERCENT%"
