@@ -1,14 +1,20 @@
 package com.uniandes.abcall.view
 
 import android.content.Intent
+import android.view.View
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.uniandes.abcall.R
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -23,8 +29,8 @@ class HomeActivityTest {
     fun setUp() {
         // Configuramos un Intent con datos de prueba para pasar a la actividad
         val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, HomeActivity::class.java).apply {
-            putExtra("TOKEN", "test_token")
-            putExtra("USER_ID", "1")
+            putExtra("TOKEN", "2e9ee56d-0f76-4595-8cdb-3bfefd084749")
+            putExtra("USER_ID", "b523bf06-d11b-4f44-b04a-08f568ddcfab")
         }
 
         // Lanzamos la actividad
@@ -39,13 +45,15 @@ class HomeActivityTest {
     @Test
     fun testNavigationToIncidentsFragment() {
         // Verificamos que la actividad HomeActivity se muestra
-        onView(withId(R.id.nav_host_fragment)).check(matches(isDisplayed()))
+        onView(withIndex(withId(R.id.nav_host_fragment), 0)).check(matches(isDisplayed()))
 
         // Hacemos clic en el elemento del menú "Home"
         onView(withId(R.id.menu_home)).perform(click())
 
+        Thread.sleep(1000)
+
         // Verificamos que se navega al fragmento de incidentes
-        onView(withId(R.id.incidentsFragment)).check(matches(isDisplayed()))
+        onView(withId(R.id.incidentsRv)).check(matches(isDisplayed()))
     }
 
     @Test
@@ -79,5 +87,20 @@ class HomeActivityTest {
         // Verificamos que el layout de error es visible y muestra el mensaje correcto
         onView(withId(R.id.splash_error_layout)).check(matches(isDisplayed()))
         onView(withId(R.id.textViewError)).check(matches(withText("Ocurrió un error")))
+    }
+
+    private fun withIndex(matcher: Matcher<View>, index: Int): Matcher<View> {
+        return object : TypeSafeMatcher<View>() {
+            var currentIndex = 0
+            override fun describeTo(description: Description) {
+                description.appendText("with index: ")
+                description.appendValue(index)
+                matcher.describeTo(description)
+            }
+
+            override fun matchesSafely(view: View): Boolean {
+                return matcher.matches(view) && currentIndex++ == index
+            }
+        }
     }
 }

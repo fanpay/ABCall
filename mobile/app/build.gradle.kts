@@ -24,6 +24,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true // Habilitar cobertura para pruebas de instrumentación
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(

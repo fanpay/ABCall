@@ -45,11 +45,6 @@ jobs:
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
 
-    - name: List Directories
-      run: |
-        echo "Listing directories and files in mobile/app/build:"
-        ls -R app/build
-
     - name: Check if JaCoCo report exists
       if: success()
       run: |
