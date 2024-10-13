@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs")
     kotlin("kapt")
     id("jacoco")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -98,6 +99,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.androidx.espresso.intents)
+
+    //Firebase
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.analytics)
 }
 
 
