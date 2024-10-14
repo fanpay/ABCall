@@ -9,14 +9,17 @@ import com.uniandes.abcall.data.model.Incident
 
 @Dao
 interface IncidentsDao {
-    @Query("SELECT * FROM incidents_table ORDER BY id ASC")
-    fun getAllIncidents(): LiveData<List<Incident>>
+    @Query("SELECT * FROM incidents_table WHERE userId = :userId ORDER BY updateDate DESC")
+    fun getAllIncidentsSync(userId: String): List<Incident>
+
+    @Query("SELECT * FROM incidents_table WHERE userId = :userId ORDER BY updateDate DESC")
+    fun getAllIncidents(userId:String): LiveData<List<Incident>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(artist: Incident)
+    suspend fun insert(incident: Incident)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(artists: List<Incident>)
+    suspend fun insertAll(incident: List<Incident>)
 
     @Query("DELETE FROM incidents_table")
     suspend fun deleteAll(): Int

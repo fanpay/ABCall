@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
     kotlin("kapt")
+    id("jacoco")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -23,6 +25,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true // Habilitar cobertura para pruebas de instrumentación
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -64,7 +70,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.picasso)
 
     //ROOM
     implementation(libs.androidx.room.runtime)
@@ -86,10 +91,52 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotlin)
 
 
     // Dependencias de Espresso para pruebas de instrumentación
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.androidx.espresso.intents)
+
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
+}
+
+
+afterEvaluate {
+    tasks.create("jacocoTestReport", JacocoReport::class.java) {
+        dependsOn("testDebugUnitTest")
+
+        reports {
+            xml.required.set(true)
+            xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/testDebugUnitTest/jacocoTestReport.xml"))
+            html.required.set(true)
+            html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/testDebugUnitTest/html"))
+        }
+
+        val fileFilter = listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "android/**/*.*"
+        )
+        val debugTree = fileTree(layout.buildDirectory.dir("tmp/kotlin-classes/debug")) {
+            exclude(fileFilter)
+        }
+
+        val mainSrc = "$projectDir/src/main/java"
+
+        sourceDirectories.setFrom(files(mainSrc))
+        classDirectories.setFrom(files(debugTree))
+        executionData.setFrom(
+            fileTree(layout.buildDirectory) {
+                include("jacoco/testDebugUnitTest.exec")
+            }
+        )
+    }
 }

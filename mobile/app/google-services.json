@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "76566737830",
+    "project_id": "abcall-e0c54",
+    "storage_bucket": "abcall-e0c54.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76566737830:android:250213382e8c7364c89567",
+        "android_client_info": {
+          "package_name": "com.uniandes.abcall"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApWiohAkSIjqB9OdenfocyVirxAu06Tc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

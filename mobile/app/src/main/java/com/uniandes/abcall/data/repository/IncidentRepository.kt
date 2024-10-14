@@ -23,15 +23,16 @@ class IncidentRepository(val application: Application) {
     }
 
     // Retornar incidencias usando LiveData desde la base de datos
-    fun getAllIncidents(): LiveData<List<Incident>> {
-        return incidentsDao.getAllIncidents()
+    fun getAllIncidents(userId:String): LiveData<List<Incident>> {
+        return incidentsDao.getAllIncidents(userId)
     }
 
     // Sincroniza los incidentes desde la API y los guarda en Room
-    suspend fun syncIncidents() {
+    suspend fun syncIncidents(userId:String) {
         if (isNetworkAvailable()) {
             try {
                 RetrofitBroker.getIncidents(
+                    userId,
                     onComplete = { response ->
                         // Guardar los incidentes en Room
                         Log.e("IncidentRepository", "Respuesta de incident: $response")

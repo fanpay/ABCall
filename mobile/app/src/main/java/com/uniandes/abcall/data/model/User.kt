@@ -15,10 +15,4 @@ data class User (
     val phoneNumber: String,
     val role:String,
     val token: String?
-    /*val name:String,
-    val lastName:String,
-    val identificationType:String,
-    val identificationNumber:String,
-    val password:String,
-    val role:String*/
 ) : Serializable

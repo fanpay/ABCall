@@ -39,15 +39,29 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Install xmllint
+      run: sudo apt-get install -y libxml2-utils
+
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
+
+    - name: Check if JaCoCo report exists
+      if: success()
+      run: |
+        if [ ! -f app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml ]; then
+          echo "JaCoCo report not found in mobile/app/build/reports/jacoco/testDebugUnitTest!"
+          exit 1
+        else
+          echo "JaCoCo report found in mobile/app/build/reports/jacoco/testDebugUnitTest."
+        fi
+      continue-on-error: false
 
     - name: Verify Coverage
       if: success()
       run: |
         # Calcula la cobertura de los ViewModels a partir del archivo XML de JaCoCo
-        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
-        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
+        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
+        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
         TOTAL=$((COVERAGE + MISSED))
         PERCENT=$((COVERAGE * 100 / TOTAL))
         echo "Line Coverage for ViewModels: $PERCENT%"
