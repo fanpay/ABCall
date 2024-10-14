@@ -60,9 +60,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hola fragment en blanco</string>
     <string name="error_create_incident">Error creando el incidente</string>
-    <string name="incident_cover_image_alt">Imagen cover para incidente</string>
+    <string name="incident_cover_image_alt">Incidencia con ID %s y asunto %s</string>
     <string name="error_user_id_null">Usuario no encontrado</string>
     <string name="successfull_login">Login Exitoso</string>
     <string name="validation_data_login">Por favor, ingresa tu usuario y contraseña.</string>
+    <string name="incidents_list">Lista de incidentes</string>
+    <string name="creation_date_incident">Fecha de creación: %s</string>
+    <string name="id_incident">Radicado: %s</string>
+    <string name="see_detail_incident">Ver</string>
 
 </resources>

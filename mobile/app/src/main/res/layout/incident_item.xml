@@ -32,7 +32,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="@id/incident_date_creation"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription='@{@string/incident_cover_image_alt + " " + incident.id + " " + incident.subject}' />
+                    android:contentDescription='@{String.format(@string/incident_cover_image_alt, String.valueOf(incident.id), incident.subject)}' />
 
                 <TextView
                     android:id="@+id/incident_subject"
@@ -69,13 +69,13 @@
                 android:textSize="16sp"
                 android:textColor="@android:color/darker_gray"
                 android:layout_marginTop="8dp"
-                android:text='@{"Radicado: "+String.valueOf(incident.id)}' />
+                android:text='@{String.format(@string/id_incident, incident.id)}' />
 
             <TextView
                 android:id="@+id/incident_view_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VER"
+                android:text="@string/see_detail_incident"
                 android:textColor="@android:color/holo_purple"
                 android:textStyle="bold"
                 android:layout_gravity="start"

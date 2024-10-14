@@ -35,4 +35,8 @@
     <string name="error_user_id_null">User not found</string>
     <string name="successfull_login">Login Successful</string>
     <string name="validation_data_login">Please, type your user and password</string>
+    <string name="incidents_list">Incidents list</string>
+    <string name="creation_date_incident">Creation date: %s</string>
+    <string name="id_incident">ID: %s</string>
+    <string name="see_detail_incident">Detail</string>
 </resources>
