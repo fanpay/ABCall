@@ -101,8 +101,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.intents)
 
     //Firebase
-    implementation(libs.firebase.bom)
-    implementation(libs.firebase.analytics)
+    implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }
 
 
