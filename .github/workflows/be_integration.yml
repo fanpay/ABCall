@@ -9,6 +9,11 @@ on:
       - synchronize
       - review_requested
       - closed
+    paths:
+      - 'backend/**'
+    paths-ignore:
+      - 'backend/infrastructure/**'
+      - 'backend/collections/**'
 
 jobs:
   merge_develop:
