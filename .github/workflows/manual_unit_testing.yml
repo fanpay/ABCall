@@ -5,13 +5,14 @@ on:
   workflow_dispatch:
     inputs:
       service:
-        description: 'Microservicio a probar (ms-incidents o ms-users)'
+        description: 'Microservicio a probar'
         required: true
         default: 'ms-incidents'
         type: choice
         options:
           - ms-incidents
           - ms-users
+          - ms-chatbot
 
 jobs:
   unit_tests:
