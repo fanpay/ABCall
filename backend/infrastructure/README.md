@@ -80,7 +80,7 @@ gcloud sql instances patch misw-pf-db-instance --no-assign-ip
 ## Comando para desplegar desde la carpeta de infraestructura de manera manual
 
 ```
-gcloud builds submit --config=cloudbuild.yaml ../
+gcloud builds submit --config=cloudbuild.yaml ../../
 ```
 
 ### Permisos
