@@ -88,23 +88,23 @@ class ChatbotTestCase(unittest.TestCase):
         mock_is_authenticated.return_value = {"id": "123"}
 
         # Simular el comportamiento de la creación de una incidencia
-        mock_create_incident.return_value = {"message": "Por favor, indícame el asunto de la incidencia."}
+        mock_create_incident.return_value = {"message": "Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito. Por favor, indícame en el siguiente mensaje el asunto de la incidencia."}
         
         # Iniciar la creación de la incidencia
         response = self.app.post('/chat', 
                                  json={"message": "crear incidencia", "originType": "web", "userId": "123"},
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Por favor, indícame el asunto de la incidencia.', response.get_json()['message'])
+        self.assertIn('Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito. Por favor, indícame en el siguiente mensaje el asunto de la incidencia.', response.get_json()['message'])
 
 
-        mock_create_incident.return_value = {"message": "Gracias. Ahora, por favor, dime la descripción de la incidencia."}
+        mock_create_incident.return_value = {"message": "Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje."}
         # Enviar el asunto
         response = self.app.post('/chat', 
                                  json={"message": "Problema en el servidor", "originType": "web", "userId": "123"},
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Gracias. Ahora, por favor, dime la descripción de la incidencia.', response.get_json()['message'])
+        self.assertIn('Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje.', response.get_json()['message'])
 
         mock_create_incident.return_value = {"message": "Incidencia creada con éxito", "incidentId": 123}
         # Enviar la descripción
@@ -235,14 +235,14 @@ class ChatbotTestCase(unittest.TestCase):
                                  json={"message": "crear incidencia", "originType": "web", "userId": "123"},
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Por favor, indícame el asunto de la incidencia.', response.get_json()['message'])
+        self.assertIn('Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito. Por favor, indícame en el siguiente mensaje el asunto de la incidencia.', response.get_json()['message'])
 
         # Simular que la conversación está en curso (esperando asunto)
         response = self.app.post('/chat', 
                                  json={"message": "Problema en el servidor", "originType": "web", "userId": "123"},
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Gracias. Ahora, por favor, dime la descripción de la incidencia.', response.get_json()['message'])
+        self.assertIn('Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje.', response.get_json()['message'])
 
     
     @patch('src.chatbot.ChatbotResource.is_authenticated')
