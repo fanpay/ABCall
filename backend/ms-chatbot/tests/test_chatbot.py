@@ -3,12 +3,16 @@ import requests
 import os
 from unittest.mock import patch
 from src.app import app
+from src.chatbot import ChatbotResource
 
 class ChatbotTestCase(unittest.TestCase):
 
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
+        self.chatbot = ChatbotResource()
+        self.chatbot.chatbot_rules_file = 'tests/test_rules.txt'
+
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_is_authenticated_invalid_token(self, mock_is_authenticated):
@@ -22,6 +26,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         self.assertIn("Usuario no autenticado", response.get_json()['message'])
 
+
     @patch('src.chatbot.requests.get')
     def test_is_authenticated_no_token(self, mock_get):
         # Simular que no se envía un token
@@ -32,6 +37,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         mock_get.assert_not_called()
 
+
     @patch('src.chatbot.requests.get')
     def test_is_authenticated_invalid_token_format(self, mock_get):
         # Simular que se envía un token mal formado
@@ -41,6 +47,7 @@ class ChatbotTestCase(unittest.TestCase):
                                  headers={"Authorization": token})
         self.assertEqual(response.status_code, 401)
         mock_get.assert_not_called()
+
 
     @patch('src.chatbot.requests.get')
     def test_is_authenticated_success(self, mock_get):
@@ -57,6 +64,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         mock_get.assert_called_once_with('http://localhost:5000/me', headers={'Authorization': token})
 
+
     @patch('src.chatbot.requests.get')
     def test_is_authenticated_invalid_response(self, mock_get):
         os.environ['USERS_SERVICE_URL'] = 'http://localhost:5000'
@@ -70,6 +78,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 401)
         mock_get.assert_called_once_with('http://localhost:5000/me', headers={'Authorization': token})
 
+
     @patch('src.chatbot.requests.get', side_effect=requests.RequestException("Network Error"))
     def test_is_authenticated_network_error(self, mock_get):
         os.environ['USERS_SERVICE_URL'] = 'http://localhost:5000'
@@ -80,6 +89,7 @@ class ChatbotTestCase(unittest.TestCase):
                                  headers={"Authorization": token})
         self.assertEqual(response.status_code, 401)
         mock_get.assert_called_once_with('http://localhost:5000/me', headers={'Authorization': token})
+
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     @patch('src.chatbot.ChatbotResource.create_incident')
@@ -115,6 +125,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertIn('Incidencia creada con éxito', response.get_json()['message'])
         self.assertEqual(response.get_json()['incidentId'], 123)
 
+
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     @patch('src.chatbot.ChatbotResource.create_incident')
     def test_create_incident_failure(self, mock_create_incident, mock_is_authenticated):
@@ -141,6 +152,7 @@ class ChatbotTestCase(unittest.TestCase):
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
         self.assertIn('Hubo un error al crear la incidencia', response.get_json()['message'])
+
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     @patch('src.chatbot.requests.post')
@@ -169,6 +181,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Hubo un error al crear la incidencia', response.get_json()['message'])
 
+
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     @patch('src.chatbot.requests.post', side_effect=requests.exceptions.RequestException("Network Error"))
     def test_create_incident_network_error(self, mock_post, mock_is_authenticated):
@@ -192,6 +205,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('No se pudo conectar con el servicio de incidencias', response.get_json()['message'])
 
+
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_origin_type_missing(self, mock_is_authenticated):
         # Simular que la autenticación es exitosa
@@ -204,6 +218,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("El campo 'originType' es obligatorio", response.get_json()['message'])
 
+
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_unauthenticated_user(self, mock_is_authenticated):
         # Simular que la autenticación falla
@@ -213,6 +228,7 @@ class ChatbotTestCase(unittest.TestCase):
         response = self.app.post('/chat', json={"message": "crear incidencia"})
         self.assertEqual(response.status_code, 401)
         self.assertIn("Usuario no autenticado", response.get_json()['message'])
+
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_chatterbot_response(self, mock_is_authenticated):
@@ -224,6 +240,7 @@ class ChatbotTestCase(unittest.TestCase):
                                 headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
         self.assertIn('Hola', response.get_json()['message'])
+
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_conversation_already_active(self, mock_is_authenticated):
@@ -244,7 +261,7 @@ class ChatbotTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje.', response.get_json()['message'])
 
-    
+
     @patch('src.chatbot.ChatbotResource.is_authenticated')
     def test_missing_message(self, mock_is_authenticated):
         # Simular que la autenticación es exitosa

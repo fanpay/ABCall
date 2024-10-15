@@ -15,7 +15,7 @@ class ChatbotResource(Resource):
         # URL del microservicio de incidentes
         self.incident_service_url = os.getenv('INCIDENT_SERVICE_URL')
         self.users_service_url = os.getenv('USERS_SERVICE_URL')
-        self.chatbot_rules_file = os.getenv('CHATBOT_RULES_FILE')
+        self.chatbot_rules_file = os.getenv('CHATBOT_RULES_FILE', 'src/rules.txt')
         
         # Cargar reglas desde el archivo de texto
         self.rules = self.load_rules()
