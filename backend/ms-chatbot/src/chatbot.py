@@ -64,7 +64,7 @@ class ChatbotResource(Resource):
             # Iniciar el proceso de recolección de datos para la incidencia
             conversations[user_id] = {"status": "awaiting_subject", "originType": origin_type}
             
-            return {"message": "Por favor, indícame el asunto de la incidencia."}
+            return {"message": "Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito. Por favor, indícame en el siguiente mensaje el asunto de la incidencia."}
 
         
         
@@ -83,7 +83,7 @@ class ChatbotResource(Resource):
             conversation["status"] = "awaiting_description"
             conversations[user_id] = conversation 
             
-            return {"message": "Gracias. Ahora, por favor, dime la descripción de la incidencia."}
+            return {"message": "Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje."}
 
         elif conversation["status"] == "awaiting_description":
             # Guardar la descripción y proceder a crear la incidencia
