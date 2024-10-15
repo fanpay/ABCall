@@ -274,3 +274,60 @@ paths:
             properties:
               msg:
                 type: string
+
+  /chat:
+    post:
+      summary: Interacción con el chatbot de ABCall
+      operationId: chatbotService
+      security:
+      - Bearer: []
+      x-google-backend:
+        address: https://ms-chatbot-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        disable_auth: true
+      parameters:
+        - in: body
+          name: body
+          required: true
+          description: Datos para interactuar con el chatbot
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: El mensaje del usuario al chatbot
+                example: "crear incidencia"
+              originType:
+                type: string
+                description: El origen del mensaje (por ejemplo, 'web', 'app')
+                example: "web"
+              userId:
+                type: string
+                description: ID del usuario que interactúa con el chatbot
+                example: "12345"
+      responses:
+        '200':
+          description: Respuesta proporcionada por el chatbot
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: La respuesta del chatbot
+              incidentId:
+                type: string
+                description: ID de la incidencia creada (si aplica)
+              error:
+                type: string
+                description: Descripción del error (si ocurrió alguno)
+        '401':
+          description: Error de autenticación
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Descripción del error de autenticación
+              error:
+                type: string
+                description: Detalles del error
