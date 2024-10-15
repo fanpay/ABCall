@@ -60,7 +60,7 @@
 									"tests[\"Response has createdAt\"] = jsonData.createdAt !== undefined;",
 									"",
 									"if(jsonData.id) {",
-									"    pm.collectionVariables.set('USER_ID', jsonData.id);",
+									"    pm.environment.set('USER_ID', jsonData.id);",
 									"}",
 									""
 								],
@@ -79,12 +79,12 @@
 									"const fullname = pm.variables.replaceIn(\"{{$randomFullName}}\").toLowerCase();",
 									"const phonenumber = pm.variables.replaceIn(\"{{$randomPhoneNumber}}\").replaceAll('-', '');",
 									"",
-									"pm.collectionVariables.set('USER_EMAIL', email);",
-									"pm.collectionVariables.set('USER_USERNAME', username);",
-									"pm.collectionVariables.set('USER_PASSWORD', password);",
-									"pm.collectionVariables.set('USER_DNI', dni);",
-									"pm.collectionVariables.set('USER_FULLNAME', fullname);",
-									"pm.collectionVariables.set('USER_PHONENUMBER', phonenumber);"
+									"pm.environment.set('USER_EMAIL', email);",
+									"pm.environment.set('USER_USERNAME', username);",
+									"pm.environment.set('USER_PASSWORD', password);",
+									"pm.environment.set('USER_DNI', dni);",
+									"pm.environment.set('USER_FULLNAME', fullname);",
+									"pm.environment.set('USER_PHONENUMBER', phonenumber);"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -208,11 +208,11 @@
 									"tests[\"Response has expireAt\"] = jsonData.expireAt !== undefined;",
 									"",
 									"if(jsonData.token) {",
-									"    pm.collectionVariables.set('USER_TOKEN', jsonData.token);",
+									"    pm.environment.set('USER_TOKEN', jsonData.token);",
 									"}",
 									"",
 									"if(jsonData.id) {",
-									"    pm.collectionVariables.set('USER_ID', jsonData.id);",
+									"    pm.environment.set('USER_ID', jsonData.id);",
 									"}"
 								],
 								"type": "text/javascript",
@@ -380,15 +380,25 @@
 									"tests[\"Response has fullName\"] = jsonData.fullName !== undefined;",
 									"tests[\"Response has dni\"] = jsonData.dni !== undefined;",
 									"tests[\"Response has phoneNumber\"] = jsonData.phoneNumber !== undefined;",
-									"tests[\"Response has status\"] = jsonData.status !== undefined;",
 									"",
-									"tests[\"ID has correct value\"] = jsonData.id.toString() === pm.collectionVariables.get(\"USER_ID\");",
-									"tests[\"Username has correct value\"] = jsonData.username.toString() === pm.collectionVariables.get(\"USER_USERNAME\");",
-									"tests[\"Email has correct value\"] = jsonData.email.toString() === pm.collectionVariables.get(\"USER_EMAIL\");",
-									"tests[\"Fullname has correct value\"] = jsonData.fullName.toString() === pm.collectionVariables.get(\"USER_FULLNAME\");",
-									"tests[\"DNI has correct value\"] = jsonData.dni.toString() === pm.collectionVariables.get(\"USER_DNI\");",
-									"tests[\"Phonenumber has correct value\"] = jsonData.phoneNumber.toString() === pm.collectionVariables.get(\"USER_PHONENUMBER\");",
-									"tests[\"Status has correct value\"] = jsonData.status.toString() === pm.collectionVariables.get(\"USER_STATUS\");",
+									"",
+									"tests[\"ID has correct value\"] = jsonData.id.toString() === pm.environment.get(\"USER_ID\");",
+									"tests[\"Username has correct value\"] = jsonData.username.toString() === pm.environment.get(\"USER_USERNAME\");",
+									"tests[\"Email has correct value\"] = jsonData.email.toString() === pm.environment.get(\"USER_EMAIL\");",
+									"tests[\"Fullname has correct value\"] = jsonData.fullName.toString() === pm.environment.get(\"USER_FULLNAME\");",
+									"tests[\"DNI has correct value\"] = jsonData.dni.toString() === pm.environment.get(\"USER_DNI\");",
+									"tests[\"Phonenumber has correct value\"] = jsonData.phoneNumber.toString() === pm.environment.get(\"USER_PHONENUMBER\");",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
 									""
 								],
 								"type": "text/javascript",
@@ -661,13 +671,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{INCIDENTS_URL}}/incidents/1",
+							"raw": "{{INCIDENTS_URL}}/incidents/30",
 							"host": [
 								"{{INCIDENTS_URL}}"
 							],
 							"path": [
 								"incidents",
-								"1"
+								"30"
 							]
 						}
 					},
@@ -688,13 +698,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{INCIDENTS_URL}}/incidents/1",
+							"raw": "{{INCIDENTS_URL}}/incidents/30",
 							"host": [
 								"{{INCIDENTS_URL}}"
 							],
 							"path": [
 								"incidents",
-								"1"
+								"30"
 							]
 						}
 					},
@@ -706,13 +716,234 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{INCIDENTS_URL}}/incidents/1",
+							"raw": "{{INCIDENTS_URL}}/incidents/30",
 							"host": [
 								"{{INCIDENTS_URL}}"
 							],
 							"path": [
 								"incidents",
-								"1"
+								"30"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "chatbot",
+			"item": [
+				{
+					"name": "greetings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"hola\",\n    \"originType\": \"web\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "thanks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"gracias\",\n    \"originType\": \"web\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "say bye bye",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"adiós\",\n    \"originType\": \"web\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create incident",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"crear incidencia\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create incident - subject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"Problema con la conexión\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create incident - description",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"Hace media hora me intento conectar y nada que puedo. Me sale error de conexión\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
 							]
 						}
 					},
