@@ -119,6 +119,7 @@ class ChatbotResource(Resource):
 
 
     def is_authenticated(self, token):
+        print("TOKEN AUTH: " + token)
         if not token:
             return None
     
@@ -128,6 +129,8 @@ class ChatbotResource(Resource):
         try:
             # Llamada al microservicio de usuarios para validar el token
             headers = {"Authorization": token}
+            print("TOKEN AUTH HEADERS: " + str (headers))
+            print("TOKEN AUTH URL: " +self.users_service_url + '/me')
             response = requests.get(self.users_service_url + '/me', headers=headers)
 
             if response.status_code == 200:
