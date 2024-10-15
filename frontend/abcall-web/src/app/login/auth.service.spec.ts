@@ -38,7 +38,7 @@ describe('AuthService', () => {
     const loginPromise = service.validateLogin(loginData);
 
     // Interceptamos la solicitud y respondemos con la respuesta mockeada
-    const req = httpMock.expectOne(`${environment.baseUrlUsers}/auth`);
+    const req = httpMock.expectOne(`${environment.backend}/auth`);
     expect(req.request.method).toBe('POST'); // Verificamos que el método sea POST
     req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada
 
@@ -60,7 +60,7 @@ describe('AuthService', () => {
     const getMeInfoPromise = service.getMeInfo(token);
 
     // Interceptamos la solicitud GET y respondemos con la respuesta mockeada
-    const req = httpMock.expectOne(`${environment.baseUrlUsers}/me`);
+    const req = httpMock.expectOne(`${environment.backend}/me`);
     expect(req.request.method).toBe('GET'); // Verificamos que el método sea GET
     expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`); // Verificamos que el token esté presente en los headers
     req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada

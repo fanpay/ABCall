@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
 export class AuthService {
   
   public isAuthenticated = false;
-  private apiUrl: string = environment.baseUrlUsers;
+  private apiUrl: string = environment.backend;
   private authInfo: any;
   public meInfo!: any;
 
