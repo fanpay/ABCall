@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   
   public isAuthenticated = false;
-  private apiUrl: string = environment.backend;
+  private apiUrl: string = environment.backendUser;
   private authInfo: any;
   public meInfo!: any;
 

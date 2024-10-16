@@ -9,7 +9,7 @@ import { Agent } from './agent';
 })
 export class AgentService {
 
-  private apiUrl: string = environment.backend;
+  private apiUrl: string = environment.backendUser;
 
   constructor(
     private http: HttpClient

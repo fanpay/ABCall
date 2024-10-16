@@ -1,9 +1,11 @@
 /**
  * Production environment configuration
  */
-const backend = 'http://localhost:9878/users';
+const backendUser = 'http://localhost:9878/users';
+const backendIncidents = 'http://localhost:9878/users';
 
 export const environment = {
  production: true,
- backend
+ backendUser,
+ backendIncidents
 };
