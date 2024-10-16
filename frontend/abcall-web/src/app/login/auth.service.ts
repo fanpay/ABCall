@@ -54,4 +54,8 @@ export class AuthService {
     }
   }
 
+  getLoggedUser() {
+    return JSON.parse(localStorage.getItem('meInfo') || '{}');
+  }
+
 }
