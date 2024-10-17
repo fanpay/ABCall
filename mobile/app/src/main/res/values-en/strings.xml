@@ -46,4 +46,6 @@
     <string name="status_label">Status:</string>
     <string name="id_incident_label">ID:</string>
     <string name="creation_date_incident_label">Creation date:</string>
+    <string name="description_label">Description:</string>
+    <string name="agent_response_label">Agent response:</string>
 </resources>

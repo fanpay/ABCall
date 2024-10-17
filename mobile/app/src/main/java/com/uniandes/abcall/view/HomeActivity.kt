@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -20,6 +22,7 @@ import com.uniandes.abcall.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels {
@@ -31,6 +34,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setSupportActionBar(findViewById(R.id.my_toolbar))
+
 
         authRepository = AuthRepository(application)
         incidentsRepository = IncidentRepository(application)
@@ -83,6 +88,24 @@ class HomeActivity : AppCompatActivity() {
             userViewModel.getUser(userId)
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        val languageItem: MenuItem? = menu?.findItem(R.id.buttonLanguage)
+        val currentLocale = Locale.getDefault().language
+
+        Log.e("HomeActivity", "El idioma a usar es $currentLocale")
+
+        when (currentLocale) {
+            "es" -> languageItem?.setIcon(R.drawable.ic_flag_es)
+            "en" -> languageItem?.setIcon(R.drawable.ic_flag_us)
+            else -> languageItem?.setIcon(R.drawable.ic_flag_xx)
+        }
+
+        return true
+    }
+
 
     private fun logout() {
         // Eliminar token o información de sesión almacenada

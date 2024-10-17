@@ -76,5 +76,7 @@
     <string name="status_label">Estado:</string>
     <string name="id_incident_label">Número de radicado:</string>
     <string name="creation_date_incident_label">Fecha de creación:</string>
+    <string name="description_label">Descripción:</string>
+    <string name="agent_response_label">Respuesta del agente:</string>
 
 </resources>

@@ -44,8 +44,8 @@ class IncidentDetailFragment : Fragment() {
 
             incidentSubject.text = incident.subject
 
-            incidentStatus.text = getString(R.string.status_placeholder, incident.status)
-            incidentID.text = getString(R.string.radicado_placeholder, incident.id)
+            incidentStatus.text = incident.status
+            incidentID.text = incident.id.toString()
 
             val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = formatter.format(incident.creationDate)
