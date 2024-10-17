@@ -1,0 +1,39 @@
+services:
+  # Servicio de PostgreSQL para la base de datos
+  ms_users_db:
+    container_name: ms_users_db
+    environment:
+      POSTGRES_DB: ms_users_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: "postgres:latest"
+    networks:
+      - incidents_net
+    ports:
+      - "5432:5432"
+
+  # Servicio de la API Flask
+  ms_users_api:
+    restart: always
+    build:
+      context: .
+    container_name: ms_users_api
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: ms_users_db
+      DB_PORT: 5432
+      DB_NAME: ms_users_db
+    networks:
+      - incidents_net
+      - abcall_network
+    ports:
+      - "9876:9876"
+    depends_on:
+      - ms_users_db
+      
+networks:
+  incidents_net:
+    driver: bridge
+  abcall_network:
+    driver: bridge
