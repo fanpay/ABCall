@@ -12,7 +12,7 @@ interface IncidentsDao {
     @Query("SELECT * FROM incidents_table WHERE userId = :userId ORDER BY updateDate DESC")
     fun getAllIncidentsSync(userId: String): List<Incident>
 
-    @Query("SELECT * FROM incidents_table WHERE userId = :userId ORDER BY updateDate DESC")
+    @Query("SELECT * FROM incidents_table WHERE userId = :userId ORDER BY id DESC")
     fun getAllIncidents(userId:String): LiveData<List<Incident>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

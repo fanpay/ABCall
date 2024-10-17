@@ -39,4 +39,11 @@
     <string name="creation_date_incident">Creation date: %s</string>
     <string name="id_incident">ID: %s</string>
     <string name="see_detail_incident">Detail</string>
+    <string name="title_detail_incident">Incident Detail</string>
+    <string name="status_placeholder">Status: %1$s</string>
+    <string name="radicado_placeholder">ID: %1$d</string>
+    <string name="creation_date_placeholder">Creation date: %1$s</string>
+    <string name="status_label">Status:</string>
+    <string name="id_incident_label">ID:</string>
+    <string name="creation_date_incident_label">Creation date:</string>
 </resources>

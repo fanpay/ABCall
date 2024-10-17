@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.uniandes.abcall.R
+import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.databinding.FragmentIncidentsBinding
 import com.uniandes.abcall.view.adapters.IncidentAdapter
 import com.uniandes.abcall.viewmodel.IncidentViewModel
@@ -31,21 +33,23 @@ class IncidentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Configurar RecyclerView
-        incidentAdapter = IncidentAdapter(emptyList())
-        binding.incidentsRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.incidentsRv.adapter = incidentAdapter
-
         val userId = arguments?.getString("USER_ID")
 
         (activity as? HomeActivity)?.showNoDataSplash(false,"")
         (activity as? HomeActivity)?.showErrorLayout(false, "")
 
         if (!userId.isNullOrEmpty()) {
+
             (activity as? HomeActivity)?.showErrorLayout(false,"")
-            // Crear el ViewModel usando el Factory
+
             val factory = IncidentViewModelFactory(requireActivity().application, userId)
             incidentViewModel = ViewModelProvider(this, factory)[IncidentViewModel::class.java]
+
+            incidentAdapter = IncidentAdapter(emptyList()) { incident ->
+                navigateToIncidentDetail(incident)
+            }
+            binding.incidentsRv.layoutManager = LinearLayoutManager(requireContext())
+            binding.incidentsRv.adapter = incidentAdapter
 
             // Observar cambios en los incidentes desde el ViewModel
             incidentViewModel.incidents.observe(viewLifecycleOwner) { incidents ->
@@ -69,5 +73,10 @@ class IncidentsFragment : Fragment() {
             (activity as? HomeActivity)?.showErrorLayout(true,resources.getString(R.string.error_user_id_null))
             Log.e("IncidentsFragment", "El userId es nulo")
         }
+    }
+
+    private fun navigateToIncidentDetail(incident: Incident) {
+        val action = IncidentsFragmentDirections.actionIncidentsFragmentToIncidentDetailFragment(incident)
+        findNavController().navigate(action)
     }
 }
