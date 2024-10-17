@@ -29,11 +29,13 @@
     </div>
 
     <!--Controles-->
-    <button type="submit" class="btn btn-primary" [disabled]="!incidentForm.valid">
-      Crear
-    </button>
-    <button type="button" class="btn btn-danger ml-3" (click)="cancelCreation()">
-      Cancelar
-    </button>
+    <div class="pt-5 text-center">
+      <button type="submit" class="btn btn-primary me-3 w-25" [disabled]="!incidentForm.valid">
+        Crear
+      </button>
+      <button type="button" class="btn btn-danger ms-3 w-25" (click)="cancelCreation()">
+        Cancelar
+      </button>
+    </div>
   </form>
 </div>

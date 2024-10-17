@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Incident } from '../incident';
+import { AuthService } from '../../login/auth.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-incident-create',
@@ -14,6 +17,8 @@ export class IncidentCreateComponent implements OnInit {
   incidentForm !: FormGroup;
 
   constructor(
+    private authService: AuthService,
+    private userService: UserService,
     private formBuilder: FormBuilder,
     private toastrService: ToastrService
   ) { }
@@ -25,10 +30,14 @@ export class IncidentCreateComponent implements OnInit {
      });
   }
 
-  createIncident(incident: any) {
-    console.log(incident);
-    this.toastrService.success("La incidencia fue creada", "Confirmacion")
-    this.incidentForm.reset();
+  createIncident(incident: Incident) {
+    incident.originType = "web";
+    incident.userId = this.authService.getLoggedUser().id;
+    
+    this.userService.createIncident(incident).subscribe(res => {
+      this.toastrService.success(`La incidencia fue creada`, "Confirmacion")
+      this.incidentForm.reset();
+    });
   }
 
   cancelCreation() {
