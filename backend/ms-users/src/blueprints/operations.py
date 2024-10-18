@@ -4,10 +4,7 @@ from ..commands.signin import ViewSignIn
 from ..commands.login import ViewLogInToken
 from ..commands.user_info import ViewUserInfo
 from ..commands.user_reset import ViewUsersReset
-import logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 operations_blueprint = Blueprint("operations", __name__)
 
@@ -34,8 +31,6 @@ def signin():
 def login_token():
     data = request.get_json()
 
-    logger.error(f"Datos recibidos: {data}")
-    
     user_authenticated = ViewLogInToken(data).execute()
 
     response_data = {
@@ -44,7 +39,6 @@ def login_token():
         "expireAt": user_authenticated.expireAt.isoformat(),
     }
     
-    logger.info(f"Respuesta generada: {response_data}")
 
     return jsonify(response_data), 200
 
