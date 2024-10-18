@@ -20,6 +20,7 @@ jobs:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
     - name: Build the Docker image
+      working-directory: ./frontend/abcall-web
       run: |
         docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
 
