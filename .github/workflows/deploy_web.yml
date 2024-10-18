@@ -14,9 +14,10 @@ jobs:
     - name: Check out the code
       uses: actions/checkout@v4
 
-    - name: Log in to Heroku Container Registry
-      run: |
-        echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+    - name: Set up Heroku API key
+      run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
     - name: Build the Docker image
       run: |
