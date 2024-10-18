@@ -18,6 +18,20 @@ securityDefinitions:
 
 paths:
   /incidents:
+    options:
+      summary: CORS support Incidents
+      operationId: corsSupportIncidents
+      description: Enable CORS by returning correct headers
+      security:
+        - Bearer: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
     get:
       summary: Listar todos los incidentes
       operationId: listIncidents
@@ -157,6 +171,17 @@ paths:
                 type: string
 
   /users:
+    options:
+      summary: CORS support User POST
+      operationId: corsSupportUsersPost
+      description: Enable CORS by returning correct headers
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
     post:
       summary: Crear un nuevo usuario
       operationId: createUser
@@ -220,8 +245,30 @@ paths:
                 type: string
               expireAt:
                 type: string
+    options:
+      summary: CORS support
+      operationId: corsSupportAuth
+      description: Enable CORS by returning correct headers
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/auth
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
 
   /users/me:
+    options:
+      summary: CORS support ME
+      operationId: corsSupportMe
+      description: Enable CORS by returning correct headers
+      x-google-backend:
+        address: https://ms-users-719013485218.us-central1.run.app/users/ping
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
     get:
       summary: Obtener información del usuario autenticado
       operationId: getUserInfo
@@ -276,6 +323,17 @@ paths:
                 type: string
 
   /chat:
+    options:
+      summary: CORS support
+      operationId: corsSupportChat
+      description: Enable CORS by returning correct headers
+      x-google-backend:
+        address: https://ms-chatbot-719013485218.us-central1.run.app
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
     post:
       summary: Interacción con el chatbot de ABCall
       operationId: chatbotService
