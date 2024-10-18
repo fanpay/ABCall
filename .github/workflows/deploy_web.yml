@@ -25,5 +25,6 @@ jobs:
         heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
         heroku_email: "f.payan@uniandes.edu.co"
         usedocker: true
+        docker_heroku_process_type: web
         dontautocreate: true
-        docker_build_args: "--file ./frontend/abcall-web/Dockerfile ."
+        appdir: ./frontend/abcall-web
