@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - name: Check out the code
@@ -19,6 +19,14 @@ jobs:
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
+    - uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "${{ secrets.HEROKU_APP_NAME }}" 
+        heroku_email: "f.payan@uniandes.edu.co"
+        usedocker: true
+
+        
     - name: Build the Docker image
       working-directory: ./frontend/abcall-web
       run: |
@@ -26,11 +34,9 @@ jobs:
 
     - name: Push the Docker image to Heroku
       run: |
-        docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+        heroku container:push web --app ${{ secrets.HEROKU_APP_NAME }}
 
-    - name: Install Heroku CLI
-      run: |
-        curl https://cli-assets.heroku.com/install.sh | sh
+    
 
     - name: Release the app on Heroku
       env:
