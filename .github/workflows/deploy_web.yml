@@ -1,0 +1,30 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v4
+
+    - name: Set up Heroku API key
+      run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+    - uses: akhileshns/heroku-deploy@v3.13.15
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+        heroku_email: "f.payan@uniandes.edu.co"
+        usedocker: true
+        docker_heroku_process_type: web
+        dontautocreate: true
+        appdir: ./frontend/abcall-web

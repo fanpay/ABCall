@@ -3,12 +3,14 @@ from dotenv import load_dotenv
 loaded = load_dotenv()
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from .blueprints.operations import operations_blueprint
 from .errors.errors import ApiError
 from .extensions import db
 import os
 
 app = Flask(__name__)
+CORS(app) 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f'postgresql://{os.environ["DB_USER"]}:{os.environ["DB_PASSWORD"]}@{os.environ["DB_HOST"]}:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}'

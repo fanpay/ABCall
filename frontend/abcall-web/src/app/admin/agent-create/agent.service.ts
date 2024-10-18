@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Agent } from './agent';
 
@@ -9,7 +9,7 @@ import { Agent } from './agent';
 })
 export class AgentService {
 
-  private apiUrl: string = environment.baseUrlUsers;
+  private apiUrl: string = environment.backendUser;
 
   constructor(
     private http: HttpClient

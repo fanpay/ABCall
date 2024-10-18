@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment.development';
 export class AuthService {
   
   public isAuthenticated = false;
-  private apiUrl: string = environment.baseUrlUsers;
+  private apiUrl: string = environment.backendUser;
   private authInfo: any;
   public meInfo!: any;
 
@@ -52,6 +52,10 @@ export class AuthService {
     if (!this.isAuthenticated) {
       this.router.navigate(['']);
     }
+  }
+
+  getLoggedUser() {
+    return JSON.parse(localStorage.getItem('meInfo') || '{}');
   }
 
 }

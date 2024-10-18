@@ -75,6 +75,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "0.0.0.0",
+            "port": 4200,
+            "ssl": false
+          },
           "configurations": {
             "production": {
               "buildTarget": "abcall-web:build:production"
