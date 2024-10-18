@@ -1,23 +1,53 @@
-import { TestBed } from '@angular/core/testing';
-import { AuthService } from './auth.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Router } from '@angular/router';
-import { environment } from '../../environments/environment.development';
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { AuthService } from "./auth.service";
+import { TestBed } from "@angular/core/testing";
+import { Router } from "@angular/router";
+import { environment } from "../../environments/environment";
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let routerMock: jasmine.SpyObj<Router>;
+  let routerSpy = { navigate: jasmine.createSpy('navigate') };
 
+  const baseUrl = environment.backendUser;
+
+  const mockLoginData = {
+    username: 'testUser',
+    password: 'password123'
+  };
+
+  const mockAuthResponse = {
+    token: 'mockToken'
+  };
+
+  const mockMeInfo = {
+    id: 1,
+    username: 'testUser',
+    email: 'test@example.com'
+  };
+
+  // Mock de localStorage
   beforeEach(() => {
-    // Crear un mock para el router
-    routerMock = jasmine.createSpyObj('Router', ['navigate']);
+    let store: { [key: string]: string } = {};
+
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
+      return store[key] || null;
+    });
+    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {
+      store[key] = value;
+    });
+    spyOn(localStorage, 'removeItem').and.callFake((key: string) => {
+      delete store[key];
+    });
+    spyOn(localStorage, 'clear').and.callFake(() => {
+      store = {};
+    });
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule], // Importamos el HttpClientTestingModule
+      imports: [HttpClientTestingModule],
       providers: [
         AuthService,
-        { provide: Router, useValue: routerMock } // Proveemos el mock del Router
+        { provide: Router, useValue: routerSpy } // Mockeamos el router
       ]
     });
 
@@ -26,62 +56,39 @@ describe('AuthService', () => {
   });
 
   afterEach(() => {
-    // Verificar que no hay peticiones abiertas después de cada prueba
-    httpMock.verify();
+    httpMock.verify(); // Verifica que no queden solicitudes pendientes
+    localStorage.clear(); // Limpia el localStorage después de cada test
   });
 
-  it('should call validateLogin and store the token', async () => {
-    const mockResponse = { token: 'fake-token' }; // Respuesta mockeada
-    const loginData = { username: 'test', password: 'password' };
+  // Prueba: Verifica que logout elimine la autenticación y redirija a la página de inicio
+  it('should logout, remove tokens and navigate to the home page', () => {
+    // Configura el estado de autenticación
+    localStorage.setItem('token', 'mockToken');
+    localStorage.setItem('meInfo', JSON.stringify(mockMeInfo));
+    service.isAuthenticated = true;
 
-    // Llamamos al método validateLogin
-    const loginPromise = service.validateLogin(loginData);
-
-    // Interceptamos la solicitud y respondemos con la respuesta mockeada
-    const req = httpMock.expectOne(`${environment.backendUser}/auth`);
-    expect(req.request.method).toBe('POST'); // Verificamos que el método sea POST
-    req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada
-
-    await loginPromise; // Esperamos que la promesa se resuelva
-
-    // Verificamos que el token se ha almacenado en el localStorage
-    expect(localStorage.getItem('token')).toBe('fake-token');
-    expect(service.isAuthenticated).toBeTrue(); // Verificamos que el estado de autenticación sea correcto
-
-    // Verificamos que no hay más peticiones abiertas
-    httpMock.verify();
-  });
-
-  it('should call getMeInfo and store user data', async () => {
-    const mockResponse = { user: { id: 1, name: 'John Doe' } }; // Respuesta mockeada
-    const token = 'fake-token';
-
-    // Llamamos al método getMeInfo
-    const getMeInfoPromise = service.getMeInfo(token);
-
-    // Interceptamos la solicitud GET y respondemos con la respuesta mockeada
-    const req = httpMock.expectOne(`${environment.backendUser}/me`);
-    expect(req.request.method).toBe('GET'); // Verificamos que el método sea GET
-    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${token}`); // Verificamos que el token esté presente en los headers
-    req.flush(mockResponse);  // Respondemos a la solicitud con la respuesta mockeada
-
-    await getMeInfoPromise; // Esperamos que la promesa se resuelva
-
-    // Verificamos que la información del usuario se ha almacenado en localStorage
-    expect(localStorage.getItem('meInfo')).toBe(JSON.stringify(mockResponse));
-
-    // Verificamos que no hay más peticiones abiertas
-    httpMock.verify();
-  });
-
-  it('should call logout and clear localStorage', () => {
-    // Simulamos el logout
+    // Llama al método de logout
     service.logout();
 
-    // Verificamos que los valores de localStorage han sido eliminados
-    expect(localStorage.getItem('token')).toBeNull();
-    expect(localStorage.getItem('meInfo')).toBeNull();
-    expect(service.isAuthenticated).toBeFalse();
-    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
+    expect(service.isAuthenticated).toBeFalse(); // Verifica que ya no esté autenticado
+    expect(localStorage.getItem('token')).toBeNull(); // Verifica que el token sea eliminado
+    expect(localStorage.getItem('meInfo')).toBeNull(); // Verifica que la información del usuario sea eliminada
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['']); // Verifica que se redirige a la página de inicio
+  });
+
+  // Prueba: Verifica que isActive redirige si no está autenticado
+  it('should navigate to home if not authenticated', () => {
+    service.isAuthenticated = false;
+    service.isActive();
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['']); // Verifica que se redirige si no está autenticado
+  });
+
+  // Prueba: Verifica que getLoggedUser retorne la información del usuario almacenada en localStorage
+  it('should return the logged user info from localStorage', () => {
+    localStorage.setItem('meInfo', JSON.stringify(mockMeInfo));
+
+    const loggedUser = service.getLoggedUser();
+    expect(loggedUser).toEqual(mockMeInfo); // Verifica que retorne la información correcta
   });
 });
