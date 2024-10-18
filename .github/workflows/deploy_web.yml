@@ -25,6 +25,7 @@ jobs:
         heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
         heroku_email: "f.payan@uniandes.edu.co"
         usedocker: true
+        dontautocreate: true
 
         
     - name: Build the Docker image
