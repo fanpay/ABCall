@@ -10,6 +10,213 @@
 			"name": "users",
 			"item": [
 				{
+					"name": "admin",
+					"item": [
+						{
+							"name": "Create Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = JSON.parse(responseBody);",
+											"",
+											"tests[\"Status should be 201\"] = responseCode.code == 201;",
+											"tests[\"Response has id\"] = jsonData.id !== undefined;",
+											"tests[\"Response has createdAt\"] = jsonData.createdAt !== undefined;",
+											"",
+											"if(jsonData.id) {",
+											"    pm.environment.set('ADMIN_USER_ID', jsonData.id);",
+											"}",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const email = pm.variables.replaceIn(\"{{$randomEmail}}\").toLowerCase();",
+											"const username = \"admin\"",
+											"const password = \"admin\";",
+											"const dni = pm.variables.replaceIn(\"{{$randomInt}}\");",
+											"const fullname = pm.variables.replaceIn(\"{{$randomFullName}}\").toLowerCase();",
+											"const phonenumber = pm.variables.replaceIn(\"{{$randomPhoneNumber}}\").replaceAll('-', '');",
+											"",
+											"pm.environment.set('ADMIN_USER_EMAIL', email);",
+											"pm.environment.set('ADMIN_USER_USERNAME', username);",
+											"pm.environment.set('ADMIN_USER_PASSWORD', password);",
+											"pm.environment.set('ADMIN_USER_DNI', dni);",
+											"pm.environment.set('ADMIN_USER_FULLNAME', fullname);",
+											"pm.environment.set('ADMIN_USER_PHONENUMBER', phonenumber);"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{ADMIN_USER_USERNAME}}\",\n    \"password\": \"{{ADMIN_USER_PASSWORD}}\",\n    \"email\": \"{{ADMIN_USER_EMAIL}}\",\n    \"dni\": \"{{ADMIN_USER_DNI}}\",\n    \"fullName\": \"{{ADMIN_USER_FULLNAME}}\",\n    \"phoneNumber\": \"{{ADMIN_USER_PHONENUMBER}}\",\n    \"role\": \"admin\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_URL}}/users",
+									"host": [
+										"{{USERS_URL}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Generate Token Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = JSON.parse(responseBody);",
+											"",
+											"tests[\"Status should be 200\"] = responseCode.code == 200;",
+											"tests[\"Response has id\"] = jsonData.id !== undefined;",
+											"tests[\"Response has token\"] = jsonData.token !== undefined;",
+											"tests[\"Response has expireAt\"] = jsonData.expireAt !== undefined;",
+											"",
+											"if(jsonData.token) {",
+											"    pm.environment.set('ADMIN_USER_TOKEN', jsonData.token);",
+											"}",
+											"",
+											"if(jsonData.id) {",
+											"    pm.environment.set('ADMIN_USER_ID', jsonData.id);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{ADMIN_USER_USERNAME}}\",\n    \"password\": \"{{ADMIN_USER_PASSWORD}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_URL}}/users/auth",
+									"host": [
+										"{{USERS_URL}}"
+									],
+									"path": [
+										"users",
+										"auth"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get info user Admin",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let jsonData = JSON.parse(responseBody);",
+											"",
+											"tests[\"Status should be 200\"] = responseCode.code == 200;",
+											"",
+											"tests[\"Response has id\"] = jsonData.id !== undefined;",
+											"tests[\"Response has username\"] = jsonData.username !== undefined;",
+											"tests[\"Response has email\"] = jsonData.email !== undefined;",
+											"tests[\"Response has fullName\"] = jsonData.fullName !== undefined;",
+											"tests[\"Response has dni\"] = jsonData.dni !== undefined;",
+											"tests[\"Response has phoneNumber\"] = jsonData.phoneNumber !== undefined;",
+											"",
+											"",
+											"tests[\"ID has correct value\"] = jsonData.id.toString() === pm.environment.get(\"ADMIN_USER_ID\");",
+											"tests[\"Username has correct value\"] = jsonData.username.toString() === pm.environment.get(\"ADMIN_USER_USERNAME\");",
+											"tests[\"Email has correct value\"] = jsonData.email.toString() === pm.environment.get(\"ADMIN_USER_EMAIL\");",
+											"tests[\"Fullname has correct value\"] = jsonData.fullName.toString() === pm.environment.get(\"ADMIN_USER_FULLNAME\");",
+											"tests[\"DNI has correct value\"] = jsonData.dni.toString() === pm.environment.get(\"ADMIN_USER_DNI\");",
+											"tests[\"Phonenumber has correct value\"] = jsonData.phoneNumber.toString() === pm.environment.get(\"ADMIN_USER_PHONENUMBER\");",
+											"",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{ADMIN_USER_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{USERS_URL}}/users/me",
+									"host": [
+										"{{USERS_URL}}"
+									],
+									"path": [
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Reset",
 					"request": {
 						"auth": {

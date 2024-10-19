@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
+    "start": "ng serve --host 0.0.0.0 --port 4200",
+    "build": "ng build --configuration=production",
+    "serve-prod": "node server.js",
+    "build-dev": "ng build --configuration=development",
     "test": "ng test",
     "test-cov": "ng test --code-coverage"
   },
@@ -21,6 +22,7 @@
     "@angular/router": "^18.2.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "express": "^4.18.2",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
