@@ -74,7 +74,7 @@ class IncidentsFragment : Fragment() {
                             }
                         }
                     }
-                    IncidentViewModel.LoadingState.ERROR -> {
+                    IncidentViewModel.LoadingState.ERROR, null -> {
                         binding.progressBar.visibility = View.GONE
                         (activity as? HomeActivity)?.showErrorLayout(true, getString(R.string.error_loading_data))
                     }
