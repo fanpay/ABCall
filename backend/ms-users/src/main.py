@@ -10,7 +10,8 @@ from .extensions import db
 import os
 
 app = Flask(__name__)
-CORS(app) 
+
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
     f'postgresql://{os.environ["DB_USER"]}:{os.environ["DB_PASSWORD"]}@{os.environ["DB_HOST"]}:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}'

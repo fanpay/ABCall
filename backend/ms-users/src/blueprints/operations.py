@@ -5,6 +5,7 @@ from ..commands.login import ViewLogInToken
 from ..commands.user_info import ViewUserInfo
 from ..commands.user_reset import ViewUsersReset
 
+
 operations_blueprint = Blueprint("operations", __name__)
 
 #Ping
@@ -37,6 +38,7 @@ def login_token():
         "token": user_authenticated.token,
         "expireAt": user_authenticated.expireAt.isoformat(),
     }
+    
 
     return jsonify(response_data), 200
 
