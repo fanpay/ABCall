@@ -29,8 +29,8 @@ class MainActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    private val testUser = "deshawn"
-    private val testPwd = "n1jk1f3iudtnacu"
+    private val testUser = "giles"
+    private val testPwd = "hola"
     private val wrongUser = "wrongUser"
     private val wrongPwd = "wrongPassword"
 
