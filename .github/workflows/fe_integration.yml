@@ -32,7 +32,7 @@ jobs:
          commit-message: "Se realiza merge de develop a la rama ${{ github.head_ref }}"
          
   unit_tests:
-    name: Pruebas unitarias y cobertura FE
+    name: Pruebas unitarias en ${{ github.event.inputs.service }}
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -42,15 +42,21 @@ jobs:
     - name: Configuración de Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '18'
 
     - name: Instalar dependencias de frontend
       run: |
         cd frontend/abcall-web
-        npm ci
+        npm install
 
-    - name: Correr pruebas unitarias y verificar cobertura abcall-web
+    - name: Correr pruebas unitarias y verificar cobertura en ${{ github.event.inputs.service }}
       run: |
         cd frontend/abcall-web
         npm run test -- --code-coverage --watch=false
         if [ $(jq '.total.lines.pct' coverage/coverage-summary.json) -lt 70 ]; then exit 1; fi
+
+    - name: Subir reporte de cobertura
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: frontend/abcall-web/coverage
