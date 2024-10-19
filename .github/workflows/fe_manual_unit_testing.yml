@@ -1,4 +1,4 @@
-name: Ejecución de pruebas unitarias en frontend Angular
+name: Manual - FE - Ejecución de pruebas unitarias en frontend Angular
 
 on:
   workflow_dispatch:

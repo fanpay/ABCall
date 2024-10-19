@@ -1,4 +1,4 @@
-name: Ejecución de pruebas unitarias en frontend Angular
+name: Pruebas e integración de ramas de funcionalidad - FrontEnd
 
 on:
   pull_request:
