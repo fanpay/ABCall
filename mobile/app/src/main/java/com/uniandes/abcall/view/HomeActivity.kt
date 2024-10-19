@@ -106,6 +106,25 @@ class HomeActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        // Verifica si el usuario está en el detalle de un incidente
+        when (navController.currentDestination?.id) {
+            R.id.incidentDetailFragment -> {
+                super.onBackPressed() // Regresa al fragmento anterior (lista de incidentes)
+            }
+            R.id.incidentsFragment -> {
+                // Si está en el fragmento de la lista de incidentes, mantenlo allí y no hagas nada
+                // O muestra un mensaje indicando que está en la pantalla principal
+            }
+            else -> {
+                super.onBackPressed() // Permite el comportamiento normal de regreso
+            }
+        }
+    }
+
+
 
     private fun logout() {
         // Eliminar token o información de sesión almacenada

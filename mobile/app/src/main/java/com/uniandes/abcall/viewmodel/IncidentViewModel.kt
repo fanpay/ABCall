@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.data.repository.IncidentRepository
@@ -14,6 +15,7 @@ class IncidentViewModel(application: Application,
                         private var incidentRepository:IncidentRepository = IncidentRepository(application)
     ) : AndroidViewModel(application) {
 
+    val loadingState = MutableLiveData<LoadingState>()
 
     val incidents: LiveData<List<Incident>> = incidentRepository.getAllIncidents(userId)
 
@@ -23,14 +25,15 @@ class IncidentViewModel(application: Application,
         syncIncidents(userId)
     }
 
-    // Sincronizar incidencias desde la API y almacenarlas en Room
     fun syncIncidents(userId: String) {
+        loadingState.value = LoadingState.LOADING
         viewModelScope.launch {
             try {
-                // Sincroniza los incidentes desde el repositorio
                 incidentRepository.syncIncidents(userId)
+                loadingState.value = LoadingState.SUCCESS
             } catch (e: Exception) {
                 Log.e("IncidentViewModel", "Error sincronizando los incidentes: ${e.message}")
+                loadingState.value = LoadingState.ERROR
             }
         }
     }
@@ -45,5 +48,9 @@ class IncidentViewModel(application: Application,
                 },
                 onError = { /* Manejo de errores */ })
         }
+    }
+
+    enum class LoadingState {
+        LOADING, SUCCESS, ERROR
     }
 }

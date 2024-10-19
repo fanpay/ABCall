@@ -78,5 +78,6 @@
     <string name="creation_date_incident_label">Fecha de creación:</string>
     <string name="description_label">Descripción:</string>
     <string name="agent_response_label">Respuesta del agente:</string>
+    <string name="error_loading_data">Error cargando la información</string>
 
 </resources>

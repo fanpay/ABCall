@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -33,14 +34,17 @@ class IncidentsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.incidents_list)
+
         val userId = arguments?.getString("USER_ID")
+
+        binding.progressBar.visibility = View.VISIBLE
+        binding.incidentsRv.visibility = View.GONE
 
         (activity as? HomeActivity)?.showNoDataSplash(false,"")
         (activity as? HomeActivity)?.showErrorLayout(false, "")
 
         if (!userId.isNullOrEmpty()) {
-
-            (activity as? HomeActivity)?.showErrorLayout(false,"")
 
             val factory = IncidentViewModelFactory(requireActivity().application, userId)
             incidentViewModel = ViewModelProvider(this, factory)[IncidentViewModel::class.java]
@@ -51,26 +55,47 @@ class IncidentsFragment : Fragment() {
             binding.incidentsRv.layoutManager = LinearLayoutManager(requireContext())
             binding.incidentsRv.adapter = incidentAdapter
 
-            // Observar cambios en los incidentes desde el ViewModel
-            incidentViewModel.incidents.observe(viewLifecycleOwner) { incidents ->
-                if (incidents != null && incidents.isNotEmpty()) {
-                    binding.progressBar.visibility = View.GONE
-                    (activity as? HomeActivity)?.showNoDataSplash(false, "")
-                    (activity as? HomeActivity)?.showErrorLayout(false, "")
-                    binding.incidentsRv.visibility = View.VISIBLE
-                    incidentAdapter.setIncidents(incidents)
-                } else {
-                    binding.progressBar.visibility = View.GONE
-                    (activity as? HomeActivity)?.showErrorLayout(false, "")
-                    (activity as? HomeActivity)?.showNoDataSplash(true, resources.getString(R.string.not_data_found))
-                    binding.incidentsRv.visibility = View.GONE
+            incidentViewModel.loadingState.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    IncidentViewModel.LoadingState.LOADING -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.incidentsRv.visibility = View.GONE
+                        (activity as? HomeActivity)?.showNoDataSplash(false, "")
+                        (activity as? HomeActivity)?.showErrorLayout(false, "")
+                    }
+                    IncidentViewModel.LoadingState.SUCCESS -> {
+                        binding.progressBar.visibility = View.GONE
+                        incidentViewModel.incidents.value?.let { incidents ->
+                            if (incidents.isNotEmpty()) {
+                                binding.incidentsRv.visibility = View.VISIBLE
+                                incidentAdapter.setIncidents(incidents)
+                            } else {
+                                (activity as? HomeActivity)?.showNoDataSplash(true, getString(R.string.not_data_found))
+                            }
+                        }
+                    }
+                    IncidentViewModel.LoadingState.ERROR -> {
+                        binding.progressBar.visibility = View.GONE
+                        (activity as? HomeActivity)?.showErrorLayout(true, getString(R.string.error_loading_data))
+                    }
                 }
             }
 
-            // Sincronizar los incidentes
+            incidentViewModel.incidents.observe(viewLifecycleOwner) { incidents ->
+                if (incidentViewModel.loadingState.value == IncidentViewModel.LoadingState.SUCCESS) {
+                    if (incidents.isNotEmpty()) {
+                        binding.incidentsRv.visibility = View.VISIBLE
+                        incidentAdapter.setIncidents(incidents)
+                        (activity as? HomeActivity)?.showNoDataSplash(false, "")
+                    } else {
+                        binding.incidentsRv.visibility = View.GONE
+                        (activity as? HomeActivity)?.showNoDataSplash(true, getString(R.string.not_data_found))
+                    }
+                }
+            }
+
             incidentViewModel.syncIncidents(userId)
         } else {
-            (activity as? HomeActivity)?.showErrorLayout(true,resources.getString(R.string.error_user_id_null))
             Log.e("IncidentsFragment", "El userId es nulo")
         }
     }
