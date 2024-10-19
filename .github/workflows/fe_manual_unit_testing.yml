@@ -27,7 +27,7 @@ jobs:
     - name: Instalar dependencias de frontend
       run: |
         cd frontend/abcall-web
-        npm ci
+        npm install
 
     - name: Correr pruebas unitarias y verificar cobertura en ${{ github.event.inputs.service }}
       run: |
