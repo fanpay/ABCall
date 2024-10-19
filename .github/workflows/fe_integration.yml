@@ -1,0 +1,62 @@
+name: Pruebas e integración de ramas de funcionalidad - FrontEnd
+
+on:
+  pull_request:
+    branches:
+      - 'develop'
+    types:
+      - opened
+      - synchronize
+      - review_requested
+      - closed
+    paths:
+      - 'frontend/**'
+jobs:         
+  merge_develop:
+    name: Mezclar develop a la rama feature
+    permissions: write-all
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Mezcla develop -> ${{ github.head_ref }}
+      uses: tukasz/direct-merge-action@master
+      with:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         source-branch: develop
+         target-branch: ${{ github.head_ref }}
+         commit-message: "Se realiza merge de develop a la rama ${{ github.head_ref }}"
+         
+  unit_tests:
+    name: Pruebas unitarias en FrontEnd
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Configuración de Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Instalar dependencias de frontend
+      run: |
+        cd frontend/abcall-web
+        npm install
+
+    - name: Correr pruebas unitarias y verificar cobertura en abcall-web
+      run: |
+        cd frontend/abcall-web
+        npm run test -- --code-coverage --watch=false
+        if [ $(jq '.total.lines.pct' coverage/coverage-summary.json) -lt 70 ]; then exit 1; fi
+
+    - name: Subir reporte de cobertura
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: frontend/abcall-web/coverage

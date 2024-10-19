@@ -1,0 +1,84 @@
+name: Pruebas e integración de ramas de funcionalidad - Mobile
+
+on:
+  pull_request:
+    branches:
+      - 'develop'
+    types:
+      - opened
+      - synchronize
+      - review_requested
+      - closed
+    paths:
+      - 'mobile/**'  # Incluir todo mobile
+
+jobs:
+  merge_develop:
+    name: Mezclar develop a la rama feature
+    permissions: write-all
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+    - name: Checkout del repositorio
+      uses: actions/checkout@v3
+
+    - name: Mezcla develop -> ${{ github.head_ref }}
+      uses: tukasz/direct-merge-action@master
+      with:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         source-branch: develop
+         target-branch: ${{ github.head_ref }}
+         commit-message: "Se realiza merge de develop a la rama ${{ github.head_ref }}"
+         
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        api-level: [33]
+        target: [default]
+        arch: [x86_64]
+
+    defaults:
+      run:
+        working-directory: mobile # Cambiar directorio de trabajo a 'mobile'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Run Unit Tests
+      run: ./gradlew testDebugUnitTest jacocoTestReport
+
+    - name: Verify Coverage
+      if: success()
+      run: |
+        # Calcula la cobertura de los ViewModels a partir del archivo XML de JaCoCo
+        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
+        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
+        TOTAL=$((COVERAGE + MISSED))
+        PERCENT=$((COVERAGE * 100 / TOTAL))
+        echo "Line Coverage for ViewModels: $PERCENT%"
+        if [ $PERCENT -lt 70 ]; then
+          echo "Coverage for ViewModels is below 70%"
+          exit 1
+        fi
+      continue-on-error: false
+
+    - name: Archive test results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: build/reports/tests/testDebugUnitTest
