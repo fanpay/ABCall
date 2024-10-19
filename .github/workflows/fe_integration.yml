@@ -32,7 +32,7 @@ jobs:
          commit-message: "Se realiza merge de develop a la rama ${{ github.head_ref }}"
          
   unit_tests:
-    name: Pruebas unitarias en ${{ github.event.inputs.service }}
+    name: Pruebas unitarias en FrontEnd
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -49,7 +49,7 @@ jobs:
         cd frontend/abcall-web
         npm install
 
-    - name: Correr pruebas unitarias y verificar cobertura en ${{ github.event.inputs.service }}
+    - name: Correr pruebas unitarias y verificar cobertura en abcall-web
       run: |
         cd frontend/abcall-web
         npm run test -- --code-coverage --watch=false
