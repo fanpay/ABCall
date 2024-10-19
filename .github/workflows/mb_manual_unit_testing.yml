@@ -1,15 +1,5 @@
-name: Android Unit Tests
-
+name: Manual - MB - Ejecución de pruebas unitarias
 on:
-  push:
-    paths:
-      - 'mobile/**'
-    branches:
-      - main
-      - develop
-  pull_request:
-    paths:
-      - 'mobile/**'
   workflow_dispatch: # Permitir ejecución manual
 
 jobs:
