@@ -30,7 +30,6 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
-
     - name: Cache de dependencias de Gradle
       uses: actions/cache@v3
       with:
@@ -45,9 +44,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y libxml2-utils
-
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v3
       
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
