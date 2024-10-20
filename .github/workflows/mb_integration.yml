@@ -49,6 +49,17 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Instalar temporalmente JDK 17 para configurar el Android SDK
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    # Volver a Java 8 para la compilación del proyecto
     - name: Set up JDK 8
       uses: actions/setup-java@v4
       with:
