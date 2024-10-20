@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ABCall Mobile App</string>
+    <string name="label_btn_crear">Create</string>
+    <string name="label_btn_cancelar">Cancel</string>
+    <string name="language">Language</string>
+    <string name="error_image_description">Error Image. Android system has a problem</string>
+    <string name="error_network_connection">Communication Error</string>
+    <string name="error_retrieve_user">Error retriving user</string>
+    <string name="add_incident">Create Incident</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_home">Home</string>
+    <string name="error_login">Login Failed</string>
+    <string name="user_not_found">User not found</string>
+    <string name="error_fetch_user_info">Error fetching user info</string>
+    <string name="error_create_incident">Error creating incident</string>
+    <string name="error_retrieve_incidents">Error retriving incidents</string>
+    <string name="email">Email</string>
+    <string name="error_save_incident">Error saving incident</string>
+    <string name="not_data_found">Not data found</string>
+    <string name="btn_logout">Logout</string>
+    <string name="t_cancel">Cancel</string>
+    <string name="t_continue">Continue</string>
+    <string name="c_t_redirect">Redirecting</string>
+    <string name="c_b_redirect">In 3 seconds</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="incident_cover_image_alt">Cover image incident</string>
+    <string name="name_logo">logo</string>
+    <string name="title_list">Available services</string>
+    <string name="lbl_user">User</string>
+    <string name="lbl_pass">Password</string>
+    <string name="h_user">Type your username</string>
+    <string name="h_pass">Type your password</string>
+    <string name="error_user_id_null">User not found</string>
+    <string name="successfull_login">Login Successful</string>
+    <string name="validation_data_login">Please, type your user and password</string>
+    <string name="incidents_list">Incidents list</string>
+    <string name="creation_date_incident">Creation date: %s</string>
+    <string name="id_incident">ID: %s</string>
+    <string name="see_detail_incident">Detail</string>
+</resources>

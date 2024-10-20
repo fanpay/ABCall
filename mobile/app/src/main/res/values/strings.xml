@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">ABCall para móviles</string>
+
+    <!-- DATE FORMATS -->
+
+    <!-- ERROR MESSAGES -->
+    <string name="error_image_description">Imagen de error, el sistema Android tiene un problema</string>
+    <string name="error_network_connection">Error de comunicación</string>
+    <string name="error_save_incident">Error creando incidente</string>
+    <string name="error_retrieve_incidents">Error obteniendo incidentes</string>
+    <string name="not_data_found">No se encontraron datos</string>
+
+    <string name="error_retrieve_user">Error obteniendo usuario</string>
+
+    <!-- ACCESSIBILITY TEXT -->
+
+
+    <string name="add_incident">Crear Incidente</string>
+
+    <string name="email">Email</string>
+
+
+
+    <string name="label_btn_crear">Crear</string>
+    <string name="label_btn_cancelar">Cancelar</string>
+
+
+    <string name="language">Idioma</string>
+
+
+
+
+    <!-- UX STRINGS -->
+    <string name="name_logo">logo</string>
+
+    <string name="title_list">Servicios disponibles</string>
+
+
+    <string name="lbl_user">Usuario</string>
+    <string name="lbl_pass">Contraseña</string>
+
+    <string name="h_user">Ingresa tu usuario</string>
+    <string name="h_pass">Ingresa tu contraseña</string>
+
+    <string name="btn_login">Ingresar</string>
+    <string name="btn_home">Inicio</string>
+    <string name="btn_logout">Salir</string>
+
+
+    <string name="t_cancel">Cancelar</string>
+
+    <string name="t_continue">Continuar</string>
+
+    <string name="c_t_redirect">Redirigiendo</string>
+    <string name="c_b_redirect">en 3 segundos.</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="error_login">No se pudo autenticar en el sistema</string>
+    <string name="user_not_found">Usuario no encontrado</string>
+    <string name="error_fetch_user_info">Error al obtener la información del usuario</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hola fragment en blanco</string>
+    <string name="error_create_incident">Error creando el incidente</string>
+    <string name="incident_cover_image_alt">Incidencia con ID %s y asunto %s</string>
+    <string name="error_user_id_null">Usuario no encontrado</string>
+    <string name="successfull_login">Login Exitoso</string>
+    <string name="validation_data_login">Por favor, ingresa tu usuario y contraseña.</string>
+    <string name="incidents_list">Lista de incidentes</string>
+    <string name="creation_date_incident">Fecha de creación: %s</string>
+    <string name="id_incident">Radicado: %s</string>
+    <string name="see_detail_incident">Ver</string>
+
+</resources>

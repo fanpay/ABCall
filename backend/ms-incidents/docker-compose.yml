@@ -1,0 +1,39 @@
+services:
+  # Servicio de PostgreSQL para la base de datos
+  ms_incidents_db:
+    container_name: ms_incidents_db
+    environment:
+      POSTGRES_DB: ms_incidents_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: "postgres:latest"
+    networks:
+      - incidents_net
+    ports:
+      - "5433:5432"
+
+  # Servicio de la API Flask
+  ms_incidents_api:
+    restart: always
+    build:
+      context: .
+    container_name: ms_incidents_api
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: ms_incidents_db
+      DB_PORT: 5432
+      DB_NAME: ms_incidents_db
+    networks:
+      - incidents_net
+      - abcall_network
+    ports:
+      - "9877:9877"
+    depends_on:
+      - ms_incidents_db
+      
+networks:
+  incidents_net:
+    driver: bridge
+  abcall_network:
+    driver: bridge

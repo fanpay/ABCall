@@ -1,0 +1,35 @@
+services:
+  ms_dash_reports_db:
+    container_name: ms_dash_reports_db
+    environment: 
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    networks:
+      - dash-reports-net
+
+  ms-dash-reports-api:
+    container_name: ms-dash-reports-api
+    restart: always
+    build:
+      context: .
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: ms_dash_reports_db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      USERS_PATH: "http://localhost:9878"
+    ports:
+      - "3003:9876"
+    networks:
+      - dash-reports-net
+    depends_on: 
+      - ms_dash_reports_db
+
+networks:
+  dash-reports-net:
+    driver: bridge

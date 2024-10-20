@@ -1,0 +1,88 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="incident" type="com.uniandes.abcall.data.model.Incident"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageView1"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/incident"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/incident_date_creation"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription='@{String.format(@string/incident_cover_image_alt, String.valueOf(incident.id), incident.subject)}' />
+
+                <TextView
+                    android:id="@+id/incident_subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:text="@{incident.subject}"
+                    app:layout_constraintStart_toEndOf="@id/imageView1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingStart="8dp" />
+
+
+                <TextView
+                    android:id="@+id/incident_date_creation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintStart_toEndOf="@id/imageView1"
+                    app:layout_constraintTop_toBottomOf="@id/incident_subject"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingStart="8dp"
+                    app:timestampToDate="@{incident.creationDate}" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/incident_radicado_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginTop="8dp"
+                android:text='@{String.format(@string/id_incident, incident.id)}' />
+
+            <TextView
+                android:id="@+id/incident_view_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/see_detail_incident"
+                android:textColor="@android:color/holo_purple"
+                android:textStyle="bold"
+                android:layout_gravity="start"
+                android:layout_marginTop="8dp"
+                android:paddingTop="8dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
