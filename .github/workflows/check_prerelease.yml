@@ -90,8 +90,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # Instalar temporalmente JDK 17 para configurar el Android SDK
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
@@ -99,15 +100,41 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
 
+    - name: Cache de dependencias de Gradle
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Update apt-get and install xmllint
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxml2-utils
+      
     - name: Run Unit Tests
       run: ./gradlew testDebugUnitTest jacocoTestReport
+
+    - name: Check if JaCoCo report exists
+      if: success()
+      run: |
+        if [ ! -f app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml ]; then
+          echo "JaCoCo report not found in mobile/app/build/reports/jacoco/testDebugUnitTest!"
+          exit 1
+        else
+          echo "JaCoCo report found in mobile/app/build/reports/jacoco/testDebugUnitTest."
+        fi
+      continue-on-error: false
 
     - name: Verify Coverage
       if: success()
       run: |
         # Calcula la cobertura de los ViewModels a partir del archivo XML de JaCoCo
-        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
-        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml)
+        COVERAGE=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@covered)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
+        MISSED=$(xmllint --xpath "number(//report/package[@name='com/uniandes/abcall/viewmodel']/counter[@type='LINE']/@missed)" app/build/reports/jacoco/testDebugUnitTest/jacocoTestReport.xml)
         TOTAL=$((COVERAGE + MISSED))
         PERCENT=$((COVERAGE * 100 / TOTAL))
         echo "Line Coverage for ViewModels: $PERCENT%"
@@ -116,10 +143,3 @@ jobs:
           exit 1
         fi
       continue-on-error: false
-
-    - name: Archive test results
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: build/reports/tests/testDebugUnitTest
