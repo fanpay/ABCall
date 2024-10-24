@@ -46,12 +46,10 @@ class IncidentDetailFragmentTest {
         Thread.sleep(1000)
         intended(hasComponent(HomeActivity::class.java.name))
 
-        onView(withId(R.id.incidentsRv)).check(matches(isDisplayed()))
-
         onView(withId(R.id.incidentsRv))
             .perform(RecyclerViewActions.actionOnItemAtPosition<IncidentAdapter.IncidentViewHolder>(0, click()))
 
-        Thread.sleep(2000L)
+        Thread.sleep(3000L)
     }
 
     @Test

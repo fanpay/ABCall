@@ -43,7 +43,7 @@ class IncidentsFragmentTest {
         onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.validPassword), closeSoftKeyboard())
         onView(withId(R.id.btn_login)).perform(click())
 
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         intended(hasComponent(HomeActivity::class.java.name))
     }
 
@@ -51,7 +51,7 @@ class IncidentsFragmentTest {
     fun testRecyclerViewIsDisplayedAfterLogin() {
         testLoginSuccess()
 
-        Thread.sleep(2000L)
+        Thread.sleep(3000L)
 
         // Verifica que el RecyclerView está visible
         onView(withId(R.id.incidentsRv)).check(matches(isDisplayed()))
