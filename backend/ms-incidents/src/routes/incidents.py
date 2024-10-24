@@ -24,7 +24,10 @@ class IncidentsList(Resource):
                 "originType": inc.originType, 
                 "status": inc.status,
                 "creationDate": inc.creationDate.strftime("%Y-%m-%dT%H:%M:%S"),
-                "updateDate": inc.updateDate.isoformat()
+                "updateDate": inc.updateDate.isoformat(),
+                "solution": inc.solution,
+                "solutionAgentId": inc.solutionAgentId,
+                "solutionDate": inc.solutionDate.isoformat() if inc.solutionDate else None 
             }
             for inc in incidents
         ]

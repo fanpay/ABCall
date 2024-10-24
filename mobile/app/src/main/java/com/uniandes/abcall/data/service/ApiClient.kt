@@ -10,6 +10,7 @@ import java.sql.Timestamp
 
 private const val USERS_URL = "http://10.0.2.2:9876/"
 private const val INCIDENTS_URL = "http://10.0.2.2:9877/"
+private const val CHATBOT_URL = "http://10.0.2.2:9878/"
 
 //private const val BASE_URL = "https://heroku-vinyls-g8-d9e277b35953.herokuapp.com/"
 

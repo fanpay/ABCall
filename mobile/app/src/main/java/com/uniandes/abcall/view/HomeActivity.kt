@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.uniandes.abcall.R
 import com.uniandes.abcall.data.repository.AuthRepository
 import com.uniandes.abcall.data.repository.IncidentRepository
@@ -20,6 +24,7 @@ import com.uniandes.abcall.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
     private val userViewModel: UserViewModel by viewModels {
@@ -31,6 +36,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        setSupportActionBar(findViewById(R.id.my_toolbar))
+
 
         authRepository = AuthRepository(application)
         incidentsRepository = IncidentRepository(application)
@@ -78,10 +85,46 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val navController = findNavController(R.id.nav_host_fragment)
+
+                when (navController.currentDestination?.id) {
+                    R.id.incidentDetailFragment -> {
+                        navController.popBackStack() // Vuelve al fragmento de lista de incidentes
+                    }
+                    R.id.incidentsFragment -> {
+                        Snackbar.make(findViewById(android.R.id.content), R.string.already_home, Snackbar.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        // En otros casos, permite el comportamiento predeterminado
+                        navController.popBackStack()
+                    }
+                }
+            }
+        })
+
         if (userId != null) {
             // Cargar los datos del usuario desde la base de datos local (Room) usando el ID
             userViewModel.getUser(userId)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        val languageItem: MenuItem? = menu?.findItem(R.id.buttonLanguage)
+        val currentLocale = Locale.getDefault().language
+
+        Log.e("HomeActivity", "El idioma a usar es $currentLocale")
+
+        when (currentLocale) {
+            "es" -> languageItem?.setIcon(R.drawable.ic_flag_es)
+            "en" -> languageItem?.setIcon(R.drawable.ic_flag_us)
+            else -> languageItem?.setIcon(R.drawable.ic_flag_xx)
+        }
+
+        return true
     }
 
     private fun logout() {
