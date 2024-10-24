@@ -9,7 +9,9 @@ object LocaleUtils {
     const val LANG_ES: String = "es"
     fun setLocale(context: Context, language: String?) {
         val locale = language?.let { Locale(it) }
-        Locale.setDefault(locale)
+        if (locale != null) {
+            Locale.setDefault(locale)
+        }
 
         val configuration = Configuration()
         configuration.setLocale(locale)

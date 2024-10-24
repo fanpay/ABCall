@@ -78,6 +78,12 @@ class AuthRepository(val application: Application) {
         }
     }
 
+    suspend fun getUserToken(userId: String): String? {
+        return withContext(Dispatchers.IO) {
+            usersDao.getUserTokenById(userId)
+        }
+    }
+
     suspend fun clearUsersTable() {
         withContext(Dispatchers.IO) {
             usersDao.deleteAll()

@@ -21,7 +21,12 @@
             app:destination="@id/incidentCreateFragment" />
         <action
             android:id="@+id/action_incidentsFragment_to_chatbotFragment"
-            app:destination="@id/chatbotFragment" />
+            app:destination="@id/chatbotFragment" >
+            <argument
+                android:name="USER_ID"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/incidentDetailFragment"
@@ -49,6 +54,10 @@
         android:name="com.uniandes.abcall.view.ChatFragment"
         android:label="chatbot_fragment"
         tools:layout="@layout/fragment_chatbot" >
+        <argument
+            android:name="USER_ID"
+            app:argType="string"
+            android:defaultValue="" />
         <action
             android:id="@+id/action_chatbotFragment_to_incidentsFragment"
             app:destination="@id/incidentsFragment" />

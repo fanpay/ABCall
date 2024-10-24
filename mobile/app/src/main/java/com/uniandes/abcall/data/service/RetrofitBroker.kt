@@ -2,6 +2,7 @@ package com.uniandes.abcall.data.service
 
 import android.util.Log
 import com.uniandes.abcall.data.model.AuthResponse
+import com.uniandes.abcall.data.model.ChatMessage
 import com.uniandes.abcall.data.model.Incident
 import com.uniandes.abcall.data.model.User
 import com.uniandes.abcall.data.model.UserCredentials
@@ -41,6 +42,7 @@ class RetrofitBroker {
             }
         }
 
+        // Create Incident
         suspend fun createIncident(incident: Incident,
                                 onComplete: (resp: Incident) -> Unit,
                                 onError: (error: Throwable) -> Unit) {
@@ -50,6 +52,23 @@ class RetrofitBroker {
                     response.body()?.let { onComplete(it) }
                 } else {
                     onError(Exception("createIncident -> Error en la solicitud a la API: ${response.code()} - ${response.raw()} - ${response.body()}"))
+                }
+            } catch (e: Throwable) {
+                onError(e)
+            }
+        }
+
+        // Chatbot
+        suspend fun sendMessageToChatbot(token: String, message: String, onComplete: (ChatMessage) -> Unit, onError: (Throwable) -> Unit) {
+            try {
+                val response = ApiClient.chatbot.chat(
+                    token = "Bearer $token",
+                    request = ChatRequest(originType = "mobile", message = message)
+                )
+                if (response.isSuccessful) {
+                    response.body()?.let { onComplete(it) }
+                } else {
+                    onError(Exception("Error en la solicitud a la API: ${response.code()} - ${response.message()}"))
                 }
             } catch (e: Throwable) {
                 onError(e)

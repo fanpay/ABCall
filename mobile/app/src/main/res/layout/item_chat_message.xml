@@ -4,7 +4,6 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <!-- Mensaje del usuario alineado a la derecha -->
     <TextView
         android:id="@+id/userMessage"
         android:layout_width="wrap_content"
@@ -12,11 +11,11 @@
         android:background="@drawable/bg_user_message"
         android:textColor="@android:color/white"
         android:padding="8dp"
+        android:gravity="end"
         android:layout_gravity="end"
         android:textSize="16sp"
         android:visibility="gone" />
 
-    <!-- Mensaje del chatbot alineado a la izquierda -->
     <TextView
         android:id="@+id/chatbotMessage"
         android:layout_width="wrap_content"
@@ -24,6 +23,7 @@
         android:background="@drawable/bg_chatbot_message"
         android:textColor="@android:color/black"
         android:padding="8dp"
+        android:gravity="start"
         android:layout_gravity="start"
         android:textSize="16sp"
         android:visibility="gone" />

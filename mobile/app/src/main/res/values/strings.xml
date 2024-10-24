@@ -87,5 +87,6 @@
     <string name="yes_option">SÍ</string>
     <string name="write_message_placeholder">Escribe un mensaje</string>
     <string name="send">Enviar</string>
+    <string name="incident_created_msg">Incidencia creada con ID %d para su seguimiento</string>
 
 </resources>

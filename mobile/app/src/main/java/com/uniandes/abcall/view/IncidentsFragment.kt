@@ -149,8 +149,13 @@ class IncidentsFragment : Fragment() {
     }
 
     private fun navigateToChatbot() {
-        val action = IncidentsFragmentDirections.actionIncidentsFragmentToChatbotFragment()
-        findNavController().navigate(action)
+        val userId = arguments?.getString("USER_ID")
+        if (userId != null) {
+            val action = IncidentsFragmentDirections.actionIncidentsFragmentToChatbotFragment(userId)
+            findNavController().navigate(action)
+        } else {
+            Log.e("IncidentsFragment", "Error: userId no disponible")
+        }
     }
 
 

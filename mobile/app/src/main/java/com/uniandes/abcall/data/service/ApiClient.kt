@@ -30,6 +30,11 @@ object ApiClient {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
+    private val retrofitChatbot: Retrofit = Retrofit.Builder()
+        .baseUrl(CHATBOT_URL)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build()
+
     val incidents : IncidentApi by lazy {
         retrofitIncident.create(IncidentApi::class.java)
     }
@@ -40,5 +45,9 @@ object ApiClient {
 
     val auth: AuthApi by lazy {
         retrofitUser.create(AuthApi::class.java)
+    }
+
+    val chatbot: ChatbotApi by lazy {
+        retrofitChatbot.create(ChatbotApi::class.java)
     }
 }

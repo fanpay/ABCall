@@ -57,4 +57,5 @@
     <string name="yes_option">YES</string>
     <string name="write_message_placeholder">Write a message</string>
     <string name="send">Send</string>
+    <string name="incident_created_msg">Incident was created with ID %d for tracking</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.uniandes.abcall.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +22,19 @@ class UserViewModel(application: Application,
         viewModelScope.launch {
             val user = authRepository.getStoredUser(id)
             _user.postValue(user)
+            Log.e("UserViewModel", "User encontrado: $user")
         }
+    }
+
+    fun getUserToken(userId: String): LiveData<String?> {
+        val tokenLiveData = MutableLiveData<String?>()
+
+        viewModelScope.launch {
+            val token = authRepository.getUserToken(userId)
+            tokenLiveData.postValue(token)
+            Log.e("UserViewModel", "Token encontrado: $token")
+        }
+
+        return tokenLiveData
     }
 }
