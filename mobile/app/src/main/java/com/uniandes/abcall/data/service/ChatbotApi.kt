@@ -9,7 +9,8 @@ import retrofit2.http.POST
 
 data class ChatRequest(
     val originType: String,
-    val message: String
+    val message: String,
+    val lang: String
 )
 
 interface ChatbotApi {

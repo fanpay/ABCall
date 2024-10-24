@@ -22,6 +22,7 @@ import com.uniandes.abcall.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 
 class ChatFragment : Fragment() {
@@ -60,6 +61,8 @@ class ChatFragment : Fragment() {
         val factory = UserViewModelFactory(requireActivity().application, authRepository)
         userViewModel = ViewModelProvider(this, factory)[UserViewModel::class.java]
 
+        sendInitialMessage(view)
+
         buttonSend.setOnClickListener {
             val userMessage = editTextMessage.text.toString()
 
@@ -71,9 +74,6 @@ class ChatFragment : Fragment() {
 
                 // Limpiar el EditText
                 editTextMessage.text.clear()
-
-                // Enviar el mensaje al chatbot y manejar la respuesta
-                //sendMessageToChatbot(userMessage, view)
 
                 // Observar los cambios en el token
                 userViewModel.getUserToken(userId!!).observe(viewLifecycleOwner) { token ->
@@ -87,24 +87,32 @@ class ChatFragment : Fragment() {
         }
     }
 
-    /*private fun sendMessageToChatbot(message: String) {
-        // Aquí iría la llamada al servicio del chatbot para obtener una respuesta
-        // Simulación de una respuesta
-        val chatbotResponse = "Esta es una respuesta del chatbot a: $message"
+    private fun sendInitialMessage(view: View) {
+        val currentLanguage = Locale.getDefault().language
 
-        // Actualizar el RecyclerView con la respuesta del chatbot
-        requireActivity().runOnUiThread {
-            chatMessages.add(ChatMessage(chatbotResponse, false))
-            chatAdapter.notifyItemInserted(chatMessages.size - 1)
-            recyclerView.scrollToPosition(chatMessages.size - 1)
+        val initialMessage = when (currentLanguage) {
+            "es" -> "hola"
+            "en" -> "hello"
+            else -> "hola"
         }
-    }*/
+
+        userViewModel.getUserToken(userId!!).observe(viewLifecycleOwner) { token ->
+            token?.let {
+                sendMessageToChatbot(initialMessage, it, view)
+            } ?: run {
+                Snackbar.make(view, "Error: Token no disponible", Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
 
     private fun sendMessageToChatbot(message: String, token: String, view: View) {
+        val currentLanguage = Locale.getDefault().language
+
         CoroutineScope(Dispatchers.IO).launch {
             RetrofitBroker.sendMessageToChatbot(
                 token = token,
                 message = message,
+                lang=currentLanguage,
                 onComplete = { chatResponse ->
 
                     val incidentId = chatResponse.incidentId

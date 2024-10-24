@@ -59,11 +59,11 @@ class RetrofitBroker {
         }
 
         // Chatbot
-        suspend fun sendMessageToChatbot(token: String, message: String, onComplete: (ChatMessage) -> Unit, onError: (Throwable) -> Unit) {
+        suspend fun sendMessageToChatbot(token: String, message: String, lang: String, onComplete: (ChatMessage) -> Unit, onError: (Throwable) -> Unit) {
             try {
                 val response = ApiClient.chatbot.chat(
                     token = "Bearer $token",
-                    request = ChatRequest(originType = "mobile", message = message)
+                    request = ChatRequest(originType = "mobile", message = message, lang = lang)
                 )
                 if (response.isSuccessful) {
                     response.body()?.let { onComplete(it) }
