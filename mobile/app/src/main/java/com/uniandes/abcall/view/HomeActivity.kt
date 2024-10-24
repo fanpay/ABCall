@@ -9,11 +9,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.uniandes.abcall.R
 import com.uniandes.abcall.data.repository.AuthRepository
 import com.uniandes.abcall.data.repository.IncidentRepository
@@ -83,6 +85,25 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val navController = findNavController(R.id.nav_host_fragment)
+
+                when (navController.currentDestination?.id) {
+                    R.id.incidentDetailFragment -> {
+                        navController.popBackStack() // Vuelve al fragmento de lista de incidentes
+                    }
+                    R.id.incidentsFragment -> {
+                        Snackbar.make(findViewById(android.R.id.content), R.string.already_home, Snackbar.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        // En otros casos, permite el comportamiento predeterminado
+                        navController.popBackStack()
+                    }
+                }
+            }
+        })
+
         if (userId != null) {
             // Cargar los datos del usuario desde la base de datos local (Room) usando el ID
             userViewModel.getUser(userId)
@@ -105,26 +126,6 @@ class HomeActivity : AppCompatActivity() {
 
         return true
     }
-
-    override fun onBackPressed() {
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        // Verifica si el usuario está en el detalle de un incidente
-        when (navController.currentDestination?.id) {
-            R.id.incidentDetailFragment -> {
-                super.onBackPressed() // Regresa al fragmento anterior (lista de incidentes)
-            }
-            R.id.incidentsFragment -> {
-                // Si está en el fragmento de la lista de incidentes, mantenlo allí y no hagas nada
-                // O muestra un mensaje indicando que está en la pantalla principal
-            }
-            else -> {
-                super.onBackPressed() // Permite el comportamiento normal de regreso
-            }
-        }
-    }
-
-
 
     private fun logout() {
         // Eliminar token o información de sesión almacenada

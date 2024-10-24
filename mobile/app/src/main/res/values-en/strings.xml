@@ -49,4 +49,5 @@
     <string name="description_label">Description:</string>
     <string name="agent_response_label">Agent response:</string>
     <string name="error_loading_data">Error loading data</string>
+    <string name="already_home">You are already in homepage</string>
 </resources>
