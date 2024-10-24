@@ -5,56 +5,69 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.uniandes.abcall.R
+import com.uniandes.abcall.data.model.ChatMessage
+import com.uniandes.abcall.view.adapters.ChatAdapter
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ChatbotFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ChatbotFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ChatFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var chatAdapter: ChatAdapter
+    private val chatMessages = mutableListOf<ChatMessage>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        // Inflar el layout del fragmento
         return inflater.inflate(R.layout.fragment_chatbot, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ChatbotFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ChatbotFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Configurar el RecyclerView
+        recyclerView = view.findViewById(R.id.recyclerViewChat)
+        chatAdapter = ChatAdapter(chatMessages)
+        recyclerView.adapter = chatAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        val editTextMessage = view.findViewById<EditText>(R.id.editTextMessage)
+        val buttonSend = view.findViewById<Button>(R.id.buttonSend)
+
+        buttonSend.setOnClickListener {
+            val userMessage = editTextMessage.text.toString()
+
+            if (userMessage.isNotEmpty()) {
+                // Añadir el mensaje del usuario a la lista y refrescar el RecyclerView
+                chatMessages.add(ChatMessage(userMessage, true))
+                chatAdapter.notifyItemInserted(chatMessages.size - 1)
+                recyclerView.scrollToPosition(chatMessages.size - 1)
+
+                // Limpiar el EditText
+                editTextMessage.text.clear()
+
+                // Enviar el mensaje al chatbot y manejar la respuesta
+                sendMessageToChatbot(userMessage)
             }
+        }
+    }
+
+    private fun sendMessageToChatbot(message: String) {
+        // Aquí iría la llamada al servicio del chatbot para obtener una respuesta
+        // Simulación de una respuesta
+        val chatbotResponse = "Esta es una respuesta del chatbot a: $message"
+
+        // Actualizar el RecyclerView con la respuesta del chatbot
+        requireActivity().runOnUiThread {
+            chatMessages.add(ChatMessage(chatbotResponse, false))
+            chatAdapter.notifyItemInserted(chatMessages.size - 1)
+            recyclerView.scrollToPosition(chatMessages.size - 1)
+        }
     }
 }

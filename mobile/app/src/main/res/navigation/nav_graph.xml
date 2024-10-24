@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_incidentsFragment_to_incidentCreateFragment"
             app:destination="@id/incidentCreateFragment" />
+        <action
+            android:id="@+id/action_incidentsFragment_to_chatbotFragment"
+            app:destination="@id/chatbotFragment" />
     </fragment>
     <fragment
         android:id="@+id/incidentDetailFragment"
@@ -39,6 +42,15 @@
         tools:layout="@layout/fragment_incident_create" >
         <action
             android:id="@+id/action_incidentCreateFragment_to_incidentsFragment"
+            app:destination="@id/incidentsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatbotFragment"
+        android:name="com.uniandes.abcall.view.ChatFragment"
+        android:label="chatbot_fragment"
+        tools:layout="@layout/fragment_chatbot" >
+        <action
+            android:id="@+id/action_chatbotFragment_to_incidentsFragment"
             app:destination="@id/incidentsFragment" />
     </fragment>
 

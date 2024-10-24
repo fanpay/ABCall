@@ -80,5 +80,12 @@
     <string name="agent_response_label">Respuesta del agente:</string>
     <string name="error_loading_data">Error cargando la información</string>
     <string name="already_home">Ya estás en la pantalla principal</string>
+    <string name="init_chatbot">Iniciar chatbot</string>
+    <string name="select_option">Seleccionar opción</string>
+    <string name="help_from_virtual_assistant">¿Deseas recibir ayuda de un asistente virtual?</string>
+    <string name="manually_create_option">NO, CREAR MANUALMENTE</string>
+    <string name="yes_option">SÍ</string>
+    <string name="write_message_placeholder">Escribe un mensaje</string>
+    <string name="send">Enviar</string>
 
 </resources>
