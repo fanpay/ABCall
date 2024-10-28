@@ -28,6 +28,7 @@
             android:layout_weight="1"
             android:autofillHints="sms"
             android:hint="@string/write_message_placeholder"
+            android:textColorHint="@color/hint_color"
             android:inputType="text"
             android:maxLines="1"
             android:minHeight="48dp"/>
