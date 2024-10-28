@@ -1,9 +1,9 @@
 package com.uniandes.abcall.utils
 
 object TestUserCredentials {
-    const val validUser = "giles"
-    const val validPassword = "hola"
+    const val VALID_USER = "giles"
+    const val VALID_PASSWORD = "hola"
 
-    const val invalidUser = "wrongUser"
-    const val invalidPassword = "wrongPassword"
+    const val INVALID_USER = "wrongUser"
+    const val INVALID_PASSWORD = "wrongPassword"
 }

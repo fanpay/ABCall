@@ -21,13 +21,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/incident_image"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@drawable/incident"
+                    android:contentDescription='@{String.format(@string/incident_cover_image_alt, String.valueOf(incident.id), incident.subject)}'
                     android:layout_marginEnd="16dp" />
 
                 <TextView

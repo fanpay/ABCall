@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:minHeight="48dp">
 
         <EditText
             android:id="@+id/editTextMessage"
@@ -28,7 +29,8 @@
             android:autofillHints="sms"
             android:hint="@string/write_message_placeholder"
             android:inputType="text"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:minHeight="48dp"/>
 
         <Button
             android:id="@+id/buttonSend"
@@ -40,6 +42,7 @@
             app:backgroundTint="@null"
             android:background="@drawable/rounded_button"
             android:text="@string/send"
-            android:textAllCaps="true"/>
+            android:textAllCaps="true"
+            android:minHeight="48dp"/>
     </LinearLayout>
 </LinearLayout>
