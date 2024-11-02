@@ -10,6 +10,7 @@ import java.sql.Timestamp
 
 private const val USERS_URL = "https://misw-2024-api-gateway-pf-96b62bvm.uc.gateway.dev/"
 private const val INCIDENTS_URL = "https://misw-2024-api-gateway-pf-96b62bvm.uc.gateway.dev/"
+private const val CHATBOT_URL = "https://misw-2024-api-gateway-pf-96b62bvm.uc.gateway.dev/"
 
 //private const val BASE_URL = "https://heroku-vinyls-g8-d9e277b35953.herokuapp.com/"
 

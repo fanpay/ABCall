@@ -68,5 +68,17 @@
     <string name="creation_date_incident">Fecha de creación: %s</string>
     <string name="id_incident">Radicado: %s</string>
     <string name="see_detail_incident">Ver</string>
+    <string name="title_detail_incident">Detalle del incidente</string>
+
+    <string name="status_placeholder">Estado: %1$s</string>
+    <string name="radicado_placeholder">Número de radicado: %1$d</string>
+    <string name="creation_date_placeholder">Fecha de creación: %1$s</string>
+    <string name="status_label">Estado:</string>
+    <string name="id_incident_label">Número de radicado:</string>
+    <string name="creation_date_incident_label">Fecha de creación:</string>
+    <string name="description_label">Descripción:</string>
+    <string name="agent_response_label">Respuesta del agente:</string>
+    <string name="error_loading_data">Error cargando la información</string>
+    <string name="already_home">Ya estás en la pantalla principal</string>
 
 </resources>
