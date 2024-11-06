@@ -57,4 +57,19 @@ class IncidentsFragmentTest {
 
         Thread.sleep(1000L)
     }
+
+    @Test
+    fun testNavigateToChatFragment() {
+        testLoginSuccess()
+
+        Thread.sleep(2000L)
+
+        onView(withId(R.id.floating_add_incident)).perform(click())
+
+        onView(withId(R.id.btn_yes)).perform(click())
+
+        Thread.sleep(2000L)
+
+        onView(withId(R.id.recyclerViewChat)).check(matches(isDisplayed()))
+    }
 }

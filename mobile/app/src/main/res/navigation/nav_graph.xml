@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatbotFragment"
-        android:name="com.uniandes.abcall.view.ChatFragment"
+        android:name="com.uniandes.abcall.view.ChatbotFragment"
         android:label="chatbot_fragment"
         tools:layout="@layout/fragment_chatbot" >
         <argument

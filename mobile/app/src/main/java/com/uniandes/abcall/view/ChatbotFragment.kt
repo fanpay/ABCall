@@ -1,7 +1,6 @@
 package com.uniandes.abcall.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 
-class ChatFragment : Fragment() {
+class ChatbotFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
@@ -46,7 +45,6 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userId = arguments?.getString("USER_ID")
-        Log.e("ChatFragment", "UserId recibido: $userId")
 
         // Configurar el RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewChat)
