@@ -1,53 +1,160 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-4">
-      <h2 class="text-center pb-5">Acceder al sistema</h2>
-      <form class="pt-5" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && validateLogin(loginForm.value)">
+      <div *ngIf="!showNewUserForm">
+        <h2 class="text-center pb-5">Acceder al sistema</h2>
+        <form class="pt-5" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && validateLogin(loginForm.value)">
 
-        <!--username-->
-        <div class="form-group mx-sm-3 mb-2 pt-3">
-          <label for="username">Nombre de usuario</label>
-          <input novalidate id="username" class="form-control" formControlName="username"
-            placeholder="Nombre de usaurio del agente" />
-          <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+          <!--username-->
+          <div class="form-group mx-sm-3 mb-2 pt-3">
+            <label for="username">Nombre de usuario</label>
+            <input novalidate id="username" class="form-control" formControlName="username"
+              placeholder="Nombre de usaurio del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
             loginForm.get('username')!.hasError('required') &&
             loginForm.get('username')!.touched
           ">
-            El nombre de usuario es requerido
+              El nombre de usuario es requerido
+            </div>
           </div>
-        </div>
 
-        <!--password-->
-        <div class="form-group mx-sm-3 mb-2">
-          <label for="password">Contraseña</label>
-          <input novalidate id="password" class="form-control" formControlName="password" placeholder="Contraseña"
-            type="password" />
-          <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+          <!--password-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="password">Contraseña</label>
+            <input novalidate id="password" class="form-control" formControlName="password" placeholder="Contraseña"
+              type="password" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
             loginForm.get('password')!.hasError('required') &&
             loginForm.get('password')!.touched
           ">
-            La Contraseña es requerida
+              La Contraseña es requerida
+            </div>
           </div>
-        </div>
 
 
-        <!--Controles-->
-        <div class="text-center pt-5">
-          <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.valid">
-            Ingresar
-          </button>
-        </div>
-      </form>
-      
+          <!--Controles-->
+          <div class="text-center pt-5">
+            <button type="submit" class="btn btn-primary w-100" [disabled]="!loginForm.valid">
+              Ingresar
+            </button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="showNewUserForm">
+        <h2 class="text-center pb-5">Resgistro de usuario nuevo </h2>
+        <form class="pt-5" [formGroup]="newUserForm" (ngSubmit)="!newUserForm.invalid && createUser(newUserForm.value)">
+
+          <!--username-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="username">Nombre de usuario</label>
+            <input novalidate id="username" class="form-control" formControlName="username"
+              placeholder="Nombre de usuario del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                newUserForm.get('username')!.hasError('required') &&
+                newUserForm.get('username')!.touched
+              ">
+              El nickname del usuario es requerido
+            </div>
+          </div>
+
+          <!--password-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="password">Contraseña</label>
+            <input novalidate id="password" class="form-control" formControlName="password"
+              placeholder="Contraseña del usuario" type="password" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                newUserForm.get('password')!.hasError('required') &&
+                newUserForm.get('password')!.touched
+              ">
+              La Contraseña del usuario es requerida
+            </div>
+          </div>
+
+          <!--email-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="email">Correo electronico</label>
+            <input novalidate id="email" class="form-control" formControlName="email"
+              placeholder="Correo electronico del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                  newUserForm.get('email')!.hasError('required') &&
+                  newUserForm.get('email')!.touched
+                ">
+              El correo electronico del usuario es requerido
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+            newUserForm.get('email')!.hasError('email') &&
+            newUserForm.get('email')!.touched
+          ">
+              El correo electronico no tiene el formato correcto
+            </div>
+          </div>
+
+          <!--dni-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="dni">DNI</label>
+            <input novalidate id="dni" class="form-control" formControlName="dni"
+              placeholder="Documento nacional de identidad del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                    newUserForm.get('dni')!.hasError('required') &&
+                    newUserForm.get('dni')!.touched
+                  ">
+              El dni del usuario es requerido
+            </div>
+          </div>
+
+          <!--FullName-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="name">Nombre</label>
+            <input novalidate id="fullName" class="form-control" formControlName="fullName"
+              placeholder="Nombre completo del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                newUserForm.get('fullName')!.hasError('required') &&
+                newUserForm.get('fullName')!.touched
+              ">
+              El nombre del usuario es requerido
+            </div>
+          </div>
+
+          <!--phoneNumber-->
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="phoneNumber">Telefono</label>
+            <input novalidate id="phoneNumber" type="number" class="form-control" formControlName="phoneNumber"
+              placeholder="Telefono de contacto del usuario" />
+            <div class="alert alert-danger alert-dismissible fade show" *ngIf="
+                    newUserForm.get('phoneNumber')!.hasError('required') &&
+                    newUserForm.get('phoneNumber')!.touched
+                  ">
+              El telefono del usuario es requerido
+            </div>
+          </div>
+
+
+          <!--Controles-->
+          <div class="pt-5 text-center">
+            <button id="btn-create-agent" type="submit" class="btn btn-primary w-100" [disabled]="!newUserForm.valid">
+              Crear
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+      <form action=""></form>
+
       <!--Usuario nuevo-->
-       <div class="text-center pt-5">
-        <p><a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">¿Eres un usuario nuevo?</a></p>
+      <div class="text-center pt-5">
+        <p><a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            *ngIf="!showNewUserForm" (click)="onNewUserClick()">¿Eres un usuario nuevo?</a></p>
+        <p><a href="#" class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            *ngIf="showNewUserForm" (click)="onNewUserClick()">Iniciar sesión</a></p>
       </div>
     </div>
     <div class="col-8 d-flex flex-column justify-content-center align-items-center">
       <h1 class="text-center">Gestión de solicitudes</h1>
       <h1 class="text-center">ABCall</h1>
-      <img src="https://us.123rf.com/450wm/jemastock/jemastock1702/jemastock170206876/72016750-car%C3%A1cter-femenino-call-center-trabajo-espacio-vector-illustration.jpg" style="height: 100%;" alt="ABCall" class="img-fluid" />
+      <img
+        src="https://us.123rf.com/450wm/jemastock/jemastock1702/jemastock170206876/72016750-car%C3%A1cter-femenino-call-center-trabajo-espacio-vector-illustration.jpg"
+        style="height: 650px;" alt="ABCall" class="img-fluid" />
     </div>
   </div>
 </div>
