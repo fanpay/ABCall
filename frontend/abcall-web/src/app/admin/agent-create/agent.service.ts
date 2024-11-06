@@ -17,7 +17,7 @@ export class AgentService {
 
   createAgent(newAgent: Agent): Observable<Agent> {
     return this.http.post<Agent>(this.apiUrl, newAgent).pipe(
-      catchError(err => throwError(() => new Error("Error con el servicio:" + err.message)))
+      catchError(err => throwError(() => new Error(JSON.stringify(err, null, 2))))
     );
   }
 
