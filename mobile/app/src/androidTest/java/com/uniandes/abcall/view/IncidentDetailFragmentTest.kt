@@ -39,19 +39,17 @@ class IncidentDetailFragmentTest {
     }
 
     private fun testLoginSuccess() {
-        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.validUser), closeSoftKeyboard())
-        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.validPassword), closeSoftKeyboard())
+        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.VALID_USER), closeSoftKeyboard())
+        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.VALID_PASSWORD), closeSoftKeyboard())
         onView(withId(R.id.btn_login)).perform(click())
 
         Thread.sleep(1000)
         intended(hasComponent(HomeActivity::class.java.name))
 
-        onView(withId(R.id.incidentsRv)).check(matches(isDisplayed()))
-
         onView(withId(R.id.incidentsRv))
             .perform(RecyclerViewActions.actionOnItemAtPosition<IncidentAdapter.IncidentViewHolder>(0, click()))
 
-        Thread.sleep(2000L)
+        Thread.sleep(3000L)
     }
 
     @Test

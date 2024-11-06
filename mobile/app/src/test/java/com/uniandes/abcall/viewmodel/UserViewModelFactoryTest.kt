@@ -3,6 +3,7 @@ package com.uniandes.abcall.viewmodel
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.ViewModel
+import com.uniandes.abcall.data.repository.AuthRepository
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,12 +34,14 @@ class UserViewModelFactoryTest {
 
     private lateinit var application: Application
     private lateinit var userViewModelFactory: UserViewModelFactory
+    private lateinit var authRepository: AuthRepository
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         application = mock(Application::class.java)
-        userViewModelFactory = UserViewModelFactory(application)
+        authRepository = mock(AuthRepository::class.java)
+        userViewModelFactory = UserViewModelFactory(application, authRepository)
     }
 
     @After

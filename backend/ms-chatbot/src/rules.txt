@@ -1,4 +1,0 @@
-hola:¡Hola! ¿Cómo te puedo ayudar?. Si deseas crear una incidencia, escribe el mensaje "crear incidencia" para empezar el proceso
-crear incidencia:Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito para crear la incidencia.
-gracias:¡De nada! Que tengas un buen día.
-adiós:Hasta luego, ¡que tengas un buen día!

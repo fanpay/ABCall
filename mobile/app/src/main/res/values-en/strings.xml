@@ -50,4 +50,12 @@
     <string name="agent_response_label">Agent response:</string>
     <string name="error_loading_data">Error loading data</string>
     <string name="already_home">You are already in homepage</string>
+    <string name="init_chatbot">Start chatbot</string>
+    <string name="select_option">Select option</string>
+    <string name="help_from_virtual_assistant">Would you like to receive help from a virtual assistant?</string>
+    <string name="manually_create_option">NO, CREATE MANUALLY</string>
+    <string name="yes_option">YES</string>
+    <string name="write_message_placeholder">Write a message</string>
+    <string name="send">Send</string>
+    <string name="incident_created_msg">Incident was created with ID %d for tracking</string>
 </resources>

@@ -957,7 +957,43 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"message\": \"hola\",\n    \"originType\": \"web\"\n    }",
+							"raw": "{\n    \"message\": \"hola\",\n    \"originType\": \"web\",\n    \"lang\": \"es\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "greetings-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"hello\",\n    \"originType\": \"web\",\n    \"lang\": \"en\"\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1013,6 +1049,42 @@
 					"response": []
 				},
 				{
+					"name": "thanks-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"thanks\",\n    \"originType\": \"web\",\n    \"lang\": \"en\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "say bye bye",
 					"request": {
 						"auth": {
@@ -1030,6 +1102,42 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"message\": \"adiós\",\n    \"originType\": \"web\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "say bye bye-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"bye\",\n    \"originType\": \"web\",\n    \"lang\": \"en\"\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1085,6 +1193,42 @@
 					"response": []
 				},
 				{
+					"name": "create incident-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"create incident\",\n    \"lang\": \"en\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create incident - subject",
 					"request": {
 						"auth": {
@@ -1121,6 +1265,42 @@
 					"response": []
 				},
 				{
+					"name": "create incident - subject-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"Problema con la conexión\",\n    \"lang\": \"en\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "create incident - description",
 					"request": {
 						"auth": {
@@ -1138,6 +1318,42 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"Hace media hora me intento conectar y nada que puedo. Me sale error de conexión\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{CHATBOT_URL}}/chat",
+							"host": [
+								"{{CHATBOT_URL}}"
+							],
+							"path": [
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create incident - description-EN",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{USER_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"originType\": \"web\",\n    \"message\": \"Hace media hora me intento conectar y nada que puedo. Me sale error de conexión\",\n    \"lang\": \"en\"\n    }",
 							"options": {
 								"raw": {
 									"language": "json"

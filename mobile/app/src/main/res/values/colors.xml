@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#2DAAE1</color>
+    <color name="primary">#1B7BAF</color>
 
     <color name="graySuperLight">#EFEFEF</color>
     <color name="grayD3">#D3D3D3</color>
@@ -11,8 +11,14 @@
     <color name="red">#B00020</color>
     <color name="yellow">#F9B233</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#F0F0F0</color>
+    <color name="green_500">#388E3C</color>
+    <color name="darker_gray">#222222</color>
+
 
     <color name="edit_text_margin">#E0E0E0</color>
     <color name="text_gray">#666666</color>
+    <color name="holo_purple">#8A2BE2</color>
+    <color name="holo_blue_light">#007BB5</color>
+    <color name="hint_color">#6B6B6B</color>
 </resources>

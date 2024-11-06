@@ -42,8 +42,8 @@ class MainActivityTest {
 
     @Test
     fun testLoginSuccess() {
-        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.validUser), closeSoftKeyboard())
-        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.validPassword), closeSoftKeyboard())
+        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.VALID_USER), closeSoftKeyboard())
+        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.VALID_PASSWORD), closeSoftKeyboard())
         onView(withId(R.id.btn_login)).perform(click())
 
         Thread.sleep(1000)
@@ -54,8 +54,8 @@ class MainActivityTest {
 
     @Test
     fun testLoginFailure() {
-        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.invalidUser), closeSoftKeyboard())
-        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.invalidPassword), closeSoftKeyboard())
+        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.INVALID_USER), closeSoftKeyboard())
+        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.INVALID_PASSWORD), closeSoftKeyboard())
         onView(withId(R.id.btn_login)).perform(click())
 
         val expectedTitle = getApplicationContext<Application>().getString(R.string.error_login)
