@@ -1,39 +1,45 @@
 <div class="row justify-content-between align-items-center mb-4">
-    <!-- Columna para la imagen y el texto -->
-    <div class="col-auto d-flex align-items-center ms-5">
-        <img src="https://cdn-icons-png.freepik.com/512/477/477804.png?ga=GA1.1.378508795.1727907287" alt="Admin Image" style="width: 50px; height: 50px; margin-right: 10px;">
-        <span class="fw-bold">Usuario</span>
-    </div>
-
-    <!-- Columna para el botón alineado a la derecha -->
-    <div class="col-auto text-end me-5" *ngIf="showBack">
-        <button type="button" class="btn btn-primary btn-lg" (click)="showBackOption()">
-            Regresar
-        </button>
-    </div>
+  <!-- Columna para la imagen y el texto -->
+  <div class="col-auto d-flex align-items-center ms-5">
+    <img [src]="subMenuImage" alt="Submenu" style="width: 50px; height: 50px; margin-right: 10px;">
+    <span class="fw-bold">{{ subMenuText }}</span>
+  </div>
+  <!-- Columna para el botón alineado a la derecha -->
+  <div class="col-auto text-end me-5" *ngIf="showBack">
+    <button type="button" class="btn btn-primary btn-lg" (click)="showBackOption()">
+      Regresar
+    </button>
+  </div>
 </div>
-
 <div class="row justify-content-center mt-5">
-    <div class="col-6 col-sx-12 d-flex justify-content-center align-items-center image-container">
-        <div class="card" style="width: 18rem;  cursor: pointer;"
-        (click)="showCreateIncidentComponent()" *ngIf="showMenu">
-            <img class="card-img-top" src="https://cdn-icons-png.freepik.com/512/13728/13728178.png?ga=GA1.1.1313625746.1728078751" alt="Crear incidente">
-            <div class="card-body">
-                <h5 class="card-title text-center">Crear incidente</h5>
-            </div>
-        </div>
+  <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
+    <div class="card" style="width: 18rem; cursor: pointer;"
+    (click)="showCreateIncidentComponent()" *ngIf="showMenu" (keydown)="showCreateIncidentComponent()">
+      <img class="card-img-top" src="./assets/images/incidents/action_create_incident.png" alt="Crear incidente">
+      <div class="card-body">
+        <h5 class="card-title text-center">Crear incidente</h5>
+      </div>
     </div>
-    <div class="col-6 col-sx-12 d-flex justify-content-center align-items-center image-container">
-        <div class="card" style="width: 18rem; cursor: pointer;"
-        (click)="showSearchIncidentComponent()" *ngIf="showMenu">
-            <img class="card-img-top" src="https://cdn-icons-png.freepik.com/512/16985/16985532.png?ga=GA1.1.1313625746.1728078751" alt="Consultar incidentes">
-            <div class="card-body">
-                <h5 class="card-title text-center">Consultar incidentes</h5>
-            </div>
-        </div>
+  </div>
+  <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
+    <div class="card" style="width: 18rem; cursor: pointer;"
+    (click)="showSearchIncidentComponent()" *ngIf="showMenu" (keydown)="showSearchIncidentComponent()">
+      <img class="card-img-top" src="./assets/images/incidents/action_search_incidents.png" alt="Consultar incidentes">
+      <div class="card-body">
+        <h5 class="card-title text-center">Consultar incidentes</h5>
+      </div>
     </div>
+  </div>
+  <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
+    <div class="card" style="width: 18rem; cursor: pointer;"
+    (click)="showChatbotComponent()" *ngIf="showMenu" (keydown)="showChatbotComponent()">
+      <img class="card-img-top" src="./assets/images/chatbot/action_chatbot.png" alt="Chatbot">
+      <div class="card-body">
+        <h5 class="card-title text-center">Chatbot</h5>
+      </div>
+    </div>
+  </div>
 </div>
-
-
-<app-incident-create *ngIf="showCreateIncident" />
-<app-incident-search *ngIf="showSearchIncident" />
+<app-incident-create *ngIf="showCreateIncident"></app-incident-create>
+<app-incident-search *ngIf="showSearchIncident"></app-incident-search>
+<app-chatbot *ngIf="showChatbot"></app-chatbot>
