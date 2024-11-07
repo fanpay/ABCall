@@ -1,8 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing'; // Importar el módulo
+import { AgentService } from '../agent.service'; // Asegúrate de que este servicio esté importado
 import { IndicatorsComponent } from './indicators.component';
 
 describe('IndicatorsComponent', () => {
@@ -11,7 +10,9 @@ describe('IndicatorsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IndicatorsComponent ]
+      declarations: [ IndicatorsComponent ],
+      imports: [ HttpClientTestingModule ],  // Agregar el módulo HttpClientTestingModule
+      providers: [ AgentService ]            // Asegúrate de que AgentService esté en providers
     })
     .compileComponents();
   }));
@@ -25,4 +26,6 @@ describe('IndicatorsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // Puedes agregar más pruebas aquí
 });
