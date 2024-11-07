@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './login/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';  // Importamos RouterTestingModule
-import { of } from 'rxjs';
 
 class AuthServiceMock {
   logout = jasmine.createSpy('logout');

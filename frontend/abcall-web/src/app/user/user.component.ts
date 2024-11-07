@@ -7,14 +7,14 @@ import { AuthService } from '../login/auth.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  subMenuText: string = 'Usuario';
-  subMenuImage: string = 'https://cdn-icons-png.freepik.com/512/477/477804.png?ga=GA1.1.378508795.1727907287';
+  subMenuText = 'Usuario';
+  subMenuImage = 'https://cdn-icons-png.freepik.com/512/477/477804.png?ga=GA1.1.378508795.1727907287';
 
-  showSearchIncident: boolean = false;
-  showCreateIncident: boolean = false;
-  showChatbot: boolean = false;
-  showMenu: boolean = true;
-  showBack: boolean = false;
+  showSearchIncident = false;
+  showCreateIncident = false;
+  showChatbot = false;
+  showMenu = true;
+  showBack = false;
 
   constructor(
     private authService: AuthService

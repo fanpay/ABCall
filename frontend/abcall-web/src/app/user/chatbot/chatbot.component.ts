@@ -15,11 +15,11 @@ interface Message {
 })
 export class ChatbotComponent implements OnInit {
   messages: Message[] = [];
-  userMessage: string = '';
+  userMessage = '';
 
   constructor(private userService: UserService, private authService: AuthService) { }
 
-  ngOnInit(): void {
+  ngOnInit(){
   }
 
   sendMessage(): void {

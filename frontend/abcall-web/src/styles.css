@@ -1,9 +1,9 @@
 html, body {
-    height: 100%; 
+    height: 100%;
   }
 
 .btn-primary {
-  background-color: #2DAAE1;
-  border-color: #2DAAE1;
+  background-color: #1B7BAF;
+  border-color: #1B7BAF;
   color: white;
 }

@@ -22,7 +22,7 @@ export class PlanComponent implements OnInit {
     });
   }
 
-  savePlan(plan: String) {
+  savePlan(plan: string) {
     console.info("The plan to created: ", plan)
     this.toastrService.success("Confirmation", "El plan fue actualizado!")
     this.planForm.reset();
