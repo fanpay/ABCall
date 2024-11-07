@@ -21,4 +21,10 @@ export class AgentService {
     );
   }
 
+  getMetrics(): Observable<any> {
+    return this.http.get<any>(this.incidentApiUrl + '/metrics').pipe(
+      catchError(err => throwError(() => new Error("Error con el servicio:" + err.message)))
+    );
+  }
+
 }

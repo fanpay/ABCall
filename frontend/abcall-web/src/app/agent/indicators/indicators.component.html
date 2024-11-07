@@ -1,24 +1,27 @@
-<div class="container mt-4">
+<div class="container mt-4 text-center">
   <h2 class="text-center">Número de incidentes en los últimos 30 días</h2>
 
-  <div class="row">
-    <div class="card-group">
-      <div class="card">
+  <div class="row row-cols-1 row-cols-md-2 g-4 mt-4">
+    <div class="col">
+      <div class="card border-primary bg-body-tertiary">
+        <i class="bi bi-door-open fs-1 text-primary"></i>
         <div class="card-body">
-          <h5 class="card-title">Abiertas</h5>
-          <p class="card-text">{{totalIncidentsOpen}}</p>
-          <p class="card-text"><small class="text-muted">Número de incidencias por procesar</small></p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Cerradas</h5>
-          <p class="card-text">{{totalIncidentsClose}}</p>
-          <p class="card-text"><small class="text-muted">Número de incidencias procesadas</small></p>
+          <h3 class="card-title text-primary">Abiertas</h3>
+          <h1 class="card-text text-primary">{{totalIncidentsOpen}}</h1>
+          <p class="card-text text-muted">Número de incidencias por procesar</p>
         </div>
       </div>
     </div>
-
+    <div class="col">
+      <div class="card border-success bg-body-tertiary">
+        <i class="bi bi-door-closed fs-1 text-success"></i>
+        <div class="card-body">
+          <h3 class="card-title text-success">Cerradas</h3>
+          <h1 class="card-text text-success">{{totalIncidentsClose}}</h1>
+          <p class="card-text text-muted">Número de incidencias procesadas</p>
+        </div>
+      </div>
+    </div>
   </div>
   
 </div>
