@@ -1,5 +1,7 @@
 from flask import request
 from flask_restful import Resource
+from datetime import datetime, timedelta
+import pytz
 from ..models.incidents import Incidents
 from ..extensions import db, cache
 from ..services.cache_service import clear_incident_cache
@@ -109,3 +111,64 @@ class IncidentDetail(Resource):
         db.session.delete(incident)
         db.session.commit()
         return {"message": "Incident removed", "incidentId": id}
+
+class IncidentsMetrics(Resource):
+    def get(self):
+        current_date = datetime.now(pytz.utc)
+        thirty_days_ago = current_date - timedelta(days=30)
+
+        open_incidents_count = Incidents.query.filter(
+            Incidents.creationDate >= thirty_days_ago,
+            Incidents.status == "OPEN"
+        ).count()
+
+        closed_incidents_count = Incidents.query.filter(
+            Incidents.creationDate >= thirty_days_ago,
+            Incidents.status == "CLOSED"
+        ).count()
+
+        return {
+            "open_incidents_count": open_incidents_count,
+            "closed_incidents_count": closed_incidents_count
+        }
+    
+class IncidentsInRange(Resource):
+    def get(self):
+        
+        start_date_str = request.args.get('startDate')
+        end_date_str = request.args.get('endDate')
+
+        if not start_date_str or not end_date_str:
+            return {"message": "Both startDate and endDate are required."}, 400
+        
+        try:
+            # Convertir las fechas en formato ISO a objetos datetime
+            start_date = datetime.fromisoformat(start_date_str)
+            end_date = datetime.fromisoformat(end_date_str)
+        except ValueError:
+            return {"message": "Invalid date format. Use ISO format (YYYY-MM-DDTHH:MM:SS)."}, 400
+        
+        # Filtrar las incidencias dentro del rango de fechas
+        incidents = Incidents.query.filter(
+            Incidents.creationDate >= start_date,
+            Incidents.creationDate <= end_date
+        ).all()
+
+        output = [
+            {
+                "id": inc.id,
+                "userId": inc.userId,
+                "subject": inc.subject,
+                "description": inc.description,
+                "originType": inc.originType,
+                "status": inc.status,
+                "creationDate": inc.creationDate.strftime("%Y-%m-%dT%H:%M:%S"),
+                "updateDate": inc.updateDate.isoformat(),
+                "solution": inc.solution,
+                "solutionAgentId": inc.solutionAgentId,
+                "solutionDate": inc.solutionDate.isoformat() if inc.solutionDate else None
+            }
+            for inc in incidents
+        ]
+        
+        return output
