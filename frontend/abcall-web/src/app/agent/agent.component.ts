@@ -7,12 +7,14 @@ import { AuthService } from '../login/auth.service';
   styleUrls: ['./agent.component.css']
 })
 export class AgentComponent implements OnInit {
+  subMenuText = 'Agente';
+  subMenuImage = 'https://cdn-icons-png.freepik.com/512/5759/5759940.png?ga=GA1.1.378508795.1727907287';
 
-  showManageIncident: boolean = false;
-  showControlPanel: boolean = false;
-  showIndicators: boolean = false;
-  showMenu: boolean = true;
-  showBack: boolean = false;
+  showManageIncident = false;
+  showControlPanel = false;
+  showIndicators = false;
+  showMenu = true;
+  showBack = false;
 
   constructor(
     private authService: AuthService
@@ -23,6 +25,9 @@ export class AgentComponent implements OnInit {
   }
 
   showManageIncidentComponent() {
+    this.subMenuText = 'Gestionar incidentes';
+    this.subMenuImage = './assets/images/agent/submenu_management_incidents.png';
+
     this.showManageIncident = true;
     this.showControlPanel = false;
     this.showIndicators = false;
@@ -31,6 +36,9 @@ export class AgentComponent implements OnInit {
   }
 
   showControlPanelComponent() {
+    this.subMenuText = 'Tablero de control';
+    this.subMenuImage = './assets/images/agent/submenu_control_panel.png';
+
     this.showManageIncident = false;
     this.showControlPanel = true;
     this.showIndicators = false;
@@ -39,6 +47,9 @@ export class AgentComponent implements OnInit {
   }
 
   showIndicatorsComponent() {
+    this.subMenuText = 'Indicadores';
+    this.subMenuImage = './assets/images/agent/submenu_indicators.png';
+
     this.showManageIncident = false;
     this.showControlPanel = false;
     this.showIndicators = true;
@@ -46,7 +57,10 @@ export class AgentComponent implements OnInit {
     this.showBack = true;
   }
 
-  showBackOption() {  
+  showBackOption() {
+    this.subMenuText = 'Agente';
+    this.subMenuImage = 'https://cdn-icons-png.freepik.com/512/5759/5759940.png?ga=GA1.1.378508795.1727907287';
+
     this.showManageIncident = false;
     this.showControlPanel = false;
     this.showIndicators = false;

@@ -8,8 +8,8 @@ import { AgentService } from '../agent.service';
 })
 export class IndicatorsComponent implements OnInit {
 
-  totalIncidentsOpen: number = 0;
-  totalIncidentsClose: number = 0;
+  totalIncidentsOpen = 0;
+  totalIncidentsClose = 0;
 
   constructor(
     private agentService: AgentService

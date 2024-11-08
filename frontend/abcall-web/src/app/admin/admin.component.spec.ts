@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminComponent } from './admin.component';
 import { AuthService } from '../login/auth.service';
 import { Router } from '@angular/router';
-import { of } from 'rxjs';
 
 // Mocking Router
 class RouterMock {
@@ -13,12 +12,11 @@ describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
   let authServiceMock: jasmine.SpyObj<AuthService>;
-  let routerMock: RouterMock;
 
   beforeEach(async () => {
     // Creación de un spy para AuthService
     authServiceMock = jasmine.createSpyObj('AuthService', ['isActive']);
-    
+
     // Configuración del TestBed
     await TestBed.configureTestingModule({
       declarations: [AdminComponent],
@@ -33,7 +31,6 @@ describe('AdminComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
-    routerMock = TestBed.inject(Router) as unknown as RouterMock;
     fixture.detectChanges(); // Dispara la detección de cambios
   });
 

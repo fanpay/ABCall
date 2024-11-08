@@ -27,13 +27,13 @@ export class IncidentCreateComponent implements OnInit {
     this.incidentForm = this.formBuilder.group({
       subject: ["", Validators.required],
       description: ["", Validators.required],
-     });
+    });
   }
 
   createIncident(incident: Incident) {
     incident.originType = "web";
     incident.userId = this.authService.getLoggedUser().id;
-    
+
     this.userService.createIncident(incident).subscribe(res => {
       this.toastrService.success(`La incidencia fue creada`, "Confirmacion")
       this.incidentForm.reset();

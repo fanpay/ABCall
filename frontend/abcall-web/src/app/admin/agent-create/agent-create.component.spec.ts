@@ -1,11 +1,9 @@
-/* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgentCreateComponent } from './agent-create.component';
-import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { AgentService } from './agent.service';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 
 // Mock de AgentService
 class AgentServiceMock {
@@ -63,13 +61,13 @@ describe('AgentCreateComponent', () => {
   // 3. **Verificar validaciones en los campos del formulario**
   it('should require username, password, email, dni, fullName, and phoneNumber', () => {
     const form = component.agentForm;
-    
-    let username = form.controls['username'];
-    let password = form.controls['password'];
-    let email = form.controls['email'];
-    let dni = form.controls['dni'];
-    let fullName = form.controls['fullName'];
-    let phoneNumber = form.controls['phoneNumber'];
+
+    const username = form.controls['username'];
+    const password = form.controls['password'];
+    const email = form.controls['email'];
+    const dni = form.controls['dni'];
+    const fullName = form.controls['fullName'];
+    const phoneNumber = form.controls['phoneNumber'];
 
     // Test de que los campos son inválidos cuando están vacíos
     expect(username.valid).toBeFalse();
@@ -106,12 +104,12 @@ describe('AgentCreateComponent', () => {
       phoneNumber: '1234567890',
       role: 'agent'
     };
-    
+
     component.createAgent(agent);
-    
+
     // Verificar que el servicio createAgent haya sido llamado con el agente correcto
     expect(agentServiceMock.createAgent).toHaveBeenCalledWith(agent);
-    
+
     // Verificar que el toastrService.show haya sido llamado
     expect(toastrServiceMock.success).toHaveBeenCalledWith(`El agente ${agent.username} fue creado!`, 'Confirmacion');
   });
@@ -121,14 +119,14 @@ describe('AgentCreateComponent', () => {
     // Rellenamos el formulario con algunos valores
     component.agentForm.controls['username'].setValue('JohnDoe');
     component.agentForm.controls['email'].setValue('john.doe@example.com');
-    
+
     // Verificamos que los valores no estén vacíos
     expect(component.agentForm.controls['username'].value).toBe('JohnDoe');
     expect(component.agentForm.controls['email'].value).toBe('john.doe@example.com');
-    
+
     // Llamamos al método de cancelación
     component.cancelCreation();
-    
+
     // Verificamos que el formulario se haya reseteado
     expect(component.agentForm.controls['username'].value).toBeNull();
     expect(component.agentForm.controls['email'].value).toBeNull();

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../login/auth.service';
 
 @Component({
@@ -9,10 +8,13 @@ import { AuthService } from '../login/auth.service';
 })
 export class AdminComponent implements OnInit {
 
-  showPlan: boolean = false;
-  showCreateAgent: boolean = false;
-  showBack: boolean = false;
-  showMenu: boolean = true;
+  subMenuText = 'Administrador';
+  subMenuImage = 'https://cdn-icons-png.freepik.com/512/15762/15762640.png?ga=GA1.1.378508795.1727907287';
+
+  showPlan = false;
+  showCreateAgent = false;
+  showBack = false;
+  showMenu = true;
 
   constructor(
     private authService: AuthService
@@ -23,6 +25,9 @@ export class AdminComponent implements OnInit {
   }
 
   showPlanComponent() {
+    this.subMenuText = 'Plan';
+    this.subMenuImage = 'https://cdn-icons-png.freepik.com/512/9577/9577437.png';
+
     this.showPlan = true;
     this.showBack = true;
     this.showCreateAgent = false;
@@ -30,6 +35,9 @@ export class AdminComponent implements OnInit {
   }
 
   showCreateAgentComponent() {
+    this.subMenuText = 'Crear Agente';
+    this.subMenuImage = 'https://cdn-icons-png.freepik.com/512/6144/6144457.png?ga=GA1.1.162831122.1727907937';
+
     this.showPlan = false;
     this.showBack = true;
     this.showCreateAgent = true;
@@ -37,6 +45,9 @@ export class AdminComponent implements OnInit {
   }
 
   showBackOption() {
+    this.subMenuText = 'Administrador';
+    this.subMenuImage = 'https://cdn-icons-png.freepik.com/512/15762/15762640.png?ga=GA1.1.378508795.1727907287';
+
     this.showPlan = false;
     this.showCreateAgent = false;
     this.showBack = false;

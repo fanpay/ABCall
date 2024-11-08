@@ -1,4 +1,3 @@
-/* tslint:disable:no-unused-variable */
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing'; // Importar el módulo
 import { AgentService } from '../agent.service'; // Asegúrate de que este servicio esté importado

@@ -1,7 +1,4 @@
-/* tslint:disable:no-unused-variable */
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 import { PlanComponent } from './plan.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -14,7 +11,7 @@ describe('PlanComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PlanComponent ],
-      imports: [ 
+      imports: [
         ToastrModule.forRoot(),
         ReactiveFormsModule  // Agregar ReactiveFormsModule para formularios reactivos
       ],

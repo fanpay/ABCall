@@ -1,53 +1,22 @@
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { AuthService } from "./auth.service";
-import { TestBed } from "@angular/core/testing";
-import { Router } from "@angular/router";
-import { environment } from "../../environments/environment";
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 describe('AuthService', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
-  let routerSpy = { navigate: jasmine.createSpy('navigate') };
+  let routerMock: jasmine.SpyObj<Router>;
 
-  const baseUrl = environment.backendUser;
-
-  const mockLoginData = {
-    username: 'testUser',
-    password: 'password123'
-  };
-
-  const mockAuthResponse = {
-    token: 'mockToken'
-  };
-
-  const mockMeInfo = {
-    id: 1,
-    username: 'testUser',
-    email: 'test@example.com'
-  };
-
-  // Mock de localStorage
   beforeEach(() => {
-    let store: { [key: string]: string } = {};
-
-    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
-      return store[key] || null;
-    });
-    spyOn(localStorage, 'setItem').and.callFake((key: string, value: string) => {
-      store[key] = value;
-    });
-    spyOn(localStorage, 'removeItem').and.callFake((key: string) => {
-      delete store[key];
-    });
-    spyOn(localStorage, 'clear').and.callFake(() => {
-      store = {};
-    });
+    routerMock = jasmine.createSpyObj('Router', ['navigate']);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         AuthService,
-        { provide: Router, useValue: routerSpy } // Mockeamos el router
+        { provide: Router, useValue: routerMock }
       ]
     });
 
@@ -56,39 +25,86 @@ describe('AuthService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // Verifica que no queden solicitudes pendientes
-    localStorage.clear(); // Limpia el localStorage después de cada test
+    httpMock.verify();
+    localStorage.clear();
   });
 
-  // Prueba: Verifica que logout elimine la autenticación y redirija a la página de inicio
-  it('should logout, remove tokens and navigate to the home page', () => {
-    // Configura el estado de autenticación
-    localStorage.setItem('token', 'mockToken');
-    localStorage.setItem('meInfo', JSON.stringify(mockMeInfo));
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  it('should validate login and store token', async () => {
+    const mockResponse = { token: 'test-token' };
+    const dataLogin = { username: 'test', password: 'test' };
+
+    const loginPromise = service.validateLogin(dataLogin);
+
+    const req = httpMock.expectOne(`${environment.backendUser}/auth`);
+    expect(req.request.method).toBe('POST');
+    req.flush(mockResponse);
+
+    const res = await loginPromise;
+    expect(res).toEqual(mockResponse);
+    expect(service.isAuthenticated).toBeTrue();
+    expect(service.getAuthInfo().token).toBe('test-token');
+    expect(localStorage.getItem('token')).toBe('test-token');
+  });
+
+  it('should handle login error', async () => {
+    const dataLogin = { username: 'test', password: 'test' };
+
+    const loginPromise = service.validateLogin(dataLogin).catch(error => {
+      expect(error).toBeTruthy();
+      expect(service.isAuthenticated).toBeFalse();
+    });
+
+    const req = httpMock.expectOne(`${environment.backendUser}/auth`);
+    expect(req.request.method).toBe('POST');
+    req.error(new ErrorEvent('Network error'));
+
+    await loginPromise;
+  });
+
+  it('should logout and clear localStorage', () => {
+    localStorage.setItem('token', 'test-token');
+    localStorage.setItem('meInfo', JSON.stringify({ id: '123' }));
     service.isAuthenticated = true;
 
-    // Llama al método de logout
     service.logout();
 
-    expect(service.isAuthenticated).toBeFalse(); // Verifica que ya no esté autenticado
-    expect(localStorage.getItem('token')).toBeNull(); // Verifica que el token sea eliminado
-    expect(localStorage.getItem('meInfo')).toBeNull(); // Verifica que la información del usuario sea eliminada
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['']); // Verifica que se redirige a la página de inicio
+    expect(service.isAuthenticated).toBeFalse();
+    expect(localStorage.getItem('token')).toBeNull();
+    expect(localStorage.getItem('meInfo')).toBeNull();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
   });
 
-  // Prueba: Verifica que isActive redirige si no está autenticado
-  it('should navigate to home if not authenticated', () => {
-    service.isAuthenticated = false;
-    service.isActive();
-
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['']); // Verifica que se redirige si no está autenticado
-  });
-
-  // Prueba: Verifica que getLoggedUser retorne la información del usuario almacenada en localStorage
-  it('should return the logged user info from localStorage', () => {
+  it('should get logged user from localStorage', () => {
+    const mockMeInfo = { id: '123', name: 'Test User' };
     localStorage.setItem('meInfo', JSON.stringify(mockMeInfo));
 
     const loggedUser = service.getLoggedUser();
-    expect(loggedUser).toEqual(mockMeInfo); // Verifica que retorne la información correcta
+    expect(loggedUser).toEqual(mockMeInfo);
+  });
+
+  it('should throw error if token is not available', () => {
+    service.setAuthInfo(null);
+    expect(() => service.getToken()).toThrow(new Error('Token no disponible. El usuario no está autenticado.'));
+  });
+
+  it('should return token if available', () => {
+    service.setAuthInfo({ token: 'test-token' });
+    expect(service.getToken()).toBe('test-token');
+  });
+
+  it('should navigate to home if not authenticated', () => {
+    service.isAuthenticated = false;
+    service.isActive();
+    expect(routerMock.navigate).toHaveBeenCalledWith(['']);
+  });
+
+  it('should not navigate if authenticated', () => {
+    service.isAuthenticated = true;
+    service.isActive();
+    expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 });
