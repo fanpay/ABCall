@@ -1,10 +1,20 @@
 <div class="container text-center">
   <h2 class="text-center">Plan del cliente</h2>
-  <div class="row align-items-start">
+  <div class="row align-items-start pt-5">
     <div class="col-sm-6 col-12">
       <div class="container">
 
-        <form [formGroup]="planForm" (ngSubmit)="!planForm.invalid && savePlan(planForm.value)">
+        <div class="pb-5">
+          <div *ngIf="actualPlan.plan !== 'Default Plan' ">
+            <h2>Plan actual:</h2>
+            <h1>{{actualPlan.plan}}</h1>
+          </div>
+          <div *ngIf="actualPlan.plan == 'Default Plan' ">
+            <h4>Aún no hay configurado un plan para la cuenta, por favor, seleccione el más apropiado.</h4>
+          </div>
+        </div>
+
+        <form class="pt-3" [formGroup]="planForm" (ngSubmit)="!planForm.invalid && savePlan(planForm.value)">
 
           <!--plan-->
           <div class="form-group mx-sm-3 mb-2">
@@ -32,19 +42,29 @@
       </div>
     </div>
     <div class="col-sm-6 col-12">
-      <div class="card" style="background-color: #D9D9D9;" >
+      <div class="card" style="background-color: #D9D9D9;">
         <div class="card-body">
           <h5 class="card-title">Detalles de nuestros planes</h5>
+          <p class="card-text">
+            <span class="fw-bold">Plan Emprendedor:</span> 
+            Dirigido a pequeñas empresas o emprendedores que necesitan servicios básicos de atención
+            al cliente. Este plan incluye funcionalidades esenciales para la gestión de llamadas y atención al cliente
+            sin complejidades avanzadas.
+          </p>
           <p class="card-text"> 
-            Emprendedor: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac purus ut diam elementum semper.
-            Quisque vel libero turpis.
-            </p>
-            <p class="card-text"> Empresario: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac purus ut diam elementum semper.
-              Quisque vel libero turpis.
-              </p>
-              <p class="card-text">
-                Empresario plus:Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac purus ut diam elementum semper.
-                Quisque vel libero turpis.</p>
+            <span class="fw-bold">Plan Empresario:</span>
+            Pensado para medianas empresas que requieren una atención al cliente
+            más sofisticada. Incluye algunas opciones de personalización, automatización de procesos y soporte para
+            integrar sus sistemas de información con el sistema de ABCall.
+          </p>
+          <p class="card-text">
+            <span class="fw-bold">Plan Empresario Plus:</span>
+            Este es el plan más avanzado, enfocado en empresas con necesidades complejas de
+            atención al cliente. Incluye capacidades avanzadas de analítica predictiva y generativa, integración
+            completa con otros sistemas, y uso de tecnologías como blockchain para la seguridad. Este plan busca captar
+            el 60% de la base de clientes en los próximos cinco años y es el más completo en cuanto a tecnología y
+            personalización.
+          </p>
         </div>
       </div>
     </div>
