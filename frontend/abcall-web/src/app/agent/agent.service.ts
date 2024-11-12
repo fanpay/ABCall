@@ -27,4 +27,11 @@ export class AgentService {
     );
   }
 
+  getIncidentsByRange(start: string, end: string): Observable<Incident[]> {
+    const params = { startDate: start, endDate: end };
+    return this.http.get<Incident[]>(this.incidentApiUrl + '/range', { params }).pipe(
+      catchError(err => throwError(() => new Error("Error con el servicio:" + err.message)))
+    );
+  }
+
 }
