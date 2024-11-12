@@ -4,6 +4,19 @@
 
 - [URL Producción](https://abcall-uniandes-74418e05b668.herokuapp.com/)
 
+## Pruebas automatizadas
+
+1. Ejecutar la aplicación con el backend en local:
+
+```bash
+ng s
+```
+
+2. Abrir Cypress:
+
+```bash
+npx cypress open
+```
 
 ## Despliegue en Heroku
 
