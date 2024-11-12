@@ -36,7 +36,6 @@ export class PlanComponent implements OnInit {
 
   savePlan(plan: Plan) {
     console.info("The plan to created: ", plan)
-    //const newPlan: Plan = new Plan(1, plan);
     this.planService.updatePlan(plan).subscribe(res => {
       this.toastrService.success("Confirmation", "El plan fue actualizado!")
       this.planForm.reset();
