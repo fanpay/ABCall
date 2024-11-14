@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { UserService } from '../user.service';
 import { AuthService } from '../../login/auth.service';
 
@@ -13,13 +13,20 @@ interface Message {
   templateUrl: './chatbot.component.html',
   styleUrls: ['./chatbot.component.css']
 })
-export class ChatbotComponent implements OnInit {
+export class ChatbotComponent implements OnInit, AfterViewChecked {
+  @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
+
   messages: Message[] = [];
   userMessage = '';
 
   constructor(private userService: UserService, private authService: AuthService) { }
 
   ngOnInit(){
+    this.sendInitialMessage();
+  }
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
   }
 
   sendMessage(): void {
@@ -39,5 +46,16 @@ export class ChatbotComponent implements OnInit {
         });
       this.userMessage = '';
     }
+  }
+
+  private sendInitialMessage(): void {
+    this.userMessage = 'Hola';
+    this.sendMessage();
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+    } catch (err) { }
   }
 }

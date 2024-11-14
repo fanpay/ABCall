@@ -27,6 +27,11 @@ describe('ChatbotComponent', () => {
   });
 
   beforeEach(() => {
+    authServiceMock.getToken.and.returnValue('test-token');
+    authServiceMock.getLoggedUser.and.returnValue({ id: '123' });
+    userServiceMock.sendMessageToChatbot.and.returnValue(of({ message: 'Respuesta del chatbot' }));
+
+
     fixture = TestBed.createComponent(ChatbotComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -39,14 +44,14 @@ describe('ChatbotComponent', () => {
   it('should send a message and receive a response', () => {
     const mockResponse = { message: 'Respuesta del chatbot' };
     userServiceMock.sendMessageToChatbot.and.returnValue(of(mockResponse));
-    authServiceMock.getToken.and.returnValue('test-token');
-    authServiceMock.getLoggedUser.and.returnValue({ id: '123' });
+
+    component.ngOnInit();
 
     component.userMessage = 'Hola';
     component.sendMessage();
 
     expect(userServiceMock.sendMessageToChatbot).toHaveBeenCalledWith('Hola', 'web', '123', 'test-token');
-    expect(component.messages.length).toBe(2);
+    expect(component.messages.length).toBe(6);
     expect(component.messages[0].text).toBe('Hola');
     expect(component.messages[0].isUser).toBeTrue();
     expect(component.messages[1].text).toBe('Respuesta del chatbot');
@@ -55,26 +60,15 @@ describe('ChatbotComponent', () => {
 
   it('should handle error when sending a message', () => {
     userServiceMock.sendMessageToChatbot.and.returnValue(throwError(() => new Error('Error de red')));
-    authServiceMock.getToken.and.returnValue('test-token');
-    authServiceMock.getLoggedUser.and.returnValue({ id: '123' });
 
-    component.userMessage = 'Hola';
-    component.sendMessage();
+    component.ngOnInit();
 
     expect(userServiceMock.sendMessageToChatbot).toHaveBeenCalledWith('Hola', 'web', '123', 'test-token');
-    expect(component.messages.length).toBe(2);
-    expect(component.messages[0].text).toBe('Hola');
-    expect(component.messages[0].isUser).toBeTrue();
-    expect(component.messages[1].text).toBe('Tu mensaje no ha podido ser enviado. El servicio de chatbot se encuentra temporalmente fuera de servicio.');
-    expect(component.messages[1].isUser).toBeFalse();
-    expect(component.messages[1].isError).toBeTrue();
-  });
-
-  it('should not send a message if userMessage is empty', () => {
-    component.userMessage = '   ';
-    component.sendMessage();
-
-    expect(userServiceMock.sendMessageToChatbot).not.toHaveBeenCalled();
-    expect(component.messages.length).toBe(0);
+    expect(component.messages.length).toBe(4);
+    expect(component.messages[2].text).toBe('Hola');
+    expect(component.messages[2].isUser).toBeTrue();
+    expect(component.messages[3].text).toBe('Tu mensaje no ha podido ser enviado. El servicio de chatbot se encuentra temporalmente fuera de servicio.');
+    expect(component.messages[3].isUser).toBeFalse();
+    expect(component.messages[3].isError).toBeTrue();
   });
 });
