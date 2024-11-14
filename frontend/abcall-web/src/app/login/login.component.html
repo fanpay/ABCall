@@ -3,7 +3,7 @@
     <div class="col-4 bg-body-tertiary">
       <div *ngIf="!showNewUserForm">
         <h2 class="text-center pb-5">Acceder al sistema</h2>
-        <form class="pt-5" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && validateLogin(loginForm.value)">
+        <form id="login-form" class="pt-5" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && validateLogin(loginForm.value)">
 
           <!--username-->
           <div class="form-group mx-sm-3 mb-2 pt-3">
@@ -42,7 +42,7 @@
       </div>
       <div *ngIf="showNewUserForm">
         <h2 class="text-center pb-5">Resgistro de usuario nuevo </h2>
-        <form class="pt-5" [formGroup]="newUserForm" (ngSubmit)="!newUserForm.invalid && createUser(newUserForm.value)">
+        <form id="register-form" class="pt-5" [formGroup]="newUserForm" (ngSubmit)="!newUserForm.invalid && createUser(newUserForm.value)">
 
           <!--username-->
           <div class="form-group mx-sm-3 mb-2">

@@ -13,7 +13,7 @@
 </div>
 <div class="row justify-content-center mt-5">
   <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
-    <div class="card" style="width: 18rem; cursor: pointer;"
+    <div id="card-create-incident" class="card" style="width: 18rem; cursor: pointer;"
     (click)="showCreateIncidentComponent()" *ngIf="showMenu" (keydown)="showCreateIncidentComponent()">
       <img class="card-img-top" src="./assets/images/incidents/action_create_incident.png" alt="Crear incidente">
       <div class="card-body">
@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
-    <div class="card" style="width: 18rem; cursor: pointer;"
+    <div id="card-search-incidents" class="card" style="width: 18rem; cursor: pointer;"
     (click)="showSearchIncidentComponent()" *ngIf="showMenu" (keydown)="showSearchIncidentComponent()">
       <img class="card-img-top" src="./assets/images/incidents/action_search_incidents.png" alt="Consultar incidentes">
       <div class="card-body">
@@ -31,7 +31,7 @@
     </div>
   </div>
   <div class="col-4 col-sx-12 d-flex justify-content-center align-items-center image-container">
-    <div class="card" style="width: 18rem; cursor: pointer;"
+    <div id="card-chat-bot" class="card" style="width: 18rem; cursor: pointer;"
     (click)="showChatbotComponent()" *ngIf="showMenu" (keydown)="showChatbotComponent()">
       <img class="card-img-top" src="./assets/images/chatbot/action_chatbot.png" alt="Chatbot">
       <div class="card-body">
