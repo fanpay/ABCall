@@ -1,5 +1,5 @@
 <div class="chat-container">
-  <div class="messages">
+  <div class="messages" #messagesContainer>
     <div *ngFor="let message of messages" [ngClass]="{'user-message-container': message.isUser, 'bot-message-container': !message.isUser}">
       <img [src]="message.isUser ? './assets/images/chatbot/user.png' : './assets/images/chatbot/submenu_chatbot.png'" class="message-icon" alt="icon">
       <div [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser, 'error-message': message.isError}">

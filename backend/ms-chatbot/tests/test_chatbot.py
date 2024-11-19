@@ -259,7 +259,7 @@ class ChatbotTestCase(unittest.TestCase):
                                  json={"message": "Problema en el servidor", "originType": "web", "userId": "123"},
                                  headers={"Authorization": "Bearer testtoken"})
         self.assertEqual(response.status_code, 200)
-        self.assertIn('Gracias. Ahora, dime la descripción de la incidencia.', response.get_json()['message'])
+        self.assertIn('Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje.', response.get_json()['message'])
 
 
     @patch('src.chatbot.ChatbotResource.is_authenticated')
