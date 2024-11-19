@@ -327,8 +327,11 @@ paths:
       summary: CORS support
       operationId: corsSupportChat
       description: Enable CORS by returning correct headers
+      security:
+        - Bearer: []
       x-google-backend:
         address: https://ms-chatbot-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       responses:
         '204':
           description: "Allow"
