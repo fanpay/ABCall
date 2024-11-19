@@ -5,10 +5,12 @@ import { ManageIncidentComponent } from './manage-incident/manage-incident.compo
 import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { IndicatorsComponent } from './indicators/indicators.component';
 import { IncidentDetailManageComponent } from './incident-detail-manage/incident-detail-manage.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AgentComponent,
