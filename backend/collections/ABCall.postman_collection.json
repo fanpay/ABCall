@@ -781,6 +781,74 @@
 			"name": "incidents",
 			"item": [
 				{
+					"name": "control-panel",
+					"item": [
+						{
+							"name": "Control - Panel - Get Incidents By DateRange",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{INCIDENTS_URL}}/incidents/range?startDate=2024-10-01T00%3A00%3A00&endDate=2024-11-09T23%3A59%3A59",
+									"host": [
+										"{{INCIDENTS_URL}}"
+									],
+									"path": [
+										"incidents",
+										"range"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2024-10-01T00%3A00%3A00"
+										},
+										{
+											"key": "endDate",
+											"value": "2024-11-09T23%3A59%3A59"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Metrics",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{INCIDENTS_URL}}/incidents/metrics",
+									"host": [
+										"{{INCIDENTS_URL}}"
+									],
+									"path": [
+										"incidents",
+										"metrics"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get plan",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{INCIDENTS_URL}}/plan",
+							"host": [
+								"{{INCIDENTS_URL}}"
+							],
+							"path": [
+								"plan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get Incidents",
 					"request": {
 						"method": "GET",
@@ -930,6 +998,37 @@
 							"path": [
 								"incidents",
 								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update plan",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"plan\": \"Premium Ultra plus Plan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{INCIDENTS_URL}}/plan",
+							"host": [
+								"{{INCIDENTS_URL}}"
+							],
+							"path": [
+								"plan"
 							]
 						}
 					},
