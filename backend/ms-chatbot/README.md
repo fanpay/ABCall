@@ -38,11 +38,9 @@ Ejecución de la aplicación de forma local. La aplicación se ejecutará en el 
 
 El servicio de chatbot permite enviar mensajes a un chatbot y recibir respuestas.
 
-Para usar el microservicio de usuarios, se deben hacer peticiones a la ruta `/users` con los métodos `POST`.
+Para usar el microservicio de usuarios, se deben hacer peticiones a la ruta `/chat`.
 
-### Endpoints
-- > `POST /chat`: Verifica que el microservicio esté en ejecución.
-  - > ``` curl --location 'http://localhost:9878/chat' ```
+Revisa la [colección de POSTMAN](https://github.com/fanpay/ABCall/blob/main/backend/collections/ABCall.postman_collection.json) para conocer los detalles de los endpoints.
 
 
 
@@ -61,7 +59,13 @@ Este último comando crea una página HTML (`index.html`) con el reporte de cobe
 > pip install pytest pytest-cov
 > ```
 
+
+## Workflows relacionados
+* [Manual - BE - Ejecución de pruebas unitarias en microservicios](https://github.com/fanpay/ABCall/actions/workflows/be_manual_unit_testing.yml)
+* [Pruebas e integración de ramas de funcionalidad - BackEnd](https://github.com/fanpay/ABCall/actions/workflows/be_integration.yml)
+
+
 ## Autores
 
-Fabián Andrés Payan Meneses - f.payan@uniandes.edu.co
+Fabián Andrés Payan Meneses - f.payan@uniandes.edu.co <br/>
 Esneider Velandia Gonzalez - e.velandia2164@uniandes.edu.co

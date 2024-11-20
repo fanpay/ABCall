@@ -1,3 +1,22 @@
+# Antes de empezar 
+
+## Asegurar variables iniciales
+
+```bash
+gcloud config get-value project
+```
+
+Luego nos debemos autenticar en la consola de Google Cloud
+```bash
+gcloud auth configure-docker us-central1-docker.pkg.dev
+```
+
+```bash
+gcloud auth login
+
+gcloud config set project PROJECT_ID
+```
+
 # Despliegue usando Cloud Build
 
 ## Creación de la red
