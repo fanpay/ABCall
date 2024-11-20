@@ -2,7 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Api
 from .config import Config
-from .routes.incidents import IncidentsList, IncidentDetail
+from .routes.incidents import IncidentsInRange, IncidentsList, IncidentDetail, IncidentsMetrics
+from .routes.plan import PlanResource
 from .extensions import db, cache  
 
 
@@ -20,6 +21,9 @@ def create_app(config_class=Config):
     # Recursos Flask-RESTful
     api.add_resource(IncidentsList, '/incidents')
     api.add_resource(IncidentDetail, '/incidents/<int:id>')
+    api.add_resource(IncidentsMetrics, '/incidents/metrics')
+    api.add_resource(IncidentsInRange, '/incidents/range')
+    api.add_resource(PlanResource, '/plan')
     
     if not app.config['TESTING']:
         with app.app_context():

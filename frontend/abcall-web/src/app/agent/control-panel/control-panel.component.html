@@ -1,3 +1,67 @@
-<div class="container mt-4">
-  <h2 class="text-center">Tablero de control</h2>
+<div class="container mt-4 text-center">
+  <h2>Tablero de control</h2>
+  <form [formGroup]="rangeForm" (ngSubmit)="searchIncidents()" class="row pt-5">
+    <div class="col-1"></div>
+    <div class="col-2">
+      <label for="startDate" class="form-label">Fecha de Inicio</label>
+    </div>
+    <div class="col-2">
+      <input
+        type="date"
+        id="startDate"
+        class="form-control"
+        formControlName="startDate"
+        [max]="today"
+        required>
+    </div>
+    <div class="col-2">
+      <label for="endDate" class="form-label">Fecha Final</label>
+    </div>
+    <div class="col-2">
+      <input
+        type="date"
+        id="endDate"
+        class="form-control"
+        formControlName="endDate"
+        [max]="today"
+        required>
+    </div>
+    <div class="col-2 d-flex align-items-end">
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="rangeForm.invalid">
+        Consultar
+      </button>
+    </div>
+    <div class="col-1"></div>
+  </form>
+
+  <!-- Mostrar mensaje de error si la fecha de inicio es mayor que la fecha final -->
+  <div *ngIf="dateError" class="text-danger mt-2">
+    La fecha de inicio no puede ser mayor que la fecha final.
+  </div>
+
+  <table class="table table-hover mt-5" *ngIf="incidentsList">
+    <thead>
+      <tr>
+        <th scope="col"># Radicado</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Asunto</th>
+        <th scope="col">Origen</th>
+        <th scope="col">Fecha creacion</th>
+        <th scope="col">Ultima actualizacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let incident of incidentsList">
+        <th scope="row">{{incident.id}}</th>
+        <td>{{incident.status}}</td>
+        <td>{{incident.subject}}</td>
+        <td>{{incident.originType}}</td>
+        <td>{{incident.creationDate | date}}</td>
+        <td>{{incident.updateDate | date}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

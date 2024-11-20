@@ -327,8 +327,11 @@ paths:
       summary: CORS support
       operationId: corsSupportChat
       description: Enable CORS by returning correct headers
+      security:
+        - Bearer: []
       x-google-backend:
         address: https://ms-chatbot-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
       responses:
         '204':
           description: "Allow"
@@ -389,3 +392,76 @@ paths:
               error:
                 type: string
                 description: Detalles del error
+
+  /plan:
+    options:
+      summary: CORS support Plan
+      operationId: corsSupportPlan
+      description: Enable CORS by returning correct headers
+      security:
+        - Bearer: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '204':
+          description: "Allow"
+        '400':
+          description: "Cors not allowed"
+    get:
+      summary: Crear plan
+      operationId: createPlan
+      security:
+        - Bearer: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      responses:
+        '200':
+          description: Crear plan
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                plan:
+                  type: string
+    put:
+      summary: Actualizar un plan
+      operationId: updatePlan
+      security:
+        - Bearer: []
+      x-google-backend:
+        address: https://ms-incidents-719013485218.us-central1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+        - name: plan
+          in: body
+          required: true
+          description: Datos del plan a actualizar
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              plan:
+                type: string
+      responses:
+        '200':
+          description: Plan actualizado
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              id:
+                type: integer
+              plan:
+                type: string
+              updateDate:
+                type: string
+                format: date-time
+        '404':
+          description: Plan no encontrado

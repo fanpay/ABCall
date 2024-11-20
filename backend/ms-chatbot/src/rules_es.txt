@@ -1,0 +1,11 @@
+default:Lo siento, no entiendo lo que dices. Intenta con otra frase.
+hola:¡Hola! ¿Cómo te puedo ayudar?. Si deseas crear una incidencia, escribe el mensaje "crear incidencia" para empezar el proceso
+create_incident:Para crear una incidencia, necesito más información. Te pediré en diferentes mensajes la información que necesito. Por favor, indícame en el siguiente mensaje el asunto de la incidencia.
+awaiting_description:Gracias. Ahora, como último paso, dime la descripción de la incidencia en un solo mensaje.
+incident_created:Incidencia creada con éxito.
+incident_creation_failed:Hubo un error al crear la incidencia.
+service_unavailable:No se pudo conectar con el servicio de incidencias.
+gracias:¡De nada! Que tengas un buen día.
+adiós:Hasta luego, ¡que tengas un buen día!
+respaldo:Para hacer un respaldo, te recomiendo seguir estos pasos: Primero, ve a la configuración de respaldos. Como segundo paso, dale click en "Respaldos". Por último, dale click en "respaldar". Ahora ya puedes guardar tu respaldo en un lugar seguro.
+sistema caído:Si el sistema está caído, intenta reiniciarlo o verifica si hay actualizaciones disponibles. También puedes contactar al soporte técnico para más ayuda.

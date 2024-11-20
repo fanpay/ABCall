@@ -1,5 +1,6 @@
 package com.uniandes.abcall.data.service
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +17,7 @@ private const val CHATBOT_URL = "https://misw-2024-api-gateway-pf-96b62bvm.uc.ga
 
 object ApiClient {
     // Crear una instancia de Gson con el adaptador personalizado
-    val gson = GsonBuilder()
+    private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(Timestamp::class.java, TimestampAdapter())
         .create()
 
@@ -30,6 +31,11 @@ object ApiClient {
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
+    private val retrofitChatbot: Retrofit = Retrofit.Builder()
+        .baseUrl(CHATBOT_URL)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build()
+
     val incidents : IncidentApi by lazy {
         retrofitIncident.create(IncidentApi::class.java)
     }
@@ -40,5 +46,9 @@ object ApiClient {
 
     val auth: AuthApi by lazy {
         retrofitUser.create(AuthApi::class.java)
+    }
+
+    val chatbot: ChatbotApi by lazy {
+        retrofitChatbot.create(ChatbotApi::class.java)
     }
 }

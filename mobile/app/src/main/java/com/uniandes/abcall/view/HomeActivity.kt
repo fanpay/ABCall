@@ -27,11 +27,13 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
-    private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(application)
-    }
     private lateinit var authRepository: AuthRepository
     private lateinit var incidentsRepository: IncidentRepository
+
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModelFactory(application, authRepository)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

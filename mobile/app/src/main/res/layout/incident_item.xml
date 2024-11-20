@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -45,7 +46,8 @@
                     app:layout_constraintStart_toEndOf="@id/imageView1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingStart="8dp" />
+                    android:paddingStart="8dp"
+                    tools:ignore="RtlSymmetry" />
 
 
                 <TextView
@@ -58,7 +60,8 @@
                     app:layout_constraintTop_toBottomOf="@id/incident_subject"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:paddingStart="8dp"
-                    app:timestampToDate="@{incident.creationDate}" />
+                    app:timestampToDate="@{incident.creationDate}"
+                    tools:ignore="RtlSymmetry" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -67,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/darker_gray"
                 android:layout_marginTop="8dp"
                 android:text='@{String.format(@string/id_incident, incident.id)}' />
 
@@ -76,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/see_detail_incident"
-                android:textColor="@android:color/holo_purple"
+                android:textColor="@color/holo_purple"
                 android:textStyle="bold"
                 android:layout_gravity="start"
                 android:layout_marginTop="8dp"

@@ -11,6 +11,9 @@ interface UsersDao {
     @Query("SELECT * FROM users_table WHERE id = :userId LIMIT 1")
     suspend fun getUserById(userId: String): User?
 
+    @Query("SELECT token FROM users_table WHERE id = :userId LIMIT 1")
+    suspend fun getUserTokenById(userId: String): String?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User)
 

@@ -1,0 +1,11 @@
+default:Sorry, I don't understand what you are saying. Try another sentence.
+hello:Hi, how can I help you?. If you want to create an issue, type the message "create incident" to start the process
+create_incident:To create an incident, I need more information. I will ask you in different messages for the information I need. Please tell me in the next message the subject of the incident
+awaiting_description:Thank you. Now, tell me the description of the issue.
+incident_created:Incident was created successfully.
+incident_creation_failed:There was an error creating the issue.
+service_unavailable:Could not connect to the incident service.
+thanks:You are welcome! Have a nice day.
+bye:See you later, have a nice day!
+backup:To make a backup, I recommend following these steps: First, go to the backup settings. As a second step, click on “Backups”. Finally, click on “backup”. Now you can save your backup in a safe place.
+system down:If the system is down, please try restarting it or check for any available updates. You can also contact technical support for further assistance.

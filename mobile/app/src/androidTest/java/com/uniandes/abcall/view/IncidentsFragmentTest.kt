@@ -5,7 +5,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
@@ -15,7 +14,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.uniandes.abcall.R
 import com.uniandes.abcall.utils.TestUserCredentials
-import com.uniandes.abcall.view.adapters.IncidentAdapter
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -39,11 +37,11 @@ class IncidentsFragmentTest {
     }
 
     private fun testLoginSuccess() {
-        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.validUser), closeSoftKeyboard())
-        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.validPassword), closeSoftKeyboard())
+        onView(withId(R.id.fieldUser)).perform(typeText(TestUserCredentials.VALID_USER), closeSoftKeyboard())
+        onView(withId(R.id.passField)).perform(typeText(TestUserCredentials.VALID_PASSWORD), closeSoftKeyboard())
         onView(withId(R.id.btn_login)).perform(click())
 
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         intended(hasComponent(HomeActivity::class.java.name))
     }
 
@@ -51,12 +49,27 @@ class IncidentsFragmentTest {
     fun testRecyclerViewIsDisplayedAfterLogin() {
         testLoginSuccess()
 
-        Thread.sleep(2000L)
+        Thread.sleep(3000L)
 
         // Verifica que el RecyclerView está visible
         onView(withId(R.id.incidentsRv)).check(matches(isDisplayed()))
 
 
         Thread.sleep(1000L)
+    }
+
+    @Test
+    fun testNavigateToChatFragment() {
+        testLoginSuccess()
+
+        Thread.sleep(2000L)
+
+        onView(withId(R.id.floating_add_incident)).perform(click())
+
+        onView(withId(R.id.btn_yes)).perform(click())
+
+        Thread.sleep(2000L)
+
+        onView(withId(R.id.recyclerViewChat)).check(matches(isDisplayed()))
     }
 }

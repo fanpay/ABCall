@@ -18,3 +18,5 @@ requests==2.31.0                # Para hacer solicitudes HTTP
 pytest==8.2.0                 # Framework de pruebas para Python
 pytest-cov==4.1.0             # Cobertura de pruebas con pytest
 coverage==7.5.0               # Cobertura de código
+
+pytz==2022.1                  # Manejo de zonas horarias

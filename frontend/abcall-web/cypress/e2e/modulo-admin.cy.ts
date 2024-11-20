@@ -7,7 +7,7 @@ describe('Pruebas del módulo del administrador', () => {
     const adminUser = { username: 'admin', password: 'admin' };
     cy.get('#username').type(adminUser.username);
     cy.get('#password').type(adminUser.password);
-    cy.get('form').submit();
+    cy.get('#login-form').submit();
     cy.url().should('include', '/admin');
   });
 
@@ -30,10 +30,22 @@ describe('Pruebas del módulo del administrador', () => {
     cy.get('#dni').type(newAgent.dni);
     cy.get('#fullName').type(newAgent.fullName);
     cy.get('#phoneNumber').type(newAgent.phoneNumber);
-    
+
     cy.get('#btn-create-agent').click();
 
     // Verifica que el agente se haya creado correctamente
     cy.contains('fue creado!').should('be.visible');
+  });
+
+  it('Vista de un plan', () => {
+    cy.wait(5000); // Esperar para que se elimine el mensaje de bienvenida
+    cy.get('#select-plan').click();
+
+    // Verifica que el título "Plan del cliente" esté presente
+    cy.contains('h2', 'Plan del cliente').should('exist');
+
+    // Verifica que exista un elemento <select> en el DOM
+    cy.get('select').should('exist');
+
   });
 });

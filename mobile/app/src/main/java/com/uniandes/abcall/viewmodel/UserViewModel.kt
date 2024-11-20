@@ -23,4 +23,15 @@ class UserViewModel(application: Application,
             _user.postValue(user)
         }
     }
+
+    fun getUserToken(userId: String): LiveData<String?> {
+        val tokenLiveData = MutableLiveData<String?>()
+
+        viewModelScope.launch {
+            val token = authRepository.getUserToken(userId)
+            tokenLiveData.postValue(token)
+        }
+
+        return tokenLiveData
+    }
 }

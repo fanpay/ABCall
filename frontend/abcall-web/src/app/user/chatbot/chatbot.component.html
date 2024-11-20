@@ -1,0 +1,14 @@
+<div class="chat-container">
+  <div class="messages" #messagesContainer>
+    <div *ngFor="let message of messages" [ngClass]="{'user-message-container': message.isUser, 'bot-message-container': !message.isUser}">
+      <img [src]="message.isUser ? './assets/images/chatbot/user.png' : './assets/images/chatbot/submenu_chatbot.png'" class="message-icon" alt="icon">
+      <div [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser, 'error-message': message.isError}">
+        {{ message.text }}
+      </div>
+    </div>
+  </div>
+  <div class="chat-input">
+    <input [(ngModel)]="userMessage" placeholder="Escribe un mensaje..." (keydown.enter)="sendMessage()" />
+    <button (click)="sendMessage()">Enviar</button>
+  </div>
+</div>

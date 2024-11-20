@@ -81,6 +81,9 @@ class UserViewModelTest {
         runBlocking {
             Mockito.`when`(authRepository.getStoredUser(userId))
                 .thenReturn(mockUser)
+
+            Mockito.`when`(authRepository.getUserToken(userId))
+                .thenReturn(mockUser.token)
         }
 
         // Llamamos al método getUser para actualizar el LiveData
@@ -99,6 +102,10 @@ class UserViewModelTest {
         Assert.assertEquals("El número de teléfono debería ser 1234567890", "1234567890", capturedUser.phoneNumber)
         Assert.assertEquals("El rol debería ser Admin", "Admin", capturedUser.role)
         Assert.assertEquals("El token debería ser token_abc123", "token_abc123", capturedUser.token)
+
+        val tokenLiveData = userViewModel.getUserToken(userId)
+        val capturedToken = tokenLiveData.getOrAwaitValue()
+        Assert.assertEquals("El token debería ser token_abc123", "token_abc123", capturedToken)
     }
 
     @Test

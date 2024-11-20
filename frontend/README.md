@@ -1,9 +1,22 @@
 # ABCall - Frontend
 
-## Endpoint
+## Endpoint
 
 - [URL Producción](https://abcall-uniandes-74418e05b668.herokuapp.com/)
 
+## Pruebas automatizadas
+
+1. Ejecutar la aplicación con el backend en local:
+
+```bash
+ng s
+```
+
+2. Abrir Cypress:
+
+```bash
+npx cypress open
+```
 
 ## Despliegue en Heroku
 
@@ -61,6 +74,11 @@ Eliminar la aplicación en Heroku:
 ```bash
 heroku apps:destroy --app abcall-uniandes
 ```
+
+## Workflow de despliegue
+
+También puedes ejecutar el despliegue con el flujo manual creado para esto
+> https://github.com/fanpay/ABCall/actions/workflows/deploy_web.yml
 
 Información:
 > https://medium.com/travis-on-docker/how-to-run-dockerized-apps-on-heroku-and-its-pretty-great-76e07e610e22

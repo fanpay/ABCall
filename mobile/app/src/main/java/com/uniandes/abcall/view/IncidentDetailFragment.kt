@@ -24,7 +24,7 @@ class IncidentDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentIncidentDetailBinding.inflate(inflater, container, false)
 
         val bar = (activity as? AppCompatActivity)?.supportActionBar
@@ -45,7 +45,7 @@ class IncidentDetailFragment : Fragment() {
             incidentSubject.text = incident.subject
 
             incidentStatus.text = incident.status
-            incidentID.text = incident.id.toString()
+            incident.id.toString().also { incidentID.text = it }
 
             val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val formattedDate = formatter.format(incident.creationDate)
