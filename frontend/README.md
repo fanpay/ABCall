@@ -1,6 +1,6 @@
 # ABCall - Frontend
 
-## Endpoint
+## Endpoint
 
 - [URL Producción](https://abcall-uniandes-74418e05b668.herokuapp.com/)
 
@@ -74,6 +74,11 @@ Eliminar la aplicación en Heroku:
 ```bash
 heroku apps:destroy --app abcall-uniandes
 ```
+
+## Workflow de despliegue
+
+También puedes ejecutar el despliegue con el flujo manual creado para esto
+> https://github.com/fanpay/ABCall/actions/workflows/deploy_web.yml
 
 Información:
 > https://medium.com/travis-on-docker/how-to-run-dockerized-apps-on-heroku-and-its-pretty-great-76e07e610e22
