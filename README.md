@@ -49,12 +49,12 @@ Este repositorio contiene los diferentes componentes del proyecto ABCall, incluy
 
 ## Requisitos
 
-- Node.js
+- Node.js 14.x o superior
 - Python 3.9
-- Docker
-- Android Studio (para la aplicación móvil)
+- Docker 20.10.x o superior
+- Android Studio 4.1 o superior (para la aplicación móvil)
 - JDK 17
-- Gradle
+- Gradle 7.0 o superior
 
 ## Configuración del Entorno
 
